@@ -162,4 +162,10 @@ dependencies {
     // google to sign in
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
+
+    // exo player
+    implementation ("androidx.media3:media3-exoplayer:1.1.1")
+    implementation ("androidx.media3:media3-exoplayer-dash:1.1.1")
+    implementation ("androidx.media3:media3-ui:1.1.1")
+    implementation ("com.google.android.exoplayer:exoplayer-ui:2.19.1")
 }

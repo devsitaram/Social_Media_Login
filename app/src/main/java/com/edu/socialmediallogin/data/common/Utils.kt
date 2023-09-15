@@ -5,6 +5,8 @@ import com.edu.socialmediallogin.domain.model.SubjectModel
 
 fun SubjectDTO.toDomainModel(): SubjectModel {
     return SubjectModel(
-        imageUrl = this.previewURL
+        imageUrl = this.previewURL,
+        title = this.tags,
+        urlDescriptions = this.userImageURL
     )
 }

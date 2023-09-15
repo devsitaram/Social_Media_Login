@@ -10,6 +10,7 @@ import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
 import com.edu.socialmediallogin.presentation.screen.SignInViewScreen
 import com.edu.socialmediallogin.presentation.screen.SignUpScreenViewScreen
 import com.edu.socialmediallogin.presentation.screen.SubjectViewScreen
+import com.edu.socialmediallogin.presentation.screen.VideoPlayViewScreen
 import com.squareup.moshi.Moshi
 import javax.security.auth.Subject
 
@@ -33,7 +34,7 @@ fun NavigationViewScreen(navController: NavHostController) {
             SubjectViewScreen(navController)
         }
         composable(ScreenList.VideoScreen.route) {
-//            VideoViewScreen(videoViewModel)
+            VideoPlayViewScreen()
         }
         composable(ScreenList.AuthScreen.route) {
 //            AuthScreen(navController = navController)

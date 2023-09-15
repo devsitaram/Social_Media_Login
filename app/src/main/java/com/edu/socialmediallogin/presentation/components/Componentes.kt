@@ -1,6 +1,5 @@
 package com.edu.socialmediallogin.presentation.components
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -35,7 +35,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,7 +48,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -65,6 +63,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.edu.socialmediallogin.ui.theme.skyBlue
 
 @Composable
@@ -358,6 +357,21 @@ fun PainterImageView(
 }
 
 @Composable
+fun AsyncImageView(
+    imageUrl: String,
+    contentDescription: String? = null,
+    modifier: Modifier = Modifier,
+) {
+    AsyncImage(
+        model = imageUrl,
+        contentDescription = null,
+        modifier = modifier
+    )
+
+
+}
+
+@Composable
 fun IconView(
     imageVector: ImageVector,
     contentDescription: String? = null,
@@ -459,7 +473,7 @@ fun IconView(
 // }
 
 @Composable
-fun ContentCardView(painter: Painter, topic: String, description: String, onClickable: () -> Unit) {
+fun ContentCardView(imageUrl: String, topic: String, description: String, onClickable: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -475,9 +489,15 @@ fun ContentCardView(painter: Painter, topic: String, description: String, onClic
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painter,
-                contentDescription = null,
+//            Image(
+//                painter = painter,
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(120.dp)
+//                    .padding(start = 15.dp, end = 15.dp)
+//            )
+            AsyncImageView(
+                imageUrl = imageUrl,
                 modifier = Modifier
                     .size(120.dp)
                     .padding(start = 15.dp, end = 15.dp)
@@ -557,6 +577,10 @@ fun RoundedCornerCardView(
 @Composable
 fun ProgressIndicator() {
     Box(modifier = Modifier.fillMaxSize()) {
-        CircularProgressIndicator(modifier = Modifier.wrapContentSize().align(Alignment.Center))
+        CircularProgressIndicator(
+            modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center)
+        )
     }
 }
