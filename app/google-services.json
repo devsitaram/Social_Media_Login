@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "31879838548",
+    "project_id": "signin-78281",
+    "storage_bucket": "signin-78281.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31879838548:android:b1ea955d0d4d728e0fe6c1",
+        "android_client_info": {
+          "package_name": "com.edu.imagesearch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHnIa8HG5P1XxrEYCboCROGJSIXx3KQcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31879838548:android:718eaf79bad748e90fe6c1",
+        "android_client_info": {
+          "package_name": "com.edu.socialmediallogin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHnIa8HG5P1XxrEYCboCROGJSIXx3KQcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
