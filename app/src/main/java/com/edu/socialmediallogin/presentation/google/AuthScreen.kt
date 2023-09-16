@@ -53,7 +53,7 @@ fun AuthScreen(navController: NavHostController) {
     val authResultLauncher = rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
             try {
                 mSignInViewModel.fetchSingInUser("np01ma4s22003@islingtoncollege.edu.np", "Sita Ram Thing MAD")
-//                val gsa = task?.getResult(ApiException::class.java)
+                val gsa = task?.getResult(ApiException::class.java)
 //                if (gsa != null) {
 //                    mSignInViewModel.fetchSingInUser(gsa.email, gsa.displayName)
 //                } else {

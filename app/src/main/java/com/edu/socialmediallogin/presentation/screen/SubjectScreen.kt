@@ -32,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import coil.compose.AsyncImage
-import com.edu.socialmediallogin.presentation.components.AsyncImageView
 import com.edu.socialmediallogin.presentation.components.ContentCardView
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
@@ -111,13 +109,6 @@ fun SubjectViewScreen(
                         .padding(start = 15.dp, end = 15.dp)
                 ) {
                     items(it) {
-//                        AsyncImageView(
-//                            imageUrl = it.imageUrl,
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .height(280.dp)
-//                                .padding(vertical = 2.dp)
-//                        )
                         ContentCardView(
                             imageUrl = it.imageUrl,
                             topic = it.title,

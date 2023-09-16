@@ -8,4 +8,8 @@ interface ApiService {
 
     @GET("api/")
     suspend fun getSearchSubject(@Query("key") key: String, @Query("q") query: String): SubjectListDTO
+
+
+//    @GET("api/")
+//    suspend fun getSearchSubject(@Query("key") key: String, @Query("q") query: String): SubjectListDT
 }

@@ -8,7 +8,6 @@ import kotlin.Exception
 
 class SubjectRepositoryImpl(private val apiService: ApiService) : SubjectRepository {
     // https://pixabay.com/api/?key=39343490-929c50e58ac235a67f48917fa&q=sunflower
-
     override suspend fun getSearchSubject(query: String): List<SubjectModel> {
         try {
             return apiService.getSearchSubject(

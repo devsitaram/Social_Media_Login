@@ -478,7 +478,7 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 15.dp)
-            .border(1.dp, Color.LightGray)
+            .border(0.5.dp, Color.LightGray)
             .clickable { onClickable() },
         shape = ShapeDefaults.Medium
     ) {
@@ -489,18 +489,11 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-//            Image(
-//                painter = painter,
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .size(120.dp)
-//                    .padding(start = 15.dp, end = 15.dp)
-//            )
             AsyncImageView(
                 imageUrl = imageUrl,
                 modifier = Modifier
                     .size(120.dp)
-                    .padding(start = 15.dp, end = 15.dp)
+                    .padding(start = 5.dp, end = 5.dp) // padding(start = 15.dp, end = 15.dp)
             )
             Column(
                 modifier = Modifier

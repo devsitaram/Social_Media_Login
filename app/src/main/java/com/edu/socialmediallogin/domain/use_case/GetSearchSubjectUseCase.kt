@@ -17,4 +17,14 @@ class GetSearchSubjectUseCase(private val subjectRepository: SubjectRepository) 
             emit(Resource.Error(message = e.message.toString()))
         }
     }
+
+
+//    operator fun invoke(query: String): Flow<Resource<List<SubjectModel>>> = flow {
+//        emit(Resource.Loading())
+//        try {
+//            emit(Resource.Success(data = subjectRepository.getSearchSubject(query = query)))
+//        } catch (e: Exception) {
+//            emit(Resource.Error(message = e.message.toString()))
+//        }
+//    }
 }

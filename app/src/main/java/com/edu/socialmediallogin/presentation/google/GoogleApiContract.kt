@@ -3,6 +3,7 @@ package com.edu.socialmediallogin.presentation.google
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContract
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -15,6 +16,7 @@ class GoogleApiContract : ActivityResultContract<Int, Task<GoogleSignInAccount>?
             .requestIdToken("463180707847-4qh8bcqg10ejfo9tsuh0i38veknvo216.apps.googleusercontent.com")
             .requestEmail()
             .build()
+        Log.e("gso", "gso: ${gso.scopeArray[2]}")
         val intent = GoogleSignIn.getClient(context, gso)
         return intent.signInIntent
     }

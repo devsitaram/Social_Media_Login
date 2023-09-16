@@ -23,6 +23,4 @@ class AppDetails {
     fun provideGetSearchUseCase(subjectRepository: SubjectRepository): GetSearchSubjectUseCase {
         return GetSearchSubjectUseCase(subjectRepository)
     }
-
-
 }
