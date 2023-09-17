@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
@@ -395,7 +396,7 @@ fun IconView(
 //) {
 //    Card(
 //        modifier = Modifier
-//            .fillMaxWidth()
+//            .fillMaxWidth().wrapContentHeight()
 //            .padding(bottom = 15.dp)
 //            .border(1.dp, Color.LightGray)
 //            .clickable { onClickable() },
@@ -478,7 +479,7 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 15.dp)
-            .border(0.5.dp, Color.LightGray)
+            .border(5.dp, Color.LightGray)
             .clickable { onClickable() },
         shape = ShapeDefaults.Medium
     ) {
@@ -492,7 +493,7 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
             AsyncImageView(
                 imageUrl = imageUrl,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(120.dp).border(1.dp, Color.LightGray)
                     .padding(start = 5.dp, end = 5.dp) // padding(start = 15.dp, end = 15.dp)
             )
             Column(

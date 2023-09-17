@@ -1,9 +1,7 @@
 package com.edu.socialmediallogin.di.appmodule
 
 import android.content.Context
-import androidx.room.Room
 import com.edu.socialmediallogin.data.common.Constants.API_BASE_URL
-import com.edu.socialmediallogin.data.common.Constants.DATABASE_NAME
 import com.edu.socialmediallogin.data.repository_impl.AuthRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.SubjectRepositoryImpl
 import com.edu.socialmediallogin.data.source.local.RoomDB
@@ -18,6 +16,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -29,6 +29,7 @@ object AppModule {
     @Provides
     @Singleton
     fun providesFirebaseAuth() = FirebaseAuth.getInstance()
+
     @Provides
     @Singleton
     fun providesRepository(firebaseAuth: FirebaseAuth): AuthRepository {
@@ -49,9 +50,19 @@ object AppModule {
     // get api instance
     @Provides
     fun provideApiService(): ApiService {
-        return Retrofit.Builder().baseUrl(API_BASE_URL).addConverterFactory(
-            GsonConverterFactory.create()
-        ).build().create(ApiService::class.java)
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+
+        // create object of okHttpClient
+        val okHttpClient: OkHttpClient =
+            OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
+
+        // create an object of the retrofit
+        return Retrofit.Builder()
+            .baseUrl(API_BASE_URL) // Replace with your base URL
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(ApiService::class.java)
     }
     @Provides
     fun provideImageRepo(apiService: ApiService): SubjectRepository {

@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
@@ -24,7 +26,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,19 +43,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.R
+import com.edu.socialmediallogin.data.common.RegistrationState
 import com.edu.socialmediallogin.presentation.components.ButtonView
 import com.edu.socialmediallogin.presentation.components.ClickableTextView
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
+import com.edu.socialmediallogin.presentation.viewmodel.SignUpViewModel
 
 @Composable
 fun SignUpScreenViewScreen(navController: NavHostController) {
 
     val context = LocalContext.current
+    val viewModel = viewModel<SignUpViewModel>()
+    val registrationState = viewModel.registrationState.collectAsState()
+
+
     var email by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -261,5 +270,26 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                 )
             }
         }
+    }
+
+    // Show loading indicator when registering
+    if (registrationState.value == RegistrationState.LOADING) {
+        Spacer(modifier = Modifier.height(16.dp))
+        CircularProgressIndicator()
+    }
+
+    // Show registration result message
+    val message = when (registrationState.value) {
+        RegistrationState.SUCCESS -> "Registration successful."
+        RegistrationState.ERROR -> "Registration failed."
+        else -> ""
+    }
+    if (message.isNotEmpty()) {
+        Spacer(modifier = Modifier.height(16.dp))
+        TextView(
+            text = message,
+            color = if (registrationState.value == RegistrationState.SUCCESS) Color.Green else Color.Red,
+            modifier = Modifier.wrapContentSize(Alignment.Center)
+        )
     }
 }

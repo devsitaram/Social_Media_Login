@@ -4,22 +4,18 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.edu.socialmediallogin.presentation.google.AuthScreen
-import com.edu.socialmediallogin.presentation.google.GoogleUserModel
 import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
 import com.edu.socialmediallogin.presentation.screen.SignInViewScreen
 import com.edu.socialmediallogin.presentation.screen.SignUpScreenViewScreen
 import com.edu.socialmediallogin.presentation.screen.SubjectViewScreen
 import com.edu.socialmediallogin.presentation.screen.VideoPlayViewScreen
-import com.squareup.moshi.Moshi
-import javax.security.auth.Subject
 
 @Composable
 fun NavigationViewScreen(navController: NavHostController) {
 
     NavHost(
         navController = navController,
-        startDestination = ScreenList.LoginScreen.route
+        startDestination = ScreenList.HomeScreen.route
     ) {
         composable(ScreenList.SplashScreen.route) {
 //            SplashViewScreen(navHostController, getUserDevice)

@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
 import com.edu.socialmediallogin.presentation.components.ContentCardView
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
@@ -55,7 +58,7 @@ fun SubjectViewScreen(
     }
 
     if (result.error.isNotBlank()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(modifier = Modifier.fillMaxSize().padding(horizontal = 15.dp, vertical = 15.dp), contentAlignment = Alignment.Center) {
             TextView(text = result.error)
         }
     }
@@ -102,6 +105,7 @@ fun SubjectViewScreen(
                     .fillMaxWidth()
                     .padding(15.dp)
             )
+
             result.data?.let {
                 LazyColumn(
                     modifier = Modifier
@@ -110,17 +114,16 @@ fun SubjectViewScreen(
                 ) {
                     items(it) {
                         ContentCardView(
-                            imageUrl = it.imageUrl,
-                            topic = it.title,
-                            description = it.urlDescriptions,
+                            imageUrl = HTTPS_IMAGE_BASE_URL + it?.photoUrl.toString(),
+                            topic = it?.name.toString(),
+                            description = it?.description.toString(),
                             onClickable = {
-                                // data transfer and navigate
 //                                    val videoDetails = VideoDetails(
 //                                        title = item.title, descriptions = item.description,
 //                                        videoUri = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
 //                                    )
 //                                    videoViewModel.addVideoDetails(newVideoDetails = videoDetails)
-                                    navController.navigate(ScreenList.VideoScreen.route)
+                                navController.navigate(ScreenList.VideoScreen.route)
                             }
                         )
                     }

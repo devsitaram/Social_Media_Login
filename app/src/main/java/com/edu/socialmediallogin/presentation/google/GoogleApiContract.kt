@@ -16,7 +16,9 @@ class GoogleApiContract : ActivityResultContract<Int, Task<GoogleSignInAccount>?
             .requestIdToken("463180707847-4qh8bcqg10ejfo9tsuh0i38veknvo216.apps.googleusercontent.com")
             .requestEmail()
             .build()
-        Log.e("gso", "gso: ${gso.scopeArray[2]}")
+//        for (g in gso.scopeArray){
+//        }
+//        Log.e("gso", "gso: ${gso.scopeArray[2]}")
         val intent = GoogleSignIn.getClient(context, gso)
         return intent.signInIntent
     }

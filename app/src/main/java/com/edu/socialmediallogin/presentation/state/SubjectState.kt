@@ -1,9 +1,9 @@
 package com.edu.socialmediallogin.presentation.state
 
-import com.edu.socialmediallogin.domain.model.SubjectModel
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
 
-data class SubjectState  (
+data class SubjectState(
     val isLoading: Boolean = false,
-    val data: List<SubjectModel>? = null,
+    val data: List<SubjectItem?>? = null,
     val error: String = ""
 )

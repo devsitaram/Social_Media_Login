@@ -11,23 +11,32 @@ import com.edu.socialmediallogin.domain.model.UserModel
 @Dao
 interface UserDao {
 
+//    @Insert
+//    suspend fun insertUser(user: User)
+//
+//    @Query("SELECT * FROM user WHERE email = :email AND password = :password")
+//    suspend fun getUserByEmailAndPassword(email: String, password: String): User?
+//
+//    @Query("SELECT * FROM user WHERE email = :email")
+//    suspend fun getUserByEmail(email: String): String?
+
     // Insert a new user
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    suspend fun insertUser(user: List<UserModel>): Boolean
 
     // Get a user by ID
-    @Query("SELECT * FROM users WHERE id = :userId")
-    suspend fun getUserById(userId: Long): UserEntity?
-
-    @Query("SELECT * FROM users WHERE email = :email AND password = :password")
-    suspend fun loginUser(email: String, password: String): UserEntity?
-
-    // Update an existing user
-    @Update
-    suspend fun updateUser(user: UserEntity)
-
-    // Delete a user
-    @Delete
-    suspend fun deleteUser(user: UserEntity)
+//    @Query("SELECT * FROM users WHERE id = :userId")
+//    suspend fun getUserById(userId: Long): UserEntity?
+//
+//    @Query("SELECT * FROM users WHERE email = :email AND password = :password")
+//    suspend fun loginUser(email: String, password: String): UserEntity?
+//
+//    // Update an existing user
+//    @Update
+//    suspend fun updateUser(user: UserEntity)
+//
+//    // Delete a user
+//    @Delete
+//    suspend fun deleteUser(user: UserEntity)
 
 }

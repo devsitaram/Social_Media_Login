@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.google
+package com.edu.socialmediallogin.presentation.viewmodel.signin
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.edu.socialmediallogin.domain.model.GoogleUserModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import kotlinx.coroutines.launch
 

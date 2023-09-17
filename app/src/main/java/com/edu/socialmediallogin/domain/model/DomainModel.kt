@@ -9,6 +9,11 @@ data class UserModel(
     val password: String
 )
 
+data class GoogleUserModel(
+    val name: String?,
+    val email: String?,
+)
+
 data class SubjectModel(
     val imageUrl: String,
     val title: String,

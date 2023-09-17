@@ -6,7 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.edu.socialmediallogin.data.common.Constants.DATABASE_NAME
 
-@Database(entities = [UserEntity::class], version = 1)
+//@Database(entities = [UserEntity::class], version = 1, exportSchema = false)
+@Database(entities = [User::class], version = 1, exportSchema = false)
 abstract class RoomDB : RoomDatabase() {
 
     abstract fun userDao(): UserDao
@@ -22,7 +23,8 @@ abstract class RoomDB : RoomDatabase() {
                 INSTANCE ?: synchronized(this) {
                     val instance = Room.databaseBuilder(
                         context.applicationContext,
-                        RoomDB::class.java, DATABASE_NAME
+                        RoomDB::class.java,
+                        DATABASE_NAME
                     ).build()
                     INSTANCE = instance
                     instance
