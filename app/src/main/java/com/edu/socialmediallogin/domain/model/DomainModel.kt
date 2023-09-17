@@ -1,6 +1,7 @@
 package com.edu.socialmediallogin.domain.model
 
 import android.os.Parcelable
+import androidx.compose.runtime.MutableState
 import kotlinx.android.parcel.Parcelize
 
 data class UserModel(
@@ -10,8 +11,8 @@ data class UserModel(
 )
 
 data class GoogleUserModel(
-    val name: String?,
-    val email: String?,
+    val name: String? = null,
+    val email: String? = null,
 )
 
 data class SubjectModel(

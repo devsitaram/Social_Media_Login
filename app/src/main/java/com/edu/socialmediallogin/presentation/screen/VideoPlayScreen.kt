@@ -1,6 +1,7 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.edu.socialmediallogin.presentation.screen
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.net.Uri
@@ -78,7 +79,6 @@ import kotlinx.coroutines.delay
 fun VideoPlayViewScreen(videoPlayViewModel: VideoPlayViewModel = viewModel()) {
 
     val context = LocalContext.current
-//    val viewModel = VideoPlayViewModel()
     val result = videoPlayViewModel.videoDetails
 
     val title = result?.title
@@ -378,7 +378,7 @@ fun TopSettingActionView(
             Box(modifier = Modifier) {
                 DropdownMenu(
                     modifier = Modifier.background(color = Color.Black),
-                    expanded = expandedSetting,
+                    expanded = true, // expandedSetting
                     onDismissRequest = { onDismissDropdown() }
                 ) {
                     optionList.forEach { option ->
@@ -448,7 +448,7 @@ fun TopSettingActionView(
             Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
                 DropdownMenu(
                     modifier = Modifier.background(color = Color.Black),
-                    expanded = plackSpeedExpanded,
+                    expanded = true, // plackSpeedExpanded,
                     onDismissRequest = { onSpeedDismiss() } // plackSpeedExpanded = false
                 ) {
                     currentPlaybackSpeed.forEachIndexed { index, speed ->
@@ -489,7 +489,7 @@ fun TopSettingActionView(
             Box(modifier = Modifier, contentAlignment = Alignment.CenterEnd) {
                 DropdownMenu(
                     modifier = Modifier.background(color = Color.Black),
-                    expanded = audioExpanded,
+                    expanded = true, // audioExpanded,
                     onDismissRequest = { onAudioDismiss() } // audioExpanded = false
                 ) {
                     audioOptions.forEachIndexed { index, quality ->
@@ -568,7 +568,7 @@ fun CenterPlayActionView(
                             Icons.Default.Pause
                         }
 
-                        (playState == Player.STATE_ENDED && isPlaying.not()) -> {
+                        ((playState == Player.STATE_ENDED && !isPlaying)) -> {
                             Icons.Default.Replay
                         }
 
@@ -604,8 +604,29 @@ fun BottomIconsActionView(
 ) {
     val context = LocalContext.current
     val activity = context as? Activity
+
+    var currentTimer by remember { mutableStateOf("") }
+    LaunchedEffect(videoTimer) {
+        // Calculate hours, minutes, and seconds
+        val seconds = (videoTimer / 1000) % 60
+        val minutes = (videoTimer / (1000 * 60)) % 60
+        currentTimer = String.format("%02d:%02d", minutes, seconds) // Format the time as MM:SS
+    }
+
+    var totalDurationTime by remember { mutableStateOf("") }
+    LaunchedEffect(totalDuration) {
+        // Calculate hours, minutes, and seconds
+        val seconds = (totalDuration / 1000) % 60
+        val minutes = (totalDuration / (1000 * 60)) % 60
+        totalDurationTime = String.format("%02d:%02d", minutes, seconds) // Format the time as MM:SS
+
+//        val hours = (totalDuration / (1000 * 60 * 60))
+//        // Format the time as HH:MM:SS
+//        totalDurationTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
     // Fullscreen state
-    var landScapeScreen by remember { mutableStateOf(false) }
+    var landScapeScreen by remember { mutableStateOf(true) }
     val onConvertLandScape = {
         if (landScapeScreen) {
             activity?.requestedOrientation =
@@ -635,7 +656,7 @@ fun BottomIconsActionView(
             // show the time
             Row(modifier = Modifier.wrapContentWidth()) {
                 Text(
-                    text = videoTimer.toString(),
+                    text = currentTimer, // videoTimer.toString(),
                     color = Color.White,
                     modifier = Modifier.padding(start = 5.dp)
                 )
@@ -645,7 +666,7 @@ fun BottomIconsActionView(
                     modifier = Modifier.padding(start = 3.dp)
                 )
                 Text(
-                    text = totalDuration.toString(),
+                    text = totalDurationTime, // totalDuration.toString(),
                     color = Color.White,
                     modifier = Modifier.padding(start = 3.dp)
                 )

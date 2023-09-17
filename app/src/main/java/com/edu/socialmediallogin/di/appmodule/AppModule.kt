@@ -42,6 +42,7 @@ object AppModule {
     fun provideAppDatabase(@ApplicationContext context: Context): RoomDB {
         return getDatabaseInstance(context)
     }
+
     @Provides
     fun provideUserDao(database: RoomDB): UserDao {
         return database.userDao()
@@ -50,12 +51,12 @@ object AppModule {
     // get api instance
     @Provides
     fun provideApiService(): ApiService {
+        // create object of httpLoggingInterceptor
         val httpLoggingInterceptor = HttpLoggingInterceptor()
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
 
         // create object of okHttpClient
-        val okHttpClient: OkHttpClient =
-            OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
+        val okHttpClient = OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
 
         // create an object of the retrofit
         return Retrofit.Builder()
@@ -64,6 +65,7 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
     }
+
     @Provides
     fun provideImageRepo(apiService: ApiService): SubjectRepository {
         return SubjectRepositoryImpl(apiService)

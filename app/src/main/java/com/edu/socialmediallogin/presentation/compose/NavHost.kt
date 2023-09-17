@@ -15,7 +15,7 @@ fun NavigationViewScreen(navController: NavHostController) {
 
     NavHost(
         navController = navController,
-        startDestination = ScreenList.HomeScreen.route
+        startDestination = ScreenList.VideoScreen.route
     ) {
         composable(ScreenList.SplashScreen.route) {
 //            SplashViewScreen(navHostController, getUserDevice)
