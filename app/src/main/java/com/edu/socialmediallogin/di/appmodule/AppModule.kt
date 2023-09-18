@@ -4,12 +4,14 @@ import android.content.Context
 import com.edu.socialmediallogin.data.common.Constants.API_BASE_URL
 import com.edu.socialmediallogin.data.repository_impl.AuthRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.SubjectRepositoryImpl
+import com.edu.socialmediallogin.data.repository_impl.UserRepositoryImpl
 import com.edu.socialmediallogin.data.source.local.RoomDB
 import com.edu.socialmediallogin.data.source.local.RoomDB.Companion.getDatabaseInstance
 import com.edu.socialmediallogin.data.source.local.UserDao
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.domain.repository.AuthRepository
 import com.edu.socialmediallogin.domain.repository.SubjectRepository
+import com.edu.socialmediallogin.domain.repository.UserRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -42,7 +44,6 @@ object AppModule {
     fun provideAppDatabase(@ApplicationContext context: Context): RoomDB {
         return getDatabaseInstance(context)
     }
-
     @Provides
     fun provideUserDao(database: RoomDB): UserDao {
         return database.userDao()
@@ -66,8 +67,15 @@ object AppModule {
             .build().create(ApiService::class.java)
     }
 
+    // subject
     @Provides
-    fun provideImageRepo(apiService: ApiService): SubjectRepository {
+    fun provideSubjectRepo(apiService: ApiService): SubjectRepository {
         return SubjectRepositoryImpl(apiService)
+    }
+
+    // user
+    @Provides
+    fun provideUserRepo(apiService: ApiService): UserRepository {
+        return UserRepositoryImpl(apiService)
     }
 }

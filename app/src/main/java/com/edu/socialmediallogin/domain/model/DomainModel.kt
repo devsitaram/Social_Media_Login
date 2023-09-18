@@ -4,12 +4,6 @@ import android.os.Parcelable
 import androidx.compose.runtime.MutableState
 import kotlinx.android.parcel.Parcelize
 
-data class UserModel(
-    val email: String,
-    val username: String,
-    val password: String
-)
-
 data class GoogleUserModel(
     val name: String? = null,
     val email: String? = null,
@@ -21,6 +15,7 @@ data class SubjectModel(
     val urlDescriptions: String
 )
 
+// video
 @Suppress("DEPRECATED_ANNOTATION")
 @Parcelize
 data class VideoModel(
@@ -28,3 +23,17 @@ data class VideoModel(
     val descriptions: String,
     val videoUri: String,
 ) : Parcelable
+
+// user login request
+data class LoginRequestModel(
+    val userNameOrEmailAddress: String,
+    val password: String,
+    val rememberClient: Boolean = false
+)
+data class LoginResponse(
+    val accessToken: String,
+    val tokenType: String,
+    val expiresIn: Long,
+    val refreshToken: String,
+    val userId: String,
+)

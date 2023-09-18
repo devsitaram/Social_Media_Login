@@ -14,11 +14,11 @@ import javax.inject.Inject
 
 //@HiltViewModel
 //class AuthViewModel @Inject constructor(private val userRepository: UserRepository) : ViewModel() {
-    // LiveData or State for managing the UI
-class AuthViewModel: ViewModel(){
+// LiveData or State for managing the UI
+class AuthViewModel : ViewModel() {
 
-    private val _loginResult = MutableLiveData<AuthResult>()
-    val loginResult: LiveData<AuthResult> = _loginResult
+    private val _googleLoginResult = MutableLiveData<AuthResult>()
+    val googleLoginResult: LiveData<AuthResult> = _googleLoginResult
 
     sealed class AuthResult {
         data class Success(val user: User) : AuthResult()
@@ -40,7 +40,7 @@ class AuthViewModel: ViewModel(){
 //                }
             } catch (e: Exception) {
                 // Handle exceptions, e.g., network issues
-                _loginResult.postValue(AuthResult.Error("Network error"))
+                _googleLoginResult.postValue(AuthResult.Error("Network error"))
             }
         }
     }
@@ -49,7 +49,7 @@ class AuthViewModel: ViewModel(){
 //    fun register(username: String, email: String, password: String) {
 //        viewModelScope.launch(Dispatchers.IO) {
 //            try {
-                // Check if the user already exists
+    // Check if the user already exists
 //                val existingUser = userRepository.getUserByEmail(email)
 //                if (existingUser == null) {
 //                    // User does not exist, proceed with registration

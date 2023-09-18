@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.edu.socialmediallogin.presentation.components
 
 import androidx.compose.foundation.Image
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.LocalTextStyle
@@ -26,6 +29,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -189,12 +193,13 @@ fun InputTextFieldView(
     placeholder: String,
     textStyle: TextStyle,
     isEmpty: Boolean = false,
-    isError: Boolean = false,
+    isInvalidError: Boolean = false,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     shape: Shape = ShapeDefaults.Medium,
     errorMessage: String,
+    invalidMessage: String,
     errorColor: Color = Color.Unspecified
 ) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
@@ -222,7 +227,7 @@ fun InputTextFieldView(
             singleLine = singleLine,
             maxLines = maxLines,
             shape = shape,
-            isError = (isEmpty || isError),
+            isError = (isEmpty || isInvalidError),
             modifier = modifier
         )
         if (isEmpty) {
@@ -232,9 +237,13 @@ fun InputTextFieldView(
                 modifier = Modifier.padding(start = 5.dp)
             )
         }
-//        if (isError) {
-//            TextView(text = invalidMessage, style = TextStyle(color = errorColor), modifier = Modifier.padding(start = 5.dp))
-//        }
+        if (isInvalidError) {
+            TextView(
+                text = invalidMessage,
+                style = TextStyle(color = errorColor),
+                modifier = Modifier.padding(start = 5.dp)
+            )
+        }
     }
 }
 
@@ -295,6 +304,7 @@ fun PasswordTextFieldView(
             ) {
                 IconView(
                     imageVector = if (passwordVisibility.value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                    tint = if (isEmpty || isError) Color.Red else Color.Black
                 )
             }
         },
@@ -365,7 +375,7 @@ fun AsyncImageView(
 ) {
     AsyncImage(
         model = imageUrl,
-        contentDescription = null,
+        contentDescription = contentDescription,
         modifier = modifier
     )
 
@@ -493,7 +503,8 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
             AsyncImageView(
                 imageUrl = imageUrl,
                 modifier = Modifier
-                    .size(120.dp).border(1.dp, Color.LightGray)
+                    .size(120.dp)
+                    .border(1.dp, Color.LightGray)
                     .padding(start = 5.dp, end = 5.dp) // padding(start = 15.dp, end = 15.dp)
             )
             Column(
@@ -577,4 +588,56 @@ fun ProgressIndicator() {
                 .align(Alignment.Center)
         )
     }
+}
+
+@Composable
+fun CustomDialogBox(
+    title: String,
+    descriptions: String,
+    onDismiss: () -> Unit,
+    btnText: String,
+    color: Color
+) {
+    AlertDialog(
+        title = {
+            TextView(
+                text = title,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Center,
+                color = color,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        onDismissRequest = { onDismiss() },
+        text = {
+            TextView(
+                text = descriptions,
+                textAlign = TextAlign.Center,
+                color = Color.Black,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        modifier = Modifier.fillMaxWidth(),
+        confirmButton = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                ButtonView(
+                    onClick = { onDismiss() },
+                    btnColor = color,
+                    text = btnText,
+                    textStyle = TextStyle(
+                        fontSize = 15.sp,
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.SemiBold
+                    ),
+                )
+            }
+        }
+    )
 }

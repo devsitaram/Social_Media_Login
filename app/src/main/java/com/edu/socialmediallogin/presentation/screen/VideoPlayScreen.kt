@@ -606,20 +606,19 @@ fun BottomIconsActionView(
     val activity = context as? Activity
 
     var currentTimer by remember { mutableStateOf("") }
-    LaunchedEffect(videoTimer) {
-        // Calculate hours, minutes, and seconds
+    LaunchedEffect(videoTimer, totalDuration) {
+        // Calculate minutes, and seconds
         val seconds = (videoTimer / 1000) % 60
         val minutes = (videoTimer / (1000 * 60)) % 60
-        currentTimer = String.format("%02d:%02d", minutes, seconds) // Format the time as MM:SS
+        currentTimer = String.format("%02d:%02d", minutes, seconds)
     }
 
     var totalDurationTime by remember { mutableStateOf("") }
     LaunchedEffect(totalDuration) {
-        // Calculate hours, minutes, and seconds
+        // Calculate minutes, and seconds
         val seconds = (totalDuration / 1000) % 60
         val minutes = (totalDuration / (1000 * 60)) % 60
-        totalDurationTime = String.format("%02d:%02d", minutes, seconds) // Format the time as MM:SS
-
+        totalDurationTime = String.format("%02d:%02d", minutes, seconds)
 //        val hours = (totalDuration / (1000 * 60 * 60))
 //        // Format the time as HH:MM:SS
 //        totalDurationTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)

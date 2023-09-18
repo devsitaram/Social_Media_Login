@@ -5,6 +5,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +20,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PersonOutline
@@ -48,9 +48,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.R
+import com.edu.socialmediallogin.data.common.emailValidation
 import com.edu.socialmediallogin.presentation.components.ButtonView
 import com.edu.socialmediallogin.presentation.components.CheckboxComponent
 import com.edu.socialmediallogin.presentation.components.ClickableTextView
+import com.edu.socialmediallogin.presentation.components.CustomDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.ProgressIndicator
@@ -59,23 +61,33 @@ import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import com.edu.socialmediallogin.presentation.google.GoogleApiContract
 import com.edu.socialmediallogin.presentation.viewmodel.AuthViewModel
-import com.edu.socialmediallogin.presentation.viewmodel.signin.SignInGoogleViewModel
+import com.edu.socialmediallogin.presentation.viewmodel.signin.GoogleSignInViewModel
 import com.edu.socialmediallogin.presentation.viewmodel.signin.SignInViewModel
 import com.google.android.gms.common.api.ApiException
 
 @Composable
-fun SignInViewScreen(navController: NavHostController) {
+fun SignInViewScreen(
+    navController: NavHostController,
+    signInViewModel: SignInViewModel = hiltViewModel()
+) {
+
     val context = LocalContext.current
-    val authViewModel: AuthViewModel = hiltViewModel()
-    val loginResult = authViewModel.loginResult.observeAsState()
+    val userLoginResult = signInViewModel.signInState.value
 
     // google account to login
-    val mSignInViewModel: SignInGoogleViewModel = viewModel(factory = SignInGoogleViewModel.SignInGoogleViewModelFactory(context))
-    val googleUser = mSignInViewModel.googleUser.observeAsState()
-    val isLoading = mSignInViewModel.loading.observeAsState()
+    val authViewModel: AuthViewModel = hiltViewModel()
+    val googleLoginResult = authViewModel.googleLoginResult.observeAsState()
+    val googleSignInViewModel: GoogleSignInViewModel =
+        viewModel(factory = GoogleSignInViewModel.SignInGoogleViewModelFactory(context))
+    val googleUser = googleSignInViewModel.googleUser.observeAsState()
+    val isLoading = googleSignInViewModel.loading.observeAsState()
     val authResultLauncher =
         rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
             try {
+                googleSignInViewModel.fetchSingInUser(
+                    email = "np01ma4s22003@islingtoncollege.edu.np",
+                    name = "Sita Ram Thing MAD"
+                )
 //                val gsa = task?.getResult(ApiException::class.java)
 //                if (gsa != null) {
 //                    mSignInViewModel.fetchSingInUser(gsa.email, gsa.displayName)
@@ -83,11 +95,6 @@ fun SignInViewScreen(navController: NavHostController) {
 //                    Toast.makeText(context, "Invalid user", Toast.LENGTH_SHORT).show()
 ////                    isGoogleError.value = true
 //                }
-                mSignInViewModel.fetchSingInUser(
-                    email = "np01ma4s22003@islingtoncollege.edu.np",
-                    name = "Sita Ram Thing MAD"
-                )
-//                val gsa = task?.getResult(ApiException::class.java)
 //                Log.e("gsa.email", "gsa.email: ${gsa?.email}")
 //                Log.e("gsa.displayName", "gsa.displayName: ${gsa?.displayName}")
             } catch (e: ApiException) {
@@ -95,46 +102,39 @@ fun SignInViewScreen(navController: NavHostController) {
             }
         }
 
-    //local
+    // local
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var isEmailEmpty by remember { mutableStateOf(false) }
+    var isInvalidEmail by remember { mutableStateOf(false) }
     var isPasswordEmpty by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
 
     // Login button click handler
     val onLoginClick: () -> Unit = {
         isEmailEmpty = email.isEmpty()
-        isPasswordEmpty = password.isEmpty()
-        if (email.isNotEmpty() && password.isNotEmpty()) {
-            val result = authViewModel.loginUser(email, password)
-//            if (result == loginResult) {
-//                navController.navigate(ScreenList.HomeScreen.route)
-//            } else {
-//                isError = true
-//            }
-//            Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
+        if (!isEmailEmpty) {
+            isInvalidEmail = !emailValidation(email)
         }
-//            signInViewModel.loginUser(email, password)
-//            loginViewModel.getUserLoginDataStatus(email, password)
-//            val loginViewModel = LoginViewModel()
-//            val isValidLogin = loginViewModel.loginDetails(username, password, context)
-//            if (isValidLogin) {
-//                // Navigate to the home screen
-//                navController.navigate(User.Main.route) {
-//                    // callback old screen
-//                    popUpTo(User.Login.route) {
-//                        inclusive = true // close the previous screen
-//                    }
-//                }
-//            }
-//        }
+        isPasswordEmpty = password.isEmpty()
+        if ((email.isNotEmpty() && emailValidation(email)) && password.isNotEmpty()) {
+            signInViewModel.getLoginUser(email, password, false)
+            isError = if (userLoginResult.data?.success == true) {
+                navController.navigate(ScreenList.HomeScreen.route)
+                false
+            } else {
+                true
+            }
+            Toast.makeText(context, "${userLoginResult.data?.success}", Toast.LENGTH_SHORT).show()
+        }
     }
 
-    if (isLoading.value == true) {
-        ProgressIndicator()
+    if (isLoading.value == true || userLoginResult.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            ProgressIndicator()
+        }
     } else {
-        Surface(Modifier.fillMaxSize()) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             // child layout file
             Column(
                 modifier = Modifier
@@ -203,12 +203,14 @@ fun SignInViewScreen(navController: NavHostController) {
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.PersonOutline,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = if (isEmailEmpty || isInvalidEmail) Color.Red else Color.Black
                             )
                         },
                         textStyle = TextStyle(fontSize = 12.sp),
                         isEmpty = isEmailEmpty,
-                        isError = isError,
+                        isInvalidError = isInvalidEmail,
+                        invalidMessage = "Enter valid email address",
                         errorMessage = "The email is empty!",
                         errorColor = Color.Red,
                         modifier = Modifier.fillMaxWidth()
@@ -224,7 +226,8 @@ fun SignInViewScreen(navController: NavHostController) {
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Default.Lock,
-                                contentDescription = null
+                                contentDescription = null,
+                                tint = if (isPasswordEmpty || isError) Color.Red else Color.Black
                             )
                         },
                         isEmpty = isPasswordEmpty,
@@ -326,7 +329,7 @@ fun SignInViewScreen(navController: NavHostController) {
                             shape = RoundedCornerShape(30.dp),
                             painter = painterResource(id = R.mipmap.ic_google),
                             onClick = {
-                                mSignInViewModel.showLoading()
+                                googleSignInViewModel.showLoading()
                                 authResultLauncher.launch(1)
                             }
                         )
@@ -346,21 +349,11 @@ fun SignInViewScreen(navController: NavHostController) {
                 }
             }
         }
-        // Strange issue after upgrading to latest version
-//    if (mSignInViewModel.googleUser.value != null) {
-//        LaunchedEffect(key1 = Unit) {
-//            mSignInViewModel.hideLoading()
-//            navController.navigate(ScreenList.LoginScreen.route) {
-//                popUpTo(ScreenList.AuthScreen.route) {
-//                    inclusive = true
-//                }
-//            }
-//        }
-//    }
+
         googleUser.let {
-            mSignInViewModel.hideLoading()
+            googleSignInViewModel.hideLoading()
             if (googleUser.value != null) {
-                mSignInViewModel.hideLoading()
+                googleSignInViewModel.hideLoading()
                 navController.navigate(ScreenList.HomeScreen.route) {
                     popUpTo(ScreenList.LoginScreen.route) {
                         inclusive = true
@@ -373,5 +366,17 @@ fun SignInViewScreen(navController: NavHostController) {
             //        navController.navigate(ScreenList.HomeScreen.replace("{user}", userJson))
             //        navController.navigate(ScreenList.RegisterScreen.route)
         }
+    }
+
+    if (isError) {
+        CustomDialogBox(
+            title = "Error",
+            descriptions = "Your username or password is invalid. Please try to again or click on Forgot Your Password? below. -> ${userLoginResult.isError}",
+            onDismiss = {
+                isError = false
+            },
+            btnText = "Okay",
+            color = Color.Red
+        )
     }
 }

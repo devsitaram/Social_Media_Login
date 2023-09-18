@@ -10,7 +10,7 @@ import com.edu.socialmediallogin.domain.model.GoogleUserModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import kotlinx.coroutines.launch
 
-class SignInGoogleViewModel(context: Context) : ViewModel() {
+class GoogleSignInViewModel(context: Context) : ViewModel() {
 
     private var _userState = MutableLiveData<GoogleUserModel?>()
     val googleUser: MutableLiveData<GoogleUserModel?> = _userState
@@ -52,8 +52,8 @@ class SignInGoogleViewModel(context: Context) : ViewModel() {
     @Suppress("UNCHECKED_CAST")
     class SignInGoogleViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(SignInGoogleViewModel::class.java)) {
-                return SignInGoogleViewModel(context) as T
+            if (modelClass.isAssignableFrom(GoogleSignInViewModel::class.java)) {
+                return GoogleSignInViewModel(context) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

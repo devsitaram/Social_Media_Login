@@ -3,6 +3,7 @@ package com.edu.socialmediallogin.presentation.screen
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -47,10 +48,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.R
 import com.edu.socialmediallogin.data.common.RegistrationState
+import com.edu.socialmediallogin.data.common.emailValidation
+import com.edu.socialmediallogin.data.common.nameValidation
 import com.edu.socialmediallogin.presentation.components.ButtonView
 import com.edu.socialmediallogin.presentation.components.ClickableTextView
+import com.edu.socialmediallogin.presentation.components.CustomDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
+import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.SignUpViewModel
@@ -64,22 +69,34 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
 
 
     var email by remember { mutableStateOf("") }
-    var name by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-
     var isEmailEmpty by remember { mutableStateOf(false) }
+    var isInvalidEmail by remember { mutableStateOf(false) }
+
+    var name by remember { mutableStateOf("") }
     var isNameEmpty by remember { mutableStateOf(false) }
+    var isInvalidUsername by remember { mutableStateOf(false) }
+
+    var password by remember { mutableStateOf("") }
     var isPasswordEmpty by remember { mutableStateOf(false) }
 
     var isError by remember { mutableStateOf(false) }
+    var isSuccessful by remember { mutableStateOf(false) }
 
     // on click function
     val onRegisterClick: () -> Unit = {
         isEmailEmpty = email.isEmpty()
+        if (!isEmailEmpty) {
+            isInvalidEmail = !emailValidation(email)
+        }
         isNameEmpty = name.isEmpty()
+        if (!isNameEmpty) {
+            isInvalidUsername = !nameValidation(name)
+        }
         isPasswordEmpty = password.isEmpty()
-        if (email.isNotEmpty() && name.isNotEmpty() && password.isNotEmpty()) {
-            isError = true
+        if ((email.isNotEmpty() && emailValidation(email)) &&
+            (name.isNotEmpty() && nameValidation(name)) && password.isNotEmpty()) {
+//            isError = true
+            isSuccessful = true
             Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show()
         }
     }
@@ -128,7 +145,7 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
             )
             TextView(
                 text = "Create an Account",
-                color = Color.Black,
+                color = Color.DarkGray,
                 modifier = Modifier
                     .wrapContentHeight()
                     .padding(horizontal = 5.dp),
@@ -161,15 +178,17 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                     placeholder = "Email",
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Email,
-                            contentDescription = null
+                            imageVector = Icons.Default.PersonOutline,
+                            contentDescription = null,
+                            tint = if (isEmailEmpty || isInvalidEmail) Color.Red else Color.Black
                         )
                     },
                     textStyle = TextStyle(fontSize = 12.sp),
                     isEmpty = isEmailEmpty,
-                    isError = isError,
-                    errorColor = Color.Red,
+                    isInvalidError = isInvalidEmail,
                     errorMessage = "The email is empty!",
+                    invalidMessage = "Enter valid email address",
+                    errorColor = Color.Red,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.padding(top = 5.dp))
@@ -182,14 +201,16 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.PersonOutline,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = if (isNameEmpty || isInvalidUsername) Color.Red else Color.Black
                         )
                     },
                     textStyle = TextStyle(fontSize = 12.sp),
                     isEmpty = isNameEmpty,
-                    isError = isError,
+                    isInvalidError = isInvalidUsername,
                     errorColor = Color.Red,
                     errorMessage = "The username is empty!",
+                    invalidMessage = "Enter the valid username",
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.padding(top = 5.dp))
@@ -201,7 +222,8 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Lock,
-                            contentDescription = null
+                            contentDescription = null,
+                            tint = if (isPasswordEmpty || isError) Color.Red else Color.Black
                         )
                     },
                     placeholder = "Password",
@@ -245,7 +267,7 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
             ) {
                 TextView(
                     text = "If you have an already account?",
-                    color = Color.Black,
+                    color = Color.DarkGray,
                     modifier = Modifier
                         .wrapContentHeight()
                         .padding(horizontal = 5.dp),
@@ -272,24 +294,49 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
         }
     }
 
-    // Show loading indicator when registering
-    if (registrationState.value == RegistrationState.LOADING) {
-        Spacer(modifier = Modifier.height(16.dp))
-        CircularProgressIndicator()
-    }
-
-    // Show registration result message
-    val message = when (registrationState.value) {
-        RegistrationState.SUCCESS -> "Registration successful."
-        RegistrationState.ERROR -> "Registration failed."
-        else -> ""
-    }
-    if (message.isNotEmpty()) {
-        Spacer(modifier = Modifier.height(16.dp))
-        TextView(
-            text = message,
-            color = if (registrationState.value == RegistrationState.SUCCESS) Color.Green else Color.Red,
-            modifier = Modifier.wrapContentSize(Alignment.Center)
+    if (isError) {
+        CustomDialogBox(
+            title = "Error",
+            descriptions = "Your Registration is incomplete",
+            onDismiss = {
+                isError = false
+            },
+            btnText = "Try again",
+            color = Color.Red
         )
     }
+
+    if (isSuccessful) {
+        CustomDialogBox(
+            title = "successful",
+            descriptions = "Your Registration was successful",
+            onDismiss = {
+                isSuccessful = false
+            },
+            btnText = "Okay",
+            color = Color.Blue
+        )
+    }
+
+    // Show loading indicator when registering
+//    if (registrationState.value == RegistrationState.LOADING) {
+//        Spacer(modifier = Modifier.height(16.dp))
+//        CircularProgressIndicator()
+//    }
+//
+//    // Show registration result message
+//    val message = when (registrationState.value) {
+//        RegistrationState.SUCCESS -> "Registration successful."
+//        RegistrationState.ERROR -> "Registration failed."
+//        else -> ""
+//    }
+//
+//    if (message.isNotEmpty()) {
+//        Spacer(modifier = Modifier.height(16.dp))
+//        TextView(
+//            text = message,
+//            color = if (registrationState.value == RegistrationState.SUCCESS) Color.Green else Color.Red,
+//            modifier = Modifier.wrapContentSize(Alignment.Center)
+//        )
+//    }
 }

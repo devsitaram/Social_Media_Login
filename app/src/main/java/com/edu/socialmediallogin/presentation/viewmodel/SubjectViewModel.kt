@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.socialmediallogin.data.common.Resource
-import com.edu.socialmediallogin.domain.use_case.GetSearchSubjectUseCase
+import com.edu.socialmediallogin.domain.use_case.GetSubjectUseCase
 import com.edu.socialmediallogin.presentation.state.SubjectState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class SubjectViewModel @Inject constructor(private val getSearchSubjectUseCase: GetSearchSubjectUseCase) : ViewModel() {
+class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSubjectUseCase) : ViewModel() {
 
     private val _imageList = mutableStateOf(SubjectState())
     val imageList: State<SubjectState> get() = _imageList
@@ -35,7 +35,7 @@ class SubjectViewModel @Inject constructor(private val getSearchSubjectUseCase: 
     }
 
     private fun getSubject() {
-        getSearchSubjectUseCase().onEach {
+        getSubjectUseCase().onEach {
             when (it) {
                 is Resource.Loading -> {
                     _imageList.value = SubjectState(isLoading = true)

@@ -7,8 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.Exception
 
-class GetSearchSubjectUseCase(private val subjectRepository: SubjectRepository) {
-
+class GetSubjectUseCase(private val subjectRepository: SubjectRepository) {
     operator fun invoke(): Flow<Resource<List<SubjectItem?>>> = flow {
         emit(Resource.Loading())
         try {
