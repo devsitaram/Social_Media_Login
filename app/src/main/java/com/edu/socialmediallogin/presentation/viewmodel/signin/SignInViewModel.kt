@@ -28,8 +28,8 @@ class SignInViewModel @Inject constructor(private val userUseCase: GetUserUseCas
     private val _signInState = mutableStateOf(SignInState())
     val signInState: State<SignInState> get() = _signInState
 
-    fun getLoginUser(email: String, password: String, rememberClient: Boolean) {
-        userUseCase(email, password, rememberClient).onEach { result ->
+    fun getLoginUser(email: String, password: String) {
+        userUseCase(email, password).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _signInState.value = SignInState(isLoading = true)

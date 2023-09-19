@@ -9,11 +9,10 @@ import kotlinx.coroutines.flow.flow
 import java.lang.Exception
 
 class GetUserUseCase(private val userRepository: UserRepository) {
-    operator fun invoke(email: String, password: String, rememberClient: Boolean): Flow<Resource<UserPojo?>> = flow {
+    operator fun invoke(email: String, password: String): Flow<Resource<UserPojo?>> = flow {
         emit(Resource.Loading())
         try {
-            val result = emit(Resource.Success(data = userRepository.getLoginUser(email, password, rememberClient)))
-            Log.e("result", "result: $result")
+            emit(Resource.Success(data = userRepository.getLoginUser(email, password)))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

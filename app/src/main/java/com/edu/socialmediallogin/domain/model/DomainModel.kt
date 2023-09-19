@@ -3,6 +3,7 @@ package com.edu.socialmediallogin.domain.model
 import android.os.Parcelable
 import androidx.compose.runtime.MutableState
 import kotlinx.android.parcel.Parcelize
+import retrofit2.http.Query
 
 data class GoogleUserModel(
     val name: String? = null,
@@ -28,8 +29,10 @@ data class VideoModel(
 data class LoginRequestModel(
     val userNameOrEmailAddress: String,
     val password: String,
-    val rememberClient: Boolean = false
+    val rememberClient: Boolean,
+    val couponCode: String,
 )
+
 data class LoginResponse(
     val accessToken: String,
     val tokenType: String,

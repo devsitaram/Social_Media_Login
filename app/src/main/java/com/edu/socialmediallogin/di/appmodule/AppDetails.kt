@@ -24,7 +24,7 @@ class AppDetails {
     // subject's use case
     @Provides
     @Singleton
-    fun provideGetSearchUseCase(subjectRepository: SubjectRepository): GetSubjectUseCase {
+    fun provideGetUseCase(subjectRepository: SubjectRepository): GetSubjectUseCase {
         return GetSubjectUseCase(subjectRepository)
     }
 }

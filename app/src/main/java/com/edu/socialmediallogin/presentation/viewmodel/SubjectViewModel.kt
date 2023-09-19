@@ -16,8 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSubjectUseCase) : ViewModel() {
 
-    private val _imageList = mutableStateOf(SubjectState())
-    val imageList: State<SubjectState> get() = _imageList
+    private var _subjectList = mutableStateOf(SubjectState())
+    val subjectList: State<SubjectState> get() = _subjectList
 
     private val _query = MutableStateFlow("")
 
@@ -27,7 +27,6 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
 //            _query.debounce(1000).collectLatest {
 //                getSubject()
 //            }
-//        }
     }
 
     fun updateQuery(query: String) {
@@ -38,15 +37,15 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
         getSubjectUseCase().onEach {
             when (it) {
                 is Resource.Loading -> {
-                    _imageList.value = SubjectState(isLoading = true)
+                    _subjectList.value = SubjectState(isLoading = true)
                 }
 
                 is Resource.Success -> {
-                    _imageList.value = SubjectState(data = it.data)
+                    _subjectList.value = SubjectState(data = it.data)
                 }
 
                 is Resource.Error -> {
-                    _imageList.value = SubjectState(error = it.message.toString())
+                    _subjectList.value = SubjectState(error = it.message.toString())
                 }
             }
         }.launchIn(viewModelScope)

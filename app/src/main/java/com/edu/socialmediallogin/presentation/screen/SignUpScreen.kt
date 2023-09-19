@@ -82,8 +82,7 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
     var isError by remember { mutableStateOf(false) }
     var isSuccessful by remember { mutableStateOf(false) }
 
-    // on click function
-    val onRegisterClick: () -> Unit = {
+    val onClickValidation: () -> Unit = {
         isEmailEmpty = email.isEmpty()
         if (!isEmailEmpty) {
             isInvalidEmail = !emailValidation(email)
@@ -93,8 +92,11 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
             isInvalidUsername = !nameValidation(name)
         }
         isPasswordEmpty = password.isEmpty()
-        if ((email.isNotEmpty() && emailValidation(email)) &&
-            (name.isNotEmpty() && nameValidation(name)) && password.isNotEmpty()) {
+    }
+
+    // on click function
+    val onRegisterClick: () -> Unit = {
+        if (emailValidation(email) && nameValidation(name) && password.isNotEmpty()) {
 //            isError = true
             isSuccessful = true
             Toast.makeText(context, "Register Success", Toast.LENGTH_SHORT).show()
@@ -238,7 +240,10 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                 Spacer(modifier = Modifier.height(30.dp))
                 // button
                 ButtonView(
-                    onClick = { onRegisterClick() },
+                    onClick = {
+                        onClickValidation()
+                        onRegisterClick()
+                    },
                     btnColor = Color.Blue,
                     text = "Sign Up",
                     textStyle = TextStyle(

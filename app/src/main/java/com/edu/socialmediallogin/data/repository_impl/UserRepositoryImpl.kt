@@ -1,25 +1,22 @@
 package com.edu.socialmediallogin.data.repository_impl
 
-import android.util.Log
-import android.widget.Toast
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
+import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import com.edu.socialmediallogin.domain.repository.UserRepository
-import kotlin.coroutines.coroutineContext
 
 class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
 
-    override suspend fun getLoginUser(email: String, password: String, rememberClient: Boolean): UserPojo? {
+    override suspend fun getLoginUser(email: String, password: String): UserPojo {
         try {
-            val response = apiService.getLoginUser(email, password)
-            if (response != null){
-                Log.e("response: ", "response: ${response.success}")
-                return response
-            } else {
-                Log.e("response: ", "response: ${response?.error}")
-                // Handle the error here, either by returning an error state or throwing an exception
-                throw Exception("Login failed: ${response?.error}")
-            }
+            val loginRequestModel = LoginRequestModel(
+                userNameOrEmailAddress = email,
+                password = password,
+                rememberClient = false,
+                couponCode = "",
+            )
+            val response = apiService.getLoginUser(loginRequestModel)
+            return response ?: throw Exception("Login failed: ${response?.error}")
         } catch (e: Exception) {
             // Handle exceptions here or rethrow with a more descriptive message
             throw Exception("Login failed: ${e.message}", e)
@@ -34,12 +31,6 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
 //            throw Exception(e)
 //        }
 //    }
-
-
-
-
-
-
 
 
 //    override suspend fun insertUser(user: User) {

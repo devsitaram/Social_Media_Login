@@ -8,4 +8,3 @@ data class SubjectPojo(
     val targetUrl: Any,
     val unAuthorizedRequest: Boolean
 )
-

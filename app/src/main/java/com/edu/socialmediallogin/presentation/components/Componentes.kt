@@ -3,12 +3,14 @@
 package com.edu.socialmediallogin.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,10 +18,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Badge
+import androidx.compose.material.BadgedBox
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.ButtonDefaults
@@ -29,8 +35,9 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Newspaper
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Card
@@ -40,6 +47,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,12 +57,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
@@ -68,8 +80,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.edu.socialmediallogin.R
+import com.edu.socialmediallogin.presentation.compose.ScreenList
+import com.edu.socialmediallogin.ui.theme.pink
 import com.edu.socialmediallogin.ui.theme.skyBlue
+import com.edu.socialmediallogin.ui.theme.white
 
 @Composable
 fun TextView(
@@ -234,14 +251,14 @@ fun InputTextFieldView(
             TextView(
                 text = errorMessage,
                 style = TextStyle(color = errorColor),
-                modifier = Modifier.padding(start = 5.dp)
+                modifier = Modifier.padding(start = 5.dp, top = 2.dp)
             )
         }
         if (isInvalidError) {
             TextView(
                 text = invalidMessage,
                 style = TextStyle(color = errorColor),
-                modifier = Modifier.padding(start = 5.dp)
+                modifier = Modifier.padding(start = 5.dp, top = 2.dp)
             )
         }
     }
@@ -317,11 +334,11 @@ fun PasswordTextFieldView(
         TextView(
             text = "The field is empty!",
             style = TextStyle(color = errorColor, textAlign = TextAlign.Start),
-            modifier = Modifier.padding(start = 5.dp)
+            modifier = Modifier.padding(start = 5.dp, top = 2.dp)
         )
     }
 //    if (isError) {
-//        TextView(text = invalidMessage, style = TextStyle(color = errorColor), modifier = Modifier.padding(start = 5.dp))
+//        TextView(text = invalidMessage, style = TextStyle(color = errorColor), modifier = Modifier.padding(start = 5.dp,  top = 2.dp))
 //    }
 }
 
@@ -489,7 +506,7 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 15.dp)
-            .border(5.dp, Color.LightGray)
+            .border(1.dp, Color.LightGray)
             .clickable { onClickable() },
         shape = ShapeDefaults.Medium
     ) {
@@ -504,7 +521,6 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
                 imageUrl = imageUrl,
                 modifier = Modifier
                     .size(120.dp)
-                    .border(1.dp, Color.LightGray)
                     .padding(start = 5.dp, end = 5.dp) // padding(start = 15.dp, end = 15.dp)
             )
             Column(
@@ -521,6 +537,7 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
                     TextView(
                         text = topic, style = TextStyle(
                             fontSize = 15.sp,
+                            color = Color.DarkGray,
                             fontWeight = FontWeight.Bold,
                         ),
                         modifier = Modifier
@@ -639,5 +656,86 @@ fun CustomDialogBox(
                 )
             }
         }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ButtonAppBar(
+    title: String,
+    navController: NavHostController
+) {
+    TopAppBar(
+        title = { TextView(text = title) },
+        navigationIcon = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 5.dp, start = 10.dp, end = 10.dp)
+                    .width(IntrinsicSize.Min),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.mipmap.img_islington_college),
+                    modifier = Modifier.size(40.dp),
+                    contentDescription = null
+                )
+                TextView(text = title)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    // search textfield icon
+                    IconView(
+                        imageVector = Icons.Default.Search,
+                        tint = Color.Gray,
+                        modifier = Modifier
+                            .size(30.dp)
+                            .clickable {
+                                /**navController.navigate(ScreenList.SearchScreen.route)*/
+                            },
+                    )
+                    // notification icon
+                    IconButton(
+                        onClick = { /**navController.navigate(ScreenList.AuthScreen.route)*/ },
+                        modifier = Modifier
+                    ) {
+                        BottomNavigationItem(
+                            icon = {
+                                BadgedBox(
+                                    badge = {
+                                        Badge(backgroundColor = pink, contentColor = white) {
+                                            TextView(
+                                                text = "3",
+                                                style = TextStyle(
+                                                    color = white,
+                                                    fontSize = 12.sp,
+                                                    fontWeight = FontWeight.Normal
+                                                ),
+                                                modifier = Modifier
+                                            )
+                                        }
+                                    }
+                                ) {
+                                    IconView(
+                                        Icons.Filled.Notifications,
+                                        contentDescription = "Notification",
+                                        tint = Color.Gray
+                                    )
+                                }
+                            },
+                            selected = false,
+                            onClick = { },
+                            modifier = Modifier,
+                        )
+                    }
+                }
+            }
+        },
+        modifier = Modifier
+            .shadow(5.dp)
+            .height(56.dp)
+            .fillMaxWidth(),
     )
 }

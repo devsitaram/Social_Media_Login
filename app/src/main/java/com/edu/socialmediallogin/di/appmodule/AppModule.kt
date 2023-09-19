@@ -44,6 +44,7 @@ object AppModule {
     fun provideAppDatabase(@ApplicationContext context: Context): RoomDB {
         return getDatabaseInstance(context)
     }
+
     @Provides
     fun provideUserDao(database: RoomDB): UserDao {
         return database.userDao()
@@ -53,8 +54,7 @@ object AppModule {
     @Provides
     fun provideApiService(): ApiService {
         // create object of httpLoggingInterceptor
-        val httpLoggingInterceptor = HttpLoggingInterceptor()
-        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         // create object of okHttpClient
         val okHttpClient = OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()

@@ -6,17 +6,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -34,8 +32,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.edu.socialmediallogin.data.common.Constants.DEFAULT_IMAGE_URL
 import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
+import com.edu.socialmediallogin.presentation.components.ButtonAppBar
 import com.edu.socialmediallogin.presentation.components.ContentCardView
+import com.edu.socialmediallogin.presentation.components.IconView
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.SubjectViewModel
@@ -47,9 +48,7 @@ fun SubjectViewScreen(
     viewModel: SubjectViewModel = hiltViewModel()
 ) {
 
-    val result = viewModel.imageList.value
-
-    var queryText by remember { mutableStateOf("") }
+    val result = viewModel.subjectList.value
 
     if (result.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -58,7 +57,12 @@ fun SubjectViewScreen(
     }
 
     if (result.error.isNotBlank()) {
-        Box(modifier = Modifier.fillMaxSize().padding(horizontal = 15.dp, vertical = 15.dp), contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 15.dp, vertical = 15.dp),
+            contentAlignment = Alignment.Center
+        ) {
             TextView(text = result.error)
         }
     }
@@ -68,31 +72,7 @@ fun SubjectViewScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TextField(
-                value = queryText,
-                onValueChange = {
-                    queryText = it
-                    viewModel.updateQuery(query = queryText)
-                },
-                placeholder = { Text(text = "Search Flower") },
-                maxLines = 1,
-                singleLine = true,
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = null
-                    )
-                },
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.Transparent,
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp, horizontal = 8.dp)
-            )
-            Divider()
+            ButtonAppBar(title = "",navController = navController)
             TextView(
                 text = "Subject",
                 style = TextStyle(
@@ -114,7 +94,7 @@ fun SubjectViewScreen(
                 ) {
                     items(it) {
                         ContentCardView(
-                            imageUrl = HTTPS_IMAGE_BASE_URL + it?.photoUrl.toString(),
+                            imageUrl = HTTPS_IMAGE_BASE_URL + if (it?.photoUrl.isNullOrEmpty()) DEFAULT_IMAGE_URL else it?.photoUrl.toString(),
                             topic = it?.name.toString(),
                             description = it?.description.toString(),
                             onClickable = {
