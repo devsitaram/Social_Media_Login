@@ -28,8 +28,8 @@ class SubjectRepositoryImpl(
         name: String?,
         description: String?,
         isIvy: Boolean?
-    ) {
-        try {
+    ): Boolean? {
+        return try {
             val listOfSubjects = listOf(
                 SubjectEntity(
                     photoUrl = photoUrl,
@@ -38,7 +38,16 @@ class SubjectRepositoryImpl(
                     isIvy = isIvy
                 )
             )
-            return userDao.insertSubject(subject = listOfSubjects)
+            userDao.insertSubject(subject = listOfSubjects)
+            true
+        } catch (e: Exception) {
+            false
+        }
+    }
+
+    override suspend fun deleteSubject(subject: SubjectEntity) {
+        try {
+            return userDao.deleteSubject(subject)
         } catch (e: Exception) {
             throw Exception(e)
         }

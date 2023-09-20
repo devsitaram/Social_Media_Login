@@ -22,6 +22,8 @@ interface UserDao {
     @Query("SELECT * FROM subject")
     suspend fun getAllSubjects(): List<SubjectItem>
 
+    @Delete
+    suspend fun deleteSubject(subject: SubjectEntity)
 
 //    @Query("SELECT * FROM subject")
 //    suspend fun getAllSubject(): List<SubjectItem>

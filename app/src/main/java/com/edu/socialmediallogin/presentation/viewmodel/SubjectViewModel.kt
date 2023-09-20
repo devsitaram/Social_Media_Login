@@ -1,17 +1,20 @@
 package com.edu.socialmediallogin.presentation.viewmodel
 
-import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.socialmediallogin.data.common.Resource
+import com.edu.socialmediallogin.data.source.local.SubjectEntity
 import com.edu.socialmediallogin.domain.use_case.GetSubjectUseCase
 import com.edu.socialmediallogin.presentation.state.SubjectState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,25 +36,60 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
                 }
 
                 is Resource.Success -> {
-                    _subjectList.value = SubjectState(data = it.data)
+                    _subjectList.value = SubjectState(isData = it.data)
                 }
 
                 is Resource.Error -> {
-                    _subjectList.value = SubjectState(error = it.message.toString())
+                    _subjectList.value = SubjectState(isError = it.message.toString())
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    fun insertSubject(photoUrl: String?, name: String?, description: String?, isIvy: Boolean?): String {
-        return try{
-            getSubjectUseCase(photoUrl, name, description, isIvy).launchIn(viewModelScope)
-             "Insert Success"
-        } catch (e: Exception){
-            throw Exception("Not Register")
+    fun insertSubject(
+        photoUrl: String?,
+        name: String?,
+        description: String?,
+        isIvy: Boolean?
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            getSubjectUseCase(photoUrl, name, description, isIvy).onEach {
+                when (it) {
+                    is Resource.Loading -> {
+                        _subjectList.value = SubjectState(isLoading = true)
+                    }
+
+                    is Resource.Success -> {
+                        _subjectList.value = SubjectState(isSuccess = true)
+                    }
+
+                    is Resource.Error -> {
+                        _subjectList.value = SubjectState(isError = it.message.toString())
+                    }
+                }
+            }.launchIn(viewModelScope)
         }
+        getSubject()
     }
 
+    fun deleteSubject(subject: SubjectEntity) {
+        getSubjectUseCase(subject).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _subjectList.value = SubjectState(isLoading = true)
+                }
+
+                is Resource.Success -> {
+                    _subjectList.value = SubjectState(isSuccess = true)
+                }
+
+                is Resource.Error -> {
+                    _subjectList.value = SubjectState(isError = it.message.toString())
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+}
 //    init {
 //        getSearchImage("flower")
 //        viewModelScope.launch {
@@ -82,4 +120,3 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
 //            }
 //        }.launchIn(viewModelScope)
 //    }
-}

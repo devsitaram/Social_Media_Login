@@ -26,7 +26,7 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
     }
 
     // get user profiles
-    override suspend fun getLoginUserProfile(): UserPojo {
+    override suspend fun getUserProfile(): UserPojo {
         try {
             val response = apiService.getUserProfiles()
             return response ?: throw Exception("Response failed: ${response?.error}")

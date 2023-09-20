@@ -11,7 +11,7 @@ class GetUserProfileUseCase(private val userRepository: UserRepository) {
     operator fun invoke(): Flow<Resource<UserPojo?>> = flow {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(data = userRepository.getLoginUserProfile()))
+            emit(Resource.Success(data = userRepository.getUserProfile()))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

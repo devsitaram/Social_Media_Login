@@ -2,8 +2,6 @@ package com.edu.socialmediallogin.presentation.screen
 
 import android.app.Activity
 import android.content.Context
-import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -87,7 +85,7 @@ fun ProfileViewScreen(
         profileResult.data?.let {
             val profiles = profileResult.data.result
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 50.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
@@ -270,7 +268,6 @@ fun ConfirmationDialogBox(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
 ) {
-//    val activity = (LocalContext.current as Activity)
     AlertDialog(
         onDismissRequest = { onDismiss() },
         title = { TextView(text = title, fontSize = 16.sp, fontWeight = FontWeight.SemiBold) },

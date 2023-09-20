@@ -1,7 +1,7 @@
 package com.edu.socialmediallogin.domain.use_case
 
-import android.content.Context
 import com.edu.socialmediallogin.data.common.Resource
+import com.edu.socialmediallogin.data.source.local.SubjectEntity
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
 import com.edu.socialmediallogin.domain.repository.SubjectRepository
 import kotlinx.coroutines.flow.Flow
@@ -25,6 +25,15 @@ class GetSubjectUseCase(private val subjectRepository: SubjectRepository) {
         emit(Resource.Loading())
         try {
             emit(Resource.Success(data = subjectRepository.insertSubject(photoUrl, name, description, isIvy)))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message.toString()))
+        }
+    }
+
+    operator fun invoke(subject: SubjectEntity) = flow {
+        emit(Resource.Loading())
+        try {
+            emit(Resource.Success(data = subjectRepository.deleteSubject(subject)))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

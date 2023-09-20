@@ -7,7 +7,7 @@ interface UserRepository {
 
     suspend fun getLoginUserAuth(email: String, password: String): AuthPojo?
 
-    suspend fun getLoginUserProfile(): UserPojo?
+    suspend fun getUserProfile(): UserPojo?
 
 //    suspend fun loginUser(email: String, password: String): UserEntity?
 //    suspend fun registerUser(email: String, name: String, password: String): Boolean?

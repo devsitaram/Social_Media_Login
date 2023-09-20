@@ -10,9 +10,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.edu.socialmediallogin.presentation.viewmodel.SubjectViewModel
 
 @Composable
-fun TestingViewScreen(viewModel: SubjectViewModel = hiltViewModel()) {
+fun TestingViewScreen() {
 
-    val data = viewModel.subjectList.value
     Box(
         modifier = androidx.compose.ui.Modifier.fillMaxSize()
             .padding(horizontal = 15.dp, vertical = 15.dp),

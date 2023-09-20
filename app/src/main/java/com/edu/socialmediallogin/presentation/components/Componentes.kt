@@ -489,13 +489,13 @@ fun IconView(
 // }
 
 @Composable
-fun ContentCardView(imageUrl: String, topic: String, description: String, onClickable: () -> Unit) {
+fun ContentCardView(imageUrl: String, topic: String, description: String, onClickable: () -> Unit, onDelete:()->Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 15.dp)
             .border(1.dp, Color.LightGray)
-            .clickable { onClickable() },
+            .clickable { /**onClickable()*/ },
         shape = ShapeDefaults.Medium
     ) {
         Row(
@@ -507,7 +507,7 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
         ) {
             AsyncImageView(
                 imageUrl = imageUrl,
-                modifier = Modifier
+                modifier = Modifier.clickable { onClickable() }
                     .size(120.dp)
                     .padding(start = 5.dp, end = 5.dp) // padding(start = 15.dp, end = 15.dp)
             )
@@ -545,7 +545,7 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
                 Spacer(modifier = Modifier.padding(top = 20.dp))
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .fillMaxWidth().clickable { onDelete() }
                         .border(1.dp, Color.LightGray)
                         .padding(10.dp),
                     verticalAlignment = Alignment.CenterVertically
