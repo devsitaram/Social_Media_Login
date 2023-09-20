@@ -17,6 +17,7 @@ class GoogleApiContract : ActivityResultContract<Int, Task<GoogleSignInAccount>?
             .requestEmail()
             .build()
 //        for (g in gso.scopeArray){
+//
 //        }
 //        Log.e("gso", "gso: ${gso.scopeArray[2]}")
         val intent = GoogleSignIn.getClient(context, gso)
@@ -28,7 +29,6 @@ class GoogleApiContract : ActivityResultContract<Int, Task<GoogleSignInAccount>?
             Activity.RESULT_OK -> {
                 GoogleSignIn.getSignedInAccountFromIntent(intent)
             }
-
             else -> null
         }
     }

@@ -1,13 +1,15 @@
 package com.edu.socialmediallogin.data.repository_impl
 
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
+import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
 import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import com.edu.socialmediallogin.domain.repository.UserRepository
 
 class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
 
-    override suspend fun getLoginUser(email: String, password: String): UserPojo {
+    // login authentications
+    override suspend fun getLoginUserAuth(email: String, password: String): AuthPojo {
         try {
             val loginRequestModel = LoginRequestModel(
                 userNameOrEmailAddress = email,
@@ -15,7 +17,7 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
                 rememberClient = false,
                 couponCode = "",
             )
-            val response = apiService.getLoginUser(loginRequestModel)
+            val response = apiService.getLoginUserAuth(loginRequestModel)
             return response ?: throw Exception("Login failed: ${response?.error}")
         } catch (e: Exception) {
             // Handle exceptions here or rethrow with a more descriptive message
@@ -23,6 +25,16 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
         }
     }
 
+    // get user profiles
+    override suspend fun getLoginUserProfile(): UserPojo {
+        try {
+            val response = apiService.getUserProfiles()
+            return response ?: throw Exception("Response failed: ${response?.error}")
+        } catch (e: Exception) {
+            // Handle exceptions here or rethrow with a more descriptive message
+            throw Exception("Response Error: ${e.message}", e)
+        }
+    }
 
 //    override suspend fun getLoginUser(email: String, password: String,  rememberClient: Boolean): UserDetails? {
 //        try {

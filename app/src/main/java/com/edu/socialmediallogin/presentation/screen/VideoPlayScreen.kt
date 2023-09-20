@@ -76,23 +76,30 @@ import com.edu.socialmediallogin.presentation.viewmodel.VideoPlayViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun VideoPlayViewScreen(videoPlayViewModel: VideoPlayViewModel = viewModel()) {
+fun VideoPlayViewScreen(
+    title: String?,
+    description: String?,
+    videoUrls: String?,
+) {
+
+//    val videoPlayViewModel: VideoPlayViewModel = viewModel()
+//    val result = videoPlayViewModel.videoDetails
+
+//    val title = result?.title
+//    val description = result?.descriptions
+//    val videoUrls = result?.videoUri
+//        "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/I-want-my-school-future-ready-1.mp4"
+//        "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/Do-you-miss-your-school.mp4
 
     val context = LocalContext.current
-    val result = videoPlayViewModel.videoDetails
-
-    val title = result?.title
-    val description = result?.descriptions
-//    val videoUrls = result?.videoUri
-
-    val videoUrls =
-        "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
+    val videoUrl =
+        "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/How-do-you-create-assessment-materials-for-your-students.mp4"
 
     // Create a single ExoPlayer instance for video playback
     val exoPlayer = remember {
         ExoPlayer.Builder(context)
             .build().apply {
-                setMediaItem(MediaItem.fromUri(Uri.parse(videoUrls)))
+                setMediaItem(MediaItem.fromUri(Uri.parse(videoUrl)))
                 this.prepare()
                 this.playWhenReady = true
             }
@@ -233,11 +240,20 @@ fun VideoPlayViewScreen(videoPlayViewModel: VideoPlayViewModel = viewModel()) {
         ) {
             TextView(
                 text = title.toString(),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.SemiBold
+                style = TextStyle(
+                    fontSize = 15.sp,
+                    color = Color.DarkGray,
+                    fontWeight = FontWeight.Bold,
+                ),
+                modifier = Modifier
             )
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             TextView(text = description.toString())
+            Spacer(modifier = Modifier.height(10.dp))
+            TextView(
+                text = videoUrls.toString(),
+                color = Color.Blue
+            )
         }
     }
 }
@@ -384,7 +400,6 @@ fun TopSettingActionView(
                     optionList.forEach { option ->
                         DropdownMenuItem(
                             onClick = {
-                                onDismissDropdown()
                                 when (option.name) {
                                     "Speed" -> {
                                         onSpeedMenuShow()
@@ -394,12 +409,13 @@ fun TopSettingActionView(
                                         onAudioMenuShow()
                                     }
                                 }
+                                onDismissDropdown()
                             }
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(
                                     modifier = Modifier.size(width = 24.dp, height = 24.dp),
-                                    onClick = { }
+                                    onClick = {  }
                                 ) {
                                     Icon(
                                         modifier = Modifier.fillMaxSize(),
@@ -427,7 +443,6 @@ fun TopSettingActionView(
                                             fontSize = 10.sp,
                                             modifier = Modifier.padding(start = 8.dp)
                                         )
-
                                         "Audio" -> TextView(
                                             text = showsAudio,
                                             color = Color.White,

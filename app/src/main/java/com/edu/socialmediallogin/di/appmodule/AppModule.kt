@@ -2,11 +2,11 @@ package com.edu.socialmediallogin.di.appmodule
 
 import android.content.Context
 import com.edu.socialmediallogin.data.common.Constants.API_BASE_URL
-import com.edu.socialmediallogin.data.repository_impl.AuthRepositoryImpl
+import com.edu.socialmediallogin.data.repository_impl.FirebaseAuthRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.SubjectRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.UserRepositoryImpl
-import com.edu.socialmediallogin.data.source.local.RoomDB
-import com.edu.socialmediallogin.data.source.local.RoomDB.Companion.getDatabaseInstance
+import com.edu.socialmediallogin.data.source.local.UserDatabase
+import com.edu.socialmediallogin.data.source.local.UserDatabase.Companion.getDatabaseInstance
 import com.edu.socialmediallogin.data.source.local.UserDao
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.domain.repository.AuthRepository
@@ -35,47 +35,42 @@ object AppModule {
     @Provides
     @Singleton
     fun providesRepository(firebaseAuth: FirebaseAuth): AuthRepository {
-        return AuthRepositoryImpl(firebaseAuth)
+        return FirebaseAuthRepositoryImpl(firebaseAuth)
     }
 
     // get room database instance
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): RoomDB {
+    fun provideAppDatabase(@ApplicationContext context: Context): UserDatabase {
         return getDatabaseInstance(context)
     }
-
+    // dao
     @Provides
-    fun provideUserDao(database: RoomDB): UserDao {
+    fun provideUserDao(database: UserDatabase): UserDao {
         return database.userDao()
     }
-
     // get api instance
     @Provides
     fun provideApiService(): ApiService {
         // create object of httpLoggingInterceptor
         val httpLoggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-
         // create object of okHttpClient
         val okHttpClient = OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor).build()
-
-        // create an object of the retrofit
+        // create an instance of the retrofit and return
         return Retrofit.Builder()
             .baseUrl(API_BASE_URL) // Replace with your base URL
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(ApiService::class.java)
     }
-
+    //user auth and profile
+    @Provides
+    fun provideUserRepo(apiService: ApiService): UserRepository {
+        return UserRepositoryImpl(apiService)
+    }
     // subject
     @Provides
     fun provideSubjectRepo(apiService: ApiService): SubjectRepository {
         return SubjectRepositoryImpl(apiService)
-    }
-
-    // user
-    @Provides
-    fun provideUserRepo(apiService: ApiService): UserRepository {
-        return UserRepositoryImpl(apiService)
     }
 }

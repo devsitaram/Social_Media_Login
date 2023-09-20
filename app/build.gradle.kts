@@ -161,11 +161,16 @@ dependencies {
 
     // google to sign in
     implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation("com.google.firebase:firebase-auth-ktx:22.1.1")
+    implementation("com.google.firebase:firebase-auth-ktx:22.1.2")
 
     // exo player
     implementation ("androidx.media3:media3-exoplayer:1.1.1")
     implementation ("androidx.media3:media3-exoplayer-dash:1.1.1")
     implementation ("androidx.media3:media3-ui:1.1.1")
     implementation ("com.google.android.exoplayer:exoplayer-ui:2.19.1")
+
+    // lottie
+    implementation ("com.airbnb.android:lottie-compose:4.0.0")
+    implementation ("androidx.compose.foundation:foundation:1.5.1")
+    implementation ("androidx.viewpager2:viewpager2:1.0.0")
 }

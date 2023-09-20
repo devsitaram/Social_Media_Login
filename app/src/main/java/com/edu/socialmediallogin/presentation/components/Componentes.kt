@@ -535,7 +535,8 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
                         .padding(15.dp)
                 ) {
                     TextView(
-                        text = topic, style = TextStyle(
+                        text = topic,
+                        style = TextStyle(
                             fontSize = 15.sp,
                             color = Color.DarkGray,
                             fontWeight = FontWeight.Bold,
@@ -680,21 +681,19 @@ fun ButtonAppBar(
                     modifier = Modifier.size(40.dp),
                     contentDescription = null
                 )
-                TextView(text = title)
+                TextView(text = title, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = 5.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.End
                 ) {
-                    // search textfield icon
+                    // search icon
                     IconView(
                         imageVector = Icons.Default.Search,
                         tint = Color.Gray,
                         modifier = Modifier
                             .size(30.dp)
-                            .clickable {
-                                /**navController.navigate(ScreenList.SearchScreen.route)*/
-                            },
+                            .clickable { navController.navigate(ScreenList.SearchScreen.route) },
                     )
                     // notification icon
                     IconButton(

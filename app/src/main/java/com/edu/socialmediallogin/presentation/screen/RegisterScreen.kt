@@ -3,7 +3,6 @@ package com.edu.socialmediallogin.presentation.screen
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,14 +12,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material3.Divider
@@ -47,7 +43,6 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.data.common.RegistrationState
 import com.edu.socialmediallogin.data.common.emailValidation
 import com.edu.socialmediallogin.data.common.nameValidation
 import com.edu.socialmediallogin.presentation.components.ButtonView
@@ -55,7 +50,6 @@ import com.edu.socialmediallogin.presentation.components.ClickableTextView
 import com.edu.socialmediallogin.presentation.components.CustomDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
-import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.SignUpViewModel
@@ -66,7 +60,6 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
     val context = LocalContext.current
     val viewModel = viewModel<SignUpViewModel>()
     val registrationState = viewModel.registrationState.collectAsState()
-
 
     var email by remember { mutableStateOf("") }
     var isEmailEmpty by remember { mutableStateOf(false) }
@@ -275,7 +268,7 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                     color = Color.DarkGray,
                     modifier = Modifier
                         .wrapContentHeight()
-                        .padding(horizontal = 5.dp),
+                        .padding(horizontal = 5.dp, vertical = 5.dp),
                     style = TextStyle(
                         fontSize = 16.sp,
                         fontWeight = FontWeight.SemiBold,

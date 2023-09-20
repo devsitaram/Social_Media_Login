@@ -41,7 +41,6 @@ import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.SubjectViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubjectViewScreen(
     navController: NavHostController,
@@ -72,7 +71,7 @@ fun SubjectViewScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ButtonAppBar(title = "",navController = navController)
+            ButtonAppBar(title = "", navController = navController)
             TextView(
                 text = "Subject",
                 style = TextStyle(
@@ -93,17 +92,17 @@ fun SubjectViewScreen(
                         .padding(start = 15.dp, end = 15.dp)
                 ) {
                     items(it) {
+                        val title = it?.name.toString()
+                        val descriptions = it?.description.toString()
+                        val videoDesc = descriptions.ifEmpty { "Descriptions is not available." }
+                        val imageUrl = if (it?.photoUrl.isNullOrEmpty()) DEFAULT_IMAGE_URL else it?.photoUrl.toString()
+                        val videoUrl = "No Video Url"
                         ContentCardView(
-                            imageUrl = HTTPS_IMAGE_BASE_URL + if (it?.photoUrl.isNullOrEmpty()) DEFAULT_IMAGE_URL else it?.photoUrl.toString(),
-                            topic = it?.name.toString(),
-                            description = it?.description.toString(),
+                            imageUrl = HTTPS_IMAGE_BASE_URL + imageUrl,
+                            topic = title,
+                            description = descriptions,
                             onClickable = {
-//                                    val videoDetails = VideoDetails(
-//                                        title = item.title, descriptions = item.description,
-//                                        videoUri = "https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4"
-//                                    )
-//                                    videoViewModel.addVideoDetails(newVideoDetails = videoDetails)
-                                navController.navigate(ScreenList.VideoScreen.route)
+                                navController.navigate("VideoScreen/${title}/${videoDesc}/${videoUrl}")
                             }
                         )
                     }
@@ -112,3 +111,5 @@ fun SubjectViewScreen(
         }
     }
 }
+
+ // navController.navigate(route = "VideoScreen/${title}/${videoDesc}/${videoUrl}")

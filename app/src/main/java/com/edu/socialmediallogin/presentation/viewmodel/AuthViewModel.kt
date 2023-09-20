@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.socialmediallogin.data.source.local.User
+import com.edu.socialmediallogin.data.source.local.UserEntity
 import com.edu.socialmediallogin.domain.repository.UserRepository
 import com.edu.socialmediallogin.presentation.state.SignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +21,7 @@ class AuthViewModel : ViewModel() {
     val googleLoginResult: LiveData<AuthResult> = _googleLoginResult
 
     sealed class AuthResult {
-        data class Success(val user: User) : AuthResult()
+        data class Success(val user: UserEntity) : AuthResult()
         data class Error(val message: String) : AuthResult()
     }
 

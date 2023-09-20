@@ -1,20 +1,29 @@
 package com.edu.socialmediallogin.data.source.remote.network
 
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectPojo
+import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
 import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface ApiService {
 
     // get user
-    @POST("TokenAuth/Authenticate")
-    suspend fun getLoginUser(@Body loginRequestModel: LoginRequestModel): UserPojo?
+    @POST("TokenAuth/Authenticate/")
+    suspend fun getLoginUserAuth(@Body loginRequestModel: LoginRequestModel): AuthPojo?
+
+    @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjkwNjg2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Im5wMDFtYTRzMjIwMDAzQGlzbGluZ3RvbmNvbGxlZ2UuZWR1Lm5wIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibnAwMW1hNHMyMjAwMDNAaXNsaW5ndG9uY29sbGVnZS5lZHUubnAiLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IkRXNUxJRFNLRUlKQVdMQUFFSFg1UlhTNTRMMlZIMlVSIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3R1ZGVudCIsImh0dHA6Ly93d3cuYXNwbmV0Ym9pbGVycGxhdGUuY29tL2lkZW50aXR5L2NsYWltcy90ZW5hbnRJZCI6IjEiLCJzdWIiOiI5MDY4NiIsImp0aSI6IjA0NDMxNmJkLTUxY2YtNDY2ZS04ZmQ2LTA2Y2I0YjMzMTk5OSIsImlhdCI6MTY5NTE4NzI2OSwibmJmIjoxNjk1MTg3MjY5LCJleHAiOjE2OTYzOTY4NjksImlzcyI6IkFQb2xsbyIsImF1ZCI6IkFQb2xsbyJ9.A4qThXLnQ39cl4PVXcArLkU71X0a8koSI8mlcwKN0zM")
+    @GET("students/profile")
+    suspend fun getUserProfiles(): UserPojo?
 
     // get subject
+    @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjkwNjg2IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6Im5wMDFtYTRzMjIwMDAzQGlzbGluZ3RvbmNvbGxlZ2UuZWR1Lm5wIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoibnAwMW1hNHMyMjAwMDNAaXNsaW5ndG9uY29sbGVnZS5lZHUubnAiLCJBc3BOZXQuSWRlbnRpdHkuU2VjdXJpdHlTdGFtcCI6IkRXNUxJRFNLRUlKQVdMQUFFSFg1UlhTNTRMMlZIMlVSIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjoiU3R1ZGVudCIsImh0dHA6Ly93d3cuYXNwbmV0Ym9pbGVycGxhdGUuY29tL2lkZW50aXR5L2NsYWltcy90ZW5hbnRJZCI6IjEiLCJzdWIiOiI5MDY4NiIsImp0aSI6ImU2MTMzNzcxLWQwNWQtNGQ2Zi05Y2IzLWJmNTRmMTk5MWU4NyIsImlhdCI6MTY5NTEwMTQ3NiwibmJmIjoxNjk1MTAxNDc2LCJleHAiOjE2OTYzMTEwNzYsImlzcyI6IkFQb2xsbyIsImF1ZCI6IkFQb2xsbyJ9.9I06mthjuPOJYadzQxjHNRQWh-uv9dN7hBTGfmLXWxU")
     @GET("students/profile/subjects/")
-    suspend fun getSearchSubject(@Header("Authorization") authorization: String): SubjectPojo
+    suspend fun getSearchSubject(): SubjectPojo
+
+//    @GET("students/profile/subjects/")
+//    suspend fun getSearchSubject(@Header("Authorization") authorization: String): SubjectPojo
 }

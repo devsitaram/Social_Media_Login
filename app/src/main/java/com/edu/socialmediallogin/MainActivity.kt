@@ -10,11 +10,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.edu.socialmediallogin.navigate.SetupNavGraph
 import com.edu.socialmediallogin.presentation.compose.NavigationViewScreen
 import com.edu.socialmediallogin.ui.theme.SocialMedialLoginTheme
+//demo1004@mst.sg
 import dagger.hilt.android.AndroidEntryPoint
 
-// https://www.youtube.com/watch?v=gIuHATUBGvA
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

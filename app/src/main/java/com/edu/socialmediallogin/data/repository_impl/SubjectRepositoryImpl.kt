@@ -7,10 +7,10 @@ import com.edu.socialmediallogin.domain.repository.SubjectRepository
 import kotlin.Exception
 
 class SubjectRepositoryImpl(private val apiService: ApiService) : SubjectRepository {
-
     override suspend fun getSearchSubject(): List<SubjectItem> {
         try {
-            return apiService.getSearchSubject(SUBJECT_AUTH_TOKEN).result.map { it }
+            return apiService.getSearchSubject().result.map { it }
+//            return apiService.getSearchSubject(SUBJECT_AUTH_TOKEN).result.map { it }
         } catch (e: Exception){
             throw Exception(e)
         }

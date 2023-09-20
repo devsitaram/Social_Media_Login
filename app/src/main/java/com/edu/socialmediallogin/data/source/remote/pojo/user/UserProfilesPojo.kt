@@ -1,7 +1,15 @@
 package com.edu.socialmediallogin.data.source.remote.pojo.user
 
+data class UserPojo(
+    val result: UserProfiles? = null,
+    val success: Boolean? = null,
+    val abp: Boolean? = null,
+    val error: Any? = null,
+    val targetUrl: Any? = null,
+    val unAuthorizedRequest: Boolean? = null
+)
 
-data class UserDetails(
+data class UserProfiles(
     val pendingBalance: Any? = null,
     val isSchoolChatroomEnabled: Boolean? = null,
     val role: String? = null,
