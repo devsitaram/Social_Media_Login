@@ -36,15 +36,6 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
         }
     }
 
-//    override suspend fun getLoginUser(email: String, password: String,  rememberClient: Boolean): UserDetails? {
-//        try {
-//            return apiService.getLoginUser(email, password, rememberClient).result
-//        } catch (e: Exception){
-//            throw Exception(e)
-//        }
-//    }
-
-
 //    override suspend fun insertUser(user: User) {
 //        userDao.insertUser(user)
 //    }

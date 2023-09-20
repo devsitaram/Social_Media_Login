@@ -55,12 +55,13 @@ import com.edu.socialmediallogin.data.common.emailValidation
 import com.edu.socialmediallogin.presentation.components.ButtonView
 import com.edu.socialmediallogin.presentation.components.CheckboxComponent
 import com.edu.socialmediallogin.presentation.components.ClickableTextView
-import com.edu.socialmediallogin.presentation.components.CustomDialogBox
+import com.edu.socialmediallogin.presentation.components.MessageDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.RoundedCornerCardView
 import com.edu.socialmediallogin.presentation.components.TextView
+import com.edu.socialmediallogin.presentation.compose.Screen
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import com.edu.socialmediallogin.presentation.google.GoogleApiContract
 import com.edu.socialmediallogin.presentation.viewmodel.signin.GoogleSignInViewModel
@@ -73,7 +74,7 @@ fun SignInViewScreen(
     signInViewModel: SignInViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
     val userLoginResult = signInViewModel.signInState.value
 
     // google account to login
@@ -117,11 +118,11 @@ fun SignInViewScreen(
         if (emailValidation(email) && password.isNotEmpty()) {
             signInViewModel.getLoginUserAuth(email, password)
             if (userLoginResult.data?.success == true) {
-                navController.navigate(ScreenList.HomeScreen.route) {
-                    popUpTo(ScreenList.LoginScreen.route) {
+                navController.navigate(Screen.MainScreen.route) {
+                    popUpTo(Screen.LoginScreen.route) {
                         inclusive = true
                         val editor = sharedPreferences.edit()
-                        editor.putString("access_token", "${userLoginResult.data.result?.accessToken}").apply()
+                        editor.putString("accessToken", "${userLoginResult.data.result?.accessToken}").apply()
                         Log.e("Access Token", "accessToken: ${userLoginResult.data.result?.accessToken}")
                     }
                 }
@@ -308,7 +309,7 @@ fun SignInViewScreen(
                                 ),
                                 overflow = TextOverflow.Clip,
                                 onTextLayout = {},
-                                onClick = { navController.navigate(ScreenList.RegisterScreen.route) }
+                                onClick = { navController.navigate(Screen.RegisterScreen.route) }
                             )
                         }
                     }
@@ -368,8 +369,8 @@ fun SignInViewScreen(
             googleSignInViewModel.hideLoading()
             if (googleUser.value != null) {
                 googleSignInViewModel.hideLoading()
-                navController.navigate(ScreenList.HomeScreen.route) {
-                    popUpTo(ScreenList.LoginScreen.route) {
+                navController.navigate(Screen.MainScreen.route) {
+                    popUpTo(Screen.LoginScreen.route) {
                         inclusive = true
                     }
                 }
@@ -383,7 +384,7 @@ fun SignInViewScreen(
     }
 
     if (isError) {
-        CustomDialogBox(
+        MessageDialogBox(
             title = "Error",
             descriptions = "Your username or password is invalid. Please try to again or click on Forgot Your Password? below.\n-> ${userLoginResult.isError}",
             onDismiss = {

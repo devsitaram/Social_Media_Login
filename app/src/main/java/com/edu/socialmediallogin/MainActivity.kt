@@ -10,8 +10,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.edu.socialmediallogin.navigate.SetupNavGraph
-import com.edu.socialmediallogin.presentation.compose.NavigationViewScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.edu.socialmediallogin.presentation.compose.MainViewScreen
+import com.edu.socialmediallogin.presentation.compose.Screen
+import com.edu.socialmediallogin.presentation.screen.SignInViewScreen
+import com.edu.socialmediallogin.presentation.screen.SignUpScreenViewScreen
+import com.edu.socialmediallogin.presentation.screen.SplashViewScreen
 import com.edu.socialmediallogin.ui.theme.SocialMedialLoginTheme
 //demo1004@mst.sg
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,8 +28,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         // create the Shared Preferences
-        val getSharedPreferences = getSharedPreferences("my_preferences", MODE_PRIVATE)
-        val getUserDevice = getSharedPreferences.getString("access_token", "")
+        val getSharedPreferences = getSharedPreferences("social_media_preferences", MODE_PRIVATE)
+        val getUserDevice = getSharedPreferences.getString("accessToken", "")
 
         var darkMode by mutableStateOf(false)
 
@@ -34,7 +40,30 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavigationViewScreen(checked = darkMode, onCheckedChange = { darkMode = !darkMode}, getUserDevice)
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = // ScreenList.SearchScreen.route // ScreenList.SplashScreen.route
+                        if (getUserDevice.isNullOrEmpty()) {
+                            Screen.LoginScreen.route
+                        } else {
+                            Screen.MainScreen.route
+                        }
+                    ) {
+                        composable(Screen.SplashScreen.route) {
+                            SplashViewScreen(getUserDevice, navController)
+                        }
+                        composable(Screen.LoginScreen.route) {
+                            SignInViewScreen(navController)
+                        }
+                        composable(Screen.RegisterScreen.route) {
+                            SignUpScreenViewScreen(navController)
+                        }
+                        composable(Screen.MainScreen.route) {
+                            MainViewScreen(checked = darkMode) { darkMode = !darkMode }
+                        }
+                    }
+//                    NavigationViewScreen(checked = darkMode, onCheckedChange = { darkMode = !darkMode}, getUserDevice)
                 }
             }
         }

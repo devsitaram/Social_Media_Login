@@ -18,6 +18,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.edu.socialmediallogin.R
+import com.edu.socialmediallogin.presentation.compose.Screen
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import kotlinx.coroutines.delay
 
@@ -75,9 +76,9 @@ fun SplashViewScreen(getUserDevice: String?, navController: NavHostController) {
     LaunchedEffect(key1 = isTextVisible) {
         if (isTextVisible) {
             if (getUserDevice.isNullOrEmpty() || getUserDevice != "this") {
-                navController.navigate(ScreenList.LoginScreen.route)
+                navController.navigate(Screen.LoginScreen.route)
             } else {
-                navController.navigate(ScreenList.HomeScreen.route)
+                navController.navigate(Screen.MainScreen.route)
             }
         }
     }

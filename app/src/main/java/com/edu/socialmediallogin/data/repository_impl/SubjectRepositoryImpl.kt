@@ -10,7 +10,6 @@ class SubjectRepositoryImpl(private val apiService: ApiService) : SubjectReposit
     override suspend fun getSearchSubject(): List<SubjectItem> {
         try {
             return apiService.getSearchSubject().result.map { it }
-//            return apiService.getSearchSubject(SUBJECT_AUTH_TOKEN).result.map { it }
         } catch (e: Exception){
             throw Exception(e)
         }

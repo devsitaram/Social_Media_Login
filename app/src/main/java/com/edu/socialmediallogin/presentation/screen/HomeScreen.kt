@@ -44,9 +44,6 @@ fun HomeViewScreen(
     checked: Boolean,
     onCheckedChange: () -> Unit
 ) {
-    val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
-    val activity = navController.context as? ComponentActivity
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Top,
@@ -66,23 +63,6 @@ fun HomeViewScreen(
             ) {
                 Switch(checked = checked, onCheckedChange = { onCheckedChange() })
                 TextView(text = if (checked) "Dark Mode" else "Light Mode")
-            }
-            Spacer(modifier = Modifier.height(20.dp))
-            Button(onClick = { navController.navigate(ScreenList.SubjectScreen.route) }) {
-                TextView(text = "Go to Subject")
-            }
-            Button(onClick = { navController.navigate(ScreenList.ProfileScreen.route) }) {
-                Text(text = "Profile Screen")
-            }
-            Button(
-                onClick = {
-                    // remove access_token
-                    val editor = sharedPreferences.edit()
-                    editor.putString("access_token", "").apply()
-                    activity?.finish() // close the app
-                }
-            ) {
-                Text(text = "Log Out")
             }
         }
     }

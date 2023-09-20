@@ -1,49 +1,119 @@
 package com.edu.socialmediallogin.presentation.compose
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.edu.socialmediallogin.presentation.components.IconView
+import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
 import com.edu.socialmediallogin.presentation.screen.ProfileViewScreen
 import com.edu.socialmediallogin.presentation.screen.SearchViewScreen
-import com.edu.socialmediallogin.presentation.screen.SignInViewScreen
-import com.edu.socialmediallogin.presentation.screen.SignUpScreenViewScreen
-import com.edu.socialmediallogin.presentation.screen.SplashViewScreen
 import com.edu.socialmediallogin.presentation.screen.SubjectViewScreen
 import com.edu.socialmediallogin.presentation.screen.VideoPlayViewScreen
+import com.edu.socialmediallogin.ui.theme.pink
 
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavigationViewScreen(checked: Boolean, onCheckedChange: () -> Unit, getUserDevice: String?) {
+fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
     val navController = rememberNavController()
-    NavHost(
-        navController = navController,
-        startDestination = // ScreenList.SearchScreen.route // ScreenList.SplashScreen.route
-        if (getUserDevice.isNullOrEmpty()) {
-            ScreenList.LoginScreen.route
-        } else {
-            ScreenList.HomeScreen.route
+    val pages = listOf(
+        ScreenList.HomeScreen,
+        ScreenList.SubjectScreen,
+        ScreenList.ProfileScreen,
+        ScreenList.SearchScreen,
+    )
+    Scaffold(
+        bottomBar = {
+            BottomNavigation {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                pages.forEach { screen ->
+                    BottomNavigationItem(
+                        modifier = Modifier.background(color = Color.White),
+                        icon = {
+                            IconView(imageVector = screen.icon,
+                                tint = if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
+                                    pink // Change to your desired color
+                                } else {
+                                    Color.Gray
+                                }
+                            )
+                        },
+                        label = {
+                            TextView(
+                                text = screen.route,
+                                style = TextStyle(
+                                    fontSize = 12.sp,
+                                    fontWeight = FontWeight.Normal
+                                ),
+                                color = if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
+                                    pink // Change to your desired color
+                                } else {
+                                    Color.Gray
+                                }
+                            )
+                        },
+                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
+            }
         }
     ) {
-        composable(ScreenList.SplashScreen.route) {
-            SplashViewScreen(getUserDevice, navController)
-        }
-        composable(ScreenList.LoginScreen.route) {
-            SignInViewScreen(navController)
-        }
-        composable(ScreenList.RegisterScreen.route) {
-            SignUpScreenViewScreen(navController)
-        }
+        ButtonNavigationViewScreen(navController, checked, onCheckedChange)
+    }
+}
+
+@Composable
+fun ButtonNavigationViewScreen(
+    navController: NavHostController,
+    checked: Boolean,
+    onCheckedChange: () -> Unit,
+) {
+    NavHost(navController = navController, startDestination = ScreenList.HomeScreen.route) {
         composable(ScreenList.HomeScreen.route) {
             HomeViewScreen(navController, checked, onCheckedChange)
         }
         composable(ScreenList.SubjectScreen.route) {
             SubjectViewScreen(navController)
         }
+        composable(ScreenList.SearchScreen.route) {
+            SearchViewScreen(navController)
+        }
+        composable(ScreenList.ProfileScreen.route) {
+            ProfileViewScreen(navController)
+        }
         composable(
-            route = ScreenList.VideoScreen.route,
+            route = Screen.VideoScreen.route,
             arguments = listOf(
                 navArgument(name = SUBJECT_NAME_KEY) {
                     type = NavType.StringType
@@ -60,12 +130,6 @@ fun NavigationViewScreen(checked: Boolean, onCheckedChange: () -> Unit, getUserD
             val description = navBackStackEntry.arguments?.getString(SUBJECT_DESC_KEY)
             val videoUrl = navBackStackEntry.arguments?.getString(VIDEO_URL_KEY)
             VideoPlayViewScreen(title = name, description = description, videoUrls = videoUrl)
-        }
-        composable(ScreenList.ProfileScreen.route) {
-            ProfileViewScreen(navController)
-        }
-        composable(ScreenList.SearchScreen.route) {
-            SearchViewScreen(navController)
         }
     }
 }

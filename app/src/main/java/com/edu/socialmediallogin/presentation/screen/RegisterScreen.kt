@@ -47,10 +47,11 @@ import com.edu.socialmediallogin.data.common.emailValidation
 import com.edu.socialmediallogin.data.common.nameValidation
 import com.edu.socialmediallogin.presentation.components.ButtonView
 import com.edu.socialmediallogin.presentation.components.ClickableTextView
-import com.edu.socialmediallogin.presentation.components.CustomDialogBox
+import com.edu.socialmediallogin.presentation.components.MessageDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.TextView
+import com.edu.socialmediallogin.presentation.compose.Screen
 import com.edu.socialmediallogin.presentation.compose.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.SignUpViewModel
 
@@ -286,14 +287,14 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                     ),
                     overflow = TextOverflow.Clip,
                     onTextLayout = {},
-                    onClick = { navController.navigate(ScreenList.LoginScreen.route) },
+                    onClick = { navController.navigate(Screen.LoginScreen.route) },
                 )
             }
         }
     }
 
     if (isError) {
-        CustomDialogBox(
+        MessageDialogBox(
             title = "Error",
             descriptions = "Your Registration is incomplete",
             onDismiss = {
@@ -305,7 +306,7 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
     }
 
     if (isSuccessful) {
-        CustomDialogBox(
+        MessageDialogBox(
             title = "successful",
             descriptions = "Your Registration was successful",
             onDismiss = {

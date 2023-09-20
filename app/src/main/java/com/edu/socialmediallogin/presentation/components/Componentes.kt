@@ -1,9 +1,6 @@
-@file:Suppress("UNUSED_EXPRESSION")
-
 package com.edu.socialmediallogin.presentation.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,7 +17,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Badge
@@ -143,15 +139,7 @@ fun ClickableTextView(
     ClickableText(
         text = AnnotatedString(text),
         modifier = modifier,
-//        Modifier
-//            .wrapContentHeight()
-//            .padding(start = 15.dp),
         style = style,
-//        TextStyle(
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.Normal,
-//            fontStyle = FontStyle.Normal
-//        ),
         softWrap = softWrap,
         overflow = overflow,
         maxLines = maxLines,
@@ -282,7 +270,7 @@ fun PasswordTextFieldView(
     maxLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
     shape: Shape = ShapeDefaults.Medium,
-    errorMessage: String,
+    errorMessage: String? = null,
     errorColor: Color = Color.Unspecified,
 ) {
     val passwordVisibility = remember { mutableStateOf(false) }
@@ -609,7 +597,7 @@ fun ProgressIndicator() {
 }
 
 @Composable
-fun CustomDialogBox(
+fun MessageDialogBox(
     title: String,
     descriptions: String,
     onDismiss: () -> Unit,
@@ -681,7 +669,11 @@ fun ButtonAppBar(
                     modifier = Modifier.size(40.dp),
                     contentDescription = null
                 )
-                TextView(text = title, fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(start = 5.dp))
+                TextView(
+                    text = title,
+                    fontWeight = FontWeight.SemiBold,
+                    modifier = Modifier.padding(start = 5.dp)
+                )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
