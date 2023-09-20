@@ -7,19 +7,31 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import androidx.room.Upsert
-import kotlinx.coroutines.flow.Flow
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
+import com.edu.socialmediallogin.domain.model.SubjectModel
 
+@SuppressWarnings("AndroidUnresolvedRoomSqlReference")
 @Dao
 interface UserDao {
 
-    @Upsert // insert and update both
-    suspend fun insertUser(user: UserEntity)
+//    @Upsert // insert and update both
 
-    @Query("SELECT * FROM user WHERE emailAddress = :email AND userPassword = :password")
-    suspend fun getUserByEmail(email: String?, password: String): List<UserEntity>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSubject(subject: List<SubjectEntity>)
 
-    @Delete
-    suspend fun deleteUser(user: UserEntity)
+    @Query("SELECT * FROM subject")
+    suspend fun getAllSubjects(): List<SubjectItem>
+
+
+//    @Query("SELECT * FROM subject")
+//    suspend fun getAllSubject(): List<SubjectItem>
+
+//    @Query("SELECT * FROM user WHERE emailAddress = :email AND userPassword = :password")
+//    suspend fun getUserByEmail(email: String?, password: String): List<UserEntity>
+
+//    @Delete
+//    suspend fun deleteUser(user: UserEntity)
+
 
 //    @Query("SELECT * FROM user ORDER BY id ASC")
 //    fun getUserById(id: Long): Flow<List<User>>

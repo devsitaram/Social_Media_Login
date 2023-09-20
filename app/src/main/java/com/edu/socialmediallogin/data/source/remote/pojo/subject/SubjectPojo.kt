@@ -8,3 +8,11 @@ data class SubjectPojo(
     val targetUrl: Any,
     val unAuthorizedRequest: Boolean
 )
+
+data class SubjectItem(
+    val photoUrl: String,
+    val name: String,
+    val description: String,
+    val id: Int,
+    val isIvy: Boolean
+)

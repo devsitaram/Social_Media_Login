@@ -1,16 +1,45 @@
 package com.edu.socialmediallogin.data.repository_impl
 
-import com.edu.socialmediallogin.data.common.Constants.SUBJECT_AUTH_TOKEN
+import com.edu.socialmediallogin.data.source.local.SubjectEntity
+import com.edu.socialmediallogin.data.source.local.UserDao
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
 import com.edu.socialmediallogin.domain.repository.SubjectRepository
 import kotlin.Exception
 
-class SubjectRepositoryImpl(private val apiService: ApiService) : SubjectRepository {
-    override suspend fun getSearchSubject(): List<SubjectItem> {
+class SubjectRepositoryImpl(
+    private val apiService: ApiService,
+    private val userDao: UserDao
+) : SubjectRepository {
+    override suspend fun getSubjects(): List<SubjectItem> {
         try {
-            return apiService.getSearchSubject().result.map { it }
-        } catch (e: Exception){
+            val listOfSubject = userDao.getAllSubjects()
+            // if local database is empty then call the server
+            return listOfSubject.ifEmpty {
+                apiService.getSearchSubject().result.map { it }
+            }
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+    }
+
+    override suspend fun insertSubject(
+        photoUrl: String?,
+        name: String?,
+        description: String?,
+        isIvy: Boolean?
+    ) {
+        try {
+            val listOfSubjects = listOf(
+                SubjectEntity(
+                    photoUrl = photoUrl,
+                    name = name,
+                    description = description,
+                    isIvy = isIvy
+                )
+            )
+            return userDao.insertSubject(subject = listOfSubjects)
+        } catch (e: Exception) {
             throw Exception(e)
         }
     }

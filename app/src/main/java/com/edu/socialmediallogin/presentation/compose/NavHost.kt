@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.edu.socialmediallogin.presentation.TestingViewScreen
 import com.edu.socialmediallogin.presentation.components.IconView
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
@@ -130,6 +131,9 @@ fun ButtonNavigationViewScreen(
             val description = navBackStackEntry.arguments?.getString(SUBJECT_DESC_KEY)
             val videoUrl = navBackStackEntry.arguments?.getString(VIDEO_URL_KEY)
             VideoPlayViewScreen(title = name, description = description, videoUrls = videoUrl)
+        }
+        composable(Screen.TestScreen.route){
+            TestingViewScreen()
         }
     }
 }

@@ -2,6 +2,7 @@ package com.edu.socialmediallogin.domain.model
 
 import android.os.Parcelable
 import androidx.compose.runtime.MutableState
+import androidx.room.ColumnInfo
 import kotlinx.android.parcel.Parcelize
 import retrofit2.http.Query
 
@@ -11,9 +12,10 @@ data class GoogleUserModel(
 )
 
 data class SubjectModel(
-    val imageUrl: String,
-    val title: String,
-    val urlDescriptions: String
+    val photoUrl: String,
+    val name: String,
+    val description: String,
+    val isIvy: Boolean
 )
 
 // video

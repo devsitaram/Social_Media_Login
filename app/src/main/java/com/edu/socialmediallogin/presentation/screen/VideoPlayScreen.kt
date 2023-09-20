@@ -241,7 +241,7 @@ fun VideoPlayViewScreen(
             TextView(
                 text = title.toString(),
                 style = TextStyle(
-                    fontSize = 15.sp,
+                    fontSize = 16.sp,
                     color = Color.DarkGray,
                     fontWeight = FontWeight.Bold,
                 ),

@@ -1,6 +1,8 @@
 package com.edu.socialmediallogin.presentation.screen
 
+import android.app.Activity
 import android.content.Context
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -58,10 +60,9 @@ fun ProfileViewScreen(
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val profileResult = profileViewModel.profileState.value
-    val context = LocalContext.current
-    val sharedPreferences =
-        context.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
-    val activity = navController.context as? ComponentActivity
+    val activity = (LocalContext.current as Activity)
+
+    val sharedPreferences = activity.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
 
     var showDialogBox by remember { mutableStateOf(false) }
 
@@ -117,7 +118,7 @@ fun ProfileViewScreen(
                 // remove access_token
                 val editor = sharedPreferences.edit()
                 editor.putString("accessToken", "").apply()
-                activity?.finish() // close the app
+                activity.finish() // close the app
             }
         )
     }
@@ -170,7 +171,7 @@ fun UserProfileView(userName: String, emailAddress: String) {
             border = BorderStroke(1.dp, skyBlue), // BorderStroke with desired color and width
         ) {
             IconButton(
-                onClick = { /* TODO */ },
+                onClick = {},
                 modifier = Modifier.size(25.dp), // Increased size for the IconButton
             ) {
                 Icon(
@@ -270,22 +271,18 @@ fun ConfirmationDialogBox(
     onConfirm: () -> Unit
 ) {
 //    val activity = (LocalContext.current as Activity)
-    androidx.compose.material3.AlertDialog(
+    AlertDialog(
         onDismissRequest = { onDismiss() },
         title = { TextView(text = title, fontSize = 16.sp, fontWeight = FontWeight.SemiBold) },
         text = { TextView(text = text, color = Color.Gray) },
         modifier = Modifier.fillMaxWidth(),
         dismissButton = {
-            TextButton(
-                onClick = { onDismiss() }
-            ) {
+            TextButton(onClick = { onDismiss() }) {
                 TextView(text = "No", color = Color.Blue)
             }
         },
         confirmButton = {
-            TextButton(
-                onClick = { onConfirm() } // activity.finish()
-            ) {
+            TextButton(onClick = { onConfirm() }) {
                 TextView(text = "Yes", color = Color.Blue)
             }
         }

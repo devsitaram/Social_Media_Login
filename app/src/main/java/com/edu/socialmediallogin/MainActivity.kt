@@ -40,6 +40,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+//                    MainViewScreen(checked = darkMode) { darkMode = !darkMode }
+
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
@@ -63,7 +65,6 @@ class MainActivity : ComponentActivity() {
                             MainViewScreen(checked = darkMode) { darkMode = !darkMode }
                         }
                     }
-//                    NavigationViewScreen(checked = darkMode, onCheckedChange = { darkMode = !darkMode}, getUserDevice)
                 }
             }
         }

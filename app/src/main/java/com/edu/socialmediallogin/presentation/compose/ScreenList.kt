@@ -17,6 +17,7 @@ sealed class Screen(val route: String) {
     object RegisterScreen : Screen("RegisterScreen")
     object MainScreen: Screen("MainScreen")
     object VideoScreen : Screen("VideoScreen/{$SUBJECT_NAME_KEY}/{$SUBJECT_DESC_KEY}/{$VIDEO_URL_KEY}")
+    object TestScreen: Screen("TestScreen")
 }
 
 sealed class ScreenList(var icon: ImageVector, val route: String) {

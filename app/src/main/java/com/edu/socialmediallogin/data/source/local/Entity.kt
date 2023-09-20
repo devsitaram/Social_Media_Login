@@ -20,9 +20,14 @@ data class UserEntity(
 @Entity(tableName = "subject")
 data class SubjectEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val photoUrl: String,
-    val name: String,
-    val description: String,
-    val isIvy: Boolean
+    @ColumnInfo(name = "id")
+    val id: Int = 0,
+    @ColumnInfo(name ="photoUrl")
+    val photoUrl: String? = null,
+    @ColumnInfo(name ="name")
+    val name: String? = null,
+    @ColumnInfo(name ="description")
+    val description: String? = null,
+    @ColumnInfo(name ="isIvy")
+    val isIvy: Boolean? = null
 )

@@ -25,7 +25,7 @@ class AppDetails {
     // user's profiles
     @Provides
     @Singleton
-    fun provideUserUseCase(userRepository: UserRepository): GetUserProfileUseCase {
+    fun provideProfileUseCase(userRepository: UserRepository): GetUserProfileUseCase {
         return GetUserProfileUseCase(userRepository)
     }
     // subject's use case

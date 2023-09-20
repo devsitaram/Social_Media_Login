@@ -1,5 +1,6 @@
 package com.edu.socialmediallogin.presentation.viewmodel
 
+import android.content.Context
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -14,23 +15,14 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSubjectUseCase) : ViewModel() {
+class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSubjectUseCase) :
+    ViewModel() {
 
     private var _subjectList = mutableStateOf(SubjectState())
     val subjectList: State<SubjectState> get() = _subjectList
 
-    private val _query = MutableStateFlow("")
-
     init {
         getSubject()
-//        viewModelScope.launch {
-//            _query.debounce(1000).collectLatest {
-//                getSubject()
-//            }
-    }
-
-    fun updateQuery(query: String) {
-        _query.value = query
     }
 
     private fun getSubject() {
@@ -49,6 +41,15 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun insertSubject(photoUrl: String?, name: String?, description: String?, isIvy: Boolean?): String {
+        return try{
+            getSubjectUseCase(photoUrl, name, description, isIvy).launchIn(viewModelScope)
+             "Insert Success"
+        } catch (e: Exception){
+            throw Exception("Not Register")
+        }
     }
 
 //    init {
