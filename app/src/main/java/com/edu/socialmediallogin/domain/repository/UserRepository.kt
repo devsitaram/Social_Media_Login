@@ -1,5 +1,6 @@
 package com.edu.socialmediallogin.domain.repository
 
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
 import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
 

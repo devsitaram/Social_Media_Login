@@ -6,13 +6,11 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.edu.socialmediallogin.data.common.Constants.DATABASE_NAME
 
-@Database(entities = [SubjectEntity::class], version = 1, exportSchema = false)
+@Database(entities = [SubjectEntity::class, UserEntity::class], version = 2, exportSchema = false)
 abstract class UserDatabase : RoomDatabase() {
-
     abstract fun userDao(): UserDao
 
 //    companion object {
-//
 //        @Volatile
 //        private var INSTANCE: UserDatabase? = null
 //

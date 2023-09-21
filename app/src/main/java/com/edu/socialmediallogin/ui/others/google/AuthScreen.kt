@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.google
+package com.edu.socialmediallogin.ui.others.google
 
 //import android.annotation.SuppressLint
 //import android.util.Log

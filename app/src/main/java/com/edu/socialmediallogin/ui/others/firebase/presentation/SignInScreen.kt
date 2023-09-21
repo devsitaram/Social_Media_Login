@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.ui.firebase.presentation
+package com.edu.socialmediallogin.ui.others.firebase.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box

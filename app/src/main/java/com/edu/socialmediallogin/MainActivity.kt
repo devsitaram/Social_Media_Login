@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.edu.socialmediallogin.presentation.compose.MainViewScreen
-import com.edu.socialmediallogin.presentation.compose.Screen
+import com.edu.socialmediallogin.presentation.Navigation.MainViewScreen
+import com.edu.socialmediallogin.presentation.Navigation.Screen
 import com.edu.socialmediallogin.presentation.screen.SignInViewScreen
 import com.edu.socialmediallogin.presentation.screen.SignUpScreenViewScreen
 import com.edu.socialmediallogin.presentation.screen.SplashViewScreen

@@ -1,18 +1,6 @@
 package com.edu.socialmediallogin.data.common
 
 
-//fun SubjectDTO.toDomainModel(): SubjectModel {
-//    return SubjectModel(
-//        imageUrl = this.previewURL,
-//        title = this.tags,
-//        urlDescriptions = this.userImageURL
-//    )
-//}
-
-enum class RegistrationState {
-    INITIAL, LOADING, SUCCESS, ERROR
-}
-
 // check the username validation
 fun emailValidation(email: String): Boolean {
     // get text fields text
@@ -30,4 +18,17 @@ fun nameValidation(username: String): Boolean {
 fun passwordValidation(password: String): Boolean {
     val nameRegex = Regex("[a-zA-Z0-9]")
     return password.matches(nameRegex)
+}
+
+
+//fun SubjectDTO.toDomainModel(): SubjectModel {
+//    return SubjectModel(
+//        imageUrl = this.previewURL,
+//        title = this.tags,
+//        urlDescriptions = this.userImageURL
+//    )
+//}
+
+enum class RegistrationState {
+    INITIAL, LOADING, SUCCESS, ERROR
 }

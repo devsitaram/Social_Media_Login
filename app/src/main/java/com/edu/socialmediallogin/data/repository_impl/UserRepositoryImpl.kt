@@ -20,7 +20,7 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
             val response = apiService.getLoginUserAuth(loginRequestModel)
             return response ?: throw Exception("Login failed: ${response?.error}")
         } catch (e: Exception) {
-            // Handle exceptions here or rethrow with a more descriptive message
+            // Handle exceptions
             throw Exception("Login failed: ${e.message}", e)
         }
     }
@@ -31,11 +31,10 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
             val response = apiService.getUserProfiles()
             return response ?: throw Exception("Response failed: ${response?.error}")
         } catch (e: Exception) {
-            // Handle exceptions here or rethrow with a more descriptive message
             throw Exception("Response Error: ${e.message}", e)
         }
     }
-
+}
 //    override suspend fun insertUser(user: User) {
 //        userDao.insertUser(user)
 //    }
@@ -58,4 +57,4 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
 ////        return userDao.insertUser(userList)
 //        return true
 //    }
-}
+//}

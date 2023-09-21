@@ -43,7 +43,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.edu.socialmediallogin.R
+import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
+import com.edu.socialmediallogin.presentation.components.AsyncImageView
 import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.viewmodel.ProfileViewModel
@@ -57,18 +58,14 @@ fun ProfileViewScreen(
     navController: NavHostController,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val profileResult = profileViewModel.profileState.value
     val activity = (LocalContext.current as Activity)
-
     val sharedPreferences = activity.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
 
+    val profileResult = profileViewModel.profileState.value
     var showDialogBox by remember { mutableStateOf(false) }
 
     if (profileResult.isLoading) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White),
+        Box(modifier = Modifier.fillMaxSize().background(Color.White),
             contentAlignment = Alignment.Center
         ) {
             ProgressIndicator()
@@ -82,8 +79,8 @@ fun ProfileViewScreen(
     }
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
-        profileResult.data?.let {
-            val profiles = profileResult.data.result
+        profileResult.isData?.let {
+            val profiles = profileResult.isData.result
             Column(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 50.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,6 +91,7 @@ fun ProfileViewScreen(
                     emailAddress = profiles?.emailAddress.toString()
                 )
                 CollegeAddressView(
+                    schoolImageUrl = profiles?.schoolPhotoUrl.toString(),
                     collegeName = profiles?.schoolName.toString(),
                     location = profiles?.location.toString()
                 )
@@ -184,7 +182,7 @@ fun UserProfileView(userName: String, emailAddress: String) {
 }
 
 @Composable
-fun CollegeAddressView(collegeName: String, location: String) {
+fun CollegeAddressView(schoolImageUrl: String,collegeName: String, location: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -198,13 +196,19 @@ fun CollegeAddressView(collegeName: String, location: String) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterResource(id = R.mipmap.img_islington_college),
-                contentDescription = null,
+            AsyncImageView(
+                imageUrl = HTTPS_IMAGE_BASE_URL + schoolImageUrl,
                 modifier = Modifier
                     .size(50.dp)
                     .padding(end = 10.dp)
             )
+//            Image(
+//                painter = painterResource(id = R.mipmap.img_islington_college),
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(50.dp)
+//                    .padding(end = 10.dp)
+//            )
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center

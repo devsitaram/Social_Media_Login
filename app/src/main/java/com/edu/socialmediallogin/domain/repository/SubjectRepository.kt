@@ -9,7 +9,7 @@ interface SubjectRepository {
 
     suspend fun getSubjects(): List<SubjectItem>
 
-    suspend fun insertSubject(photoUrl: String?, name: String?, description: String?, isIvy: Boolean?): Boolean?
+    suspend fun insertSubject(photoUrl: String?, name: String?, description: String?, isIvy: Boolean?)
 
-    suspend fun deleteSubject(subject: SubjectEntity)
+    suspend fun deleteSubject(id: Int)
 }

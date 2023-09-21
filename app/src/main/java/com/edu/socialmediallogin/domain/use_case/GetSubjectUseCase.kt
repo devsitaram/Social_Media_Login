@@ -30,10 +30,11 @@ class GetSubjectUseCase(private val subjectRepository: SubjectRepository) {
         }
     }
 
-    operator fun invoke(subject: SubjectEntity) = flow {
+    // delete by id
+    operator fun invoke(id: Int) = flow {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(data = subjectRepository.deleteSubject(subject)))
+            emit(Resource.Success(data = subjectRepository.deleteSubject(id)))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

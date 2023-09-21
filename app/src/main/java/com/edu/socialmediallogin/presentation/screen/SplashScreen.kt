@@ -18,8 +18,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.presentation.compose.Screen
-import com.edu.socialmediallogin.presentation.compose.ScreenList
+import com.edu.socialmediallogin.presentation.Navigation.Screen
 import kotlinx.coroutines.delay
 
 @Composable

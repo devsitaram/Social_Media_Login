@@ -7,10 +7,7 @@ import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
 import com.edu.socialmediallogin.domain.repository.SubjectRepository
 import kotlin.Exception
 
-class SubjectRepositoryImpl(
-    private val apiService: ApiService,
-    private val userDao: UserDao
-) : SubjectRepository {
+class SubjectRepositoryImpl(private val apiService: ApiService, private val userDao: UserDao) : SubjectRepository {
     override suspend fun getSubjects(): List<SubjectItem> {
         try {
             val listOfSubject = userDao.getAllSubjects()
@@ -28,8 +25,8 @@ class SubjectRepositoryImpl(
         name: String?,
         description: String?,
         isIvy: Boolean?
-    ): Boolean? {
-        return try {
+    ) {
+        try {
             val listOfSubjects = listOf(
                 SubjectEntity(
                     photoUrl = photoUrl,
@@ -39,15 +36,14 @@ class SubjectRepositoryImpl(
                 )
             )
             userDao.insertSubject(subject = listOfSubjects)
-            true
         } catch (e: Exception) {
-            false
+            throw Exception("Error")
         }
     }
 
-    override suspend fun deleteSubject(subject: SubjectEntity) {
+    override suspend fun deleteSubject(id: Int) {
         try {
-            return userDao.deleteSubject(subject)
+            return userDao.deleteSubject(id)
         } catch (e: Exception) {
             throw Exception(e)
         }

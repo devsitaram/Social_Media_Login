@@ -11,13 +11,6 @@ data class GoogleUserModel(
     val email: String? = null,
 )
 
-data class SubjectModel(
-    val photoUrl: String,
-    val name: String,
-    val description: String,
-    val isIvy: Boolean
-)
-
 // video
 @Suppress("DEPRECATED_ANNOTATION")
 @Parcelize
@@ -33,12 +26,4 @@ data class LoginRequestModel(
     val password: String,
     val rememberClient: Boolean,
     val couponCode: String,
-)
-
-data class LoginResponse(
-    val accessToken: String,
-    val tokenType: String,
-    val expiresIn: Long,
-    val refreshToken: String,
-    val userId: String,
 )

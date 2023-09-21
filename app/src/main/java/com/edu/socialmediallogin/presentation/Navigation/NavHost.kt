@@ -1,8 +1,7 @@
-package com.edu.socialmediallogin.presentation.compose
+package com.edu.socialmediallogin.presentation.Navigation
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -24,7 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.edu.socialmediallogin.presentation.TestingViewScreen
+import com.edu.socialmediallogin.test.TestingViewScreen
 import com.edu.socialmediallogin.presentation.components.IconView
 import com.edu.socialmediallogin.presentation.components.TextView
 import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
@@ -43,9 +41,9 @@ fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
     val pages = listOf(
         ScreenList.HomeScreen,
         ScreenList.SubjectScreen,
-        ScreenList.ProfileScreen,
         ScreenList.SearchScreen,
-    )
+        ScreenList.ProfileScreen,
+        )
     Scaffold(
         bottomBar = {
             BottomNavigation {
@@ -135,7 +133,7 @@ fun ButtonNavigationViewScreen(
             VideoPlayViewScreen(title = name, description = description, videoUrls = videoUrl)
         }
         composable(Screen.TestScreen.route){
-            TestingViewScreen()
+            TestingViewScreen(navController)
         }
     }
 }

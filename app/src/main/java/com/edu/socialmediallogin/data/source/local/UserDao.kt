@@ -1,29 +1,23 @@
 package com.edu.socialmediallogin.data.source.local
 
 import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import androidx.room.Upsert
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
-import com.edu.socialmediallogin.domain.model.SubjectModel
 
 @SuppressWarnings("AndroidUnresolvedRoomSqlReference")
 @Dao
 interface UserDao {
 
-//    @Upsert // insert and update both
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    //    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Upsert // insert and update both
     suspend fun insertSubject(subject: List<SubjectEntity>)
 
     @Query("SELECT * FROM subject")
     suspend fun getAllSubjects(): List<SubjectItem>
 
-    @Delete
-    suspend fun deleteSubject(subject: SubjectEntity)
+    @Query("DELETE FROM subject WHERE id = :id")
+    suspend fun deleteSubject(id: Int)
 
 //    @Query("SELECT * FROM subject")
 //    suspend fun getAllSubject(): List<SubjectItem>

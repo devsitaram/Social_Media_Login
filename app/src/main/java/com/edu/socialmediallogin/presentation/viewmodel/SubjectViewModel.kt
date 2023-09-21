@@ -28,7 +28,7 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
         getSubject()
     }
 
-    private fun getSubject() {
+    fun getSubject() {
         getSubjectUseCase().onEach {
             when (it) {
                 is Resource.Loading -> {
@@ -52,71 +52,53 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
         description: String?,
         isIvy: Boolean?
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            getSubjectUseCase(photoUrl, name, description, isIvy).onEach {
-                when (it) {
-                    is Resource.Loading -> {
-                        _subjectList.value = SubjectState(isLoading = true)
-                    }
-
-                    is Resource.Success -> {
-                        _subjectList.value = SubjectState(isSuccess = true)
-                    }
-
-                    is Resource.Error -> {
-                        _subjectList.value = SubjectState(isError = it.message.toString())
-                    }
-                }
-            }.launchIn(viewModelScope)
-        }
-        getSubject()
+        getSubjectUseCase(photoUrl, name, description, isIvy).launchIn(viewModelScope)
     }
 
-    fun deleteSubject(subject: SubjectEntity) {
-        getSubjectUseCase(subject).onEach {
-            when (it) {
-                is Resource.Loading -> {
-                    _subjectList.value = SubjectState(isLoading = true)
-                }
-
-                is Resource.Success -> {
-                    _subjectList.value = SubjectState(isSuccess = true)
-                }
-
-                is Resource.Error -> {
-                    _subjectList.value = SubjectState(isError = it.message.toString())
-                }
-            }
-        }.launchIn(viewModelScope)
+    fun deleteSubject(id: Int) {
+        getSubjectUseCase(id).launchIn(viewModelScope)
     }
 }
-//    init {
-//        getSearchImage("flower")
-//        viewModelScope.launch {
-//            _query.debounce(1000).collectLatest {
-//                getSearchImage(query = it)
+
+
+//fun insertSubject(
+//    photoUrl: String?,
+//    name: String?,
+//    description: String?,
+//    isIvy: Boolean?
+//) {
+//    getSubjectUseCase(photoUrl, name, description, isIvy).onEach {
+//        when (it) {
+//            is Resource.Loading -> {
+//                _subjectList.value = SubjectState(isLoading = true)
+//            }
+//
+//            is Resource.Success -> {
+//                _subjectList.value = SubjectState(isData = it.data)
+//            }
+//
+//            is Resource.Error -> {
+//                _subjectList.value = SubjectState(isError = it.message.toString())
 //            }
 //        }
-//    }
+//    }.launchIn(viewModelScope)
+//}
 //
-//    fun updateQuery(query: String) {
-//        _query.value = query
-//    }
 //
-//    private fun getSearchImage(query: String) {
-//        getSearchSubjectUseCase(query).onEach {
-//            when (it) {
-//                is Resource.Loading -> {
-//                    _imageList.value = SubjectState(isLoading = true)
-//                }
-//
-//                is Resource.Success -> {
-//                    _imageList.value = SubjectState(data = it.data)
-//                }
-//
-//                is Resource.Error -> {
-//                    _imageList.value = SubjectState(error = it.message.toString())
-//                }
+//fun deleteSubject(id: Int) {
+//    getSubjectUseCase(id).onEach {
+//        when (it) {
+//            is Resource.Loading -> {
+//                _subjectList.value = SubjectState(isLoading = true)
 //            }
-//        }.launchIn(viewModelScope)
-//    }
+//
+//            is Resource.Success -> {
+//                _subjectList.value = SubjectState(isSuccess = true)
+//            }
+//
+//            is Resource.Error -> {
+//                _subjectList.value = SubjectState(isError = it.message.toString())
+//            }
+//        }
+//    }.launchIn(viewModelScope)
+//}

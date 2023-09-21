@@ -61,9 +61,8 @@ import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.RoundedCornerCardView
 import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.compose.Screen
-import com.edu.socialmediallogin.presentation.compose.ScreenList
-import com.edu.socialmediallogin.presentation.google.GoogleApiContract
+import com.edu.socialmediallogin.presentation.Navigation.Screen
+import com.edu.socialmediallogin.ui.others.google.GoogleApiContract
 import com.edu.socialmediallogin.presentation.viewmodel.signin.GoogleSignInViewModel
 import com.edu.socialmediallogin.presentation.viewmodel.signin.SignInViewModel
 import com.google.android.gms.common.api.ApiException

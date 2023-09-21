@@ -1,8 +1,8 @@
-package com.edu.socialmediallogin.ui.firebase.presentation.viewmodel
+package com.edu.socialmediallogin.ui.others.firebase.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.edu.socialmediallogin.ui.firebase.presentation.SignInResult
-import com.edu.socialmediallogin.ui.firebase.presentation.SignInState
+import com.edu.socialmediallogin.ui.others.firebase.presentation.SignInResult
+import com.edu.socialmediallogin.ui.others.firebase.presentation.SignInState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

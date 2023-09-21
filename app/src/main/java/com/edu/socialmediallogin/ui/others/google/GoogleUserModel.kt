@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.google
+package com.edu.socialmediallogin.ui.others.google
 
 //data class GoogleUserModel(
 //    val name: String?,

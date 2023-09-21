@@ -37,7 +37,8 @@ object AppModule {
             context.applicationContext,
             UserDatabase::class.java,
             Constants.DATABASE_NAME
-        ).build().userDao()
+        ).fallbackToDestructiveMigration().build().userDao()
+    // multi table migrate fallbackToDestructiveMigration
     }
 
     // get api instance

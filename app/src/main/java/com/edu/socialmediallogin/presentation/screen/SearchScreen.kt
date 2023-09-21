@@ -74,6 +74,7 @@ fun SearchViewScreen(navController: NavHostController) {
             ) {
                 IconView(
                     imageVector = Icons.Default.ArrowBackIos,
+                    tint = Color.Gray,
                     modifier = Modifier
                         .padding(start = 15.dp)
                         .clickable { navController.popBackStack() }

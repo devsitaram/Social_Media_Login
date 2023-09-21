@@ -51,8 +51,7 @@ import com.edu.socialmediallogin.presentation.components.MessageDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.compose.Screen
-import com.edu.socialmediallogin.presentation.compose.ScreenList
+import com.edu.socialmediallogin.presentation.Navigation.Screen
 import com.edu.socialmediallogin.presentation.viewmodel.SignUpViewModel
 
 @Composable

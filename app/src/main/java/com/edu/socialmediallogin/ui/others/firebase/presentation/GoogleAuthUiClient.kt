@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.ui.firebase.presentation
+package com.edu.socialmediallogin.ui.others.firebase.presentation
 
 import android.content.Context
 import android.content.Intent

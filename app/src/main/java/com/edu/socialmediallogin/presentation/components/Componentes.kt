@@ -1,5 +1,6 @@
 package com.edu.socialmediallogin.presentation.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,8 +44,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -79,7 +78,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.presentation.compose.ScreenList
+import com.edu.socialmediallogin.presentation.Navigation.ScreenList
 import com.edu.socialmediallogin.ui.theme.pink
 import com.edu.socialmediallogin.ui.theme.skyBlue
 import com.edu.socialmediallogin.ui.theme.white
@@ -125,6 +124,7 @@ fun TextView(
     )
 }
 
+@SuppressLint("ModifierParameter")
 @Composable
 fun ClickableTextView(
     text: String,
@@ -185,7 +185,7 @@ fun TextButtonView(
 }
 
 // input text fields
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("ModifierParameter")
 @Composable
 fun InputTextFieldView(
     value: String,
@@ -253,6 +253,7 @@ fun InputTextFieldView(
 }
 
 // password input text fields
+@SuppressLint("ModifierParameter")
 @Composable
 fun PasswordTextFieldView(
     value: String,
@@ -325,9 +326,9 @@ fun PasswordTextFieldView(
             modifier = Modifier.padding(start = 5.dp, top = 2.dp)
         )
     }
-//    if (isError) {
-//        TextView(text = invalidMessage, style = TextStyle(color = errorColor), modifier = Modifier.padding(start = 5.dp,  top = 2.dp))
-//    }
+    if (isError) {
+        TextView(text = errorMessage.toString(), style = TextStyle(color = errorColor), modifier = Modifier.padding(start = 5.dp,  top = 2.dp))
+    }
 }
 
 @Composable
@@ -351,6 +352,7 @@ fun CheckboxComponent(modifier: Modifier = Modifier) {
     }
 }
 
+@SuppressLint("ModifierParameter")
 @Composable
 fun PainterImageView(
     painter: Painter,
@@ -372,6 +374,7 @@ fun PainterImageView(
     )
 }
 
+@SuppressLint("ModifierParameter")
 @Composable
 fun AsyncImageView(
     imageUrl: String,
@@ -383,10 +386,9 @@ fun AsyncImageView(
         contentDescription = contentDescription,
         modifier = modifier
     )
-
-
 }
 
+@SuppressLint("ModifierParameter")
 @Composable
 fun IconView(
     imageVector: ImageVector,
@@ -402,100 +404,20 @@ fun IconView(
     )
 }
 
-//@Composable
-//fun ContentCardView(
-//    imageUrl: String,
-//    topic: String,
-//    description: String,
-//    onClickable: () -> Unit
-//) {
-//    Card(
-//        modifier = Modifier
-//            .fillMaxWidth().wrapContentHeight()
-//            .padding(bottom = 15.dp)
-//            .border(1.dp, Color.LightGray)
-//            .clickable { onClickable() },
-//        shape = ShapeDefaults.Medium
-//    ) {
-//        Row(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .background(Color.White),
-//            horizontalArrangement = Arrangement.Center,
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            AsyncImage(
-//                model = imageUrl,
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .size(120.dp)
-//                    .padding(start = 15.dp, end = 15.dp)
-//            )
-//            Column(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .border(1.dp, Color.LightGray),
-//                verticalArrangement = Arrangement.Bottom
-//            ) {
-//                Column(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(15.dp)
-//                ) {
-//                    TextView(
-//                        text = topic, style = TextStyle(
-//                            fontSize = 15.sp,
-//                            fontWeight = FontWeight.Bold,
-//                        ),
-//                        modifier = Modifier
-//                    )
-//                    TextView(
-//                        text = description,
-//                        style = TextStyle(
-//                            fontSize = 14.sp,
-//                            fontWeight = FontWeight.Normal,
-//                            lineHeight = 20.sp,
-//                            color = Color.Gray
-//                        ),
-//                        modifier = Modifier.padding(top = 5.dp)
-//                    )
-//                }
-//                Spacer(modifier = Modifier.padding(top = 20.dp))
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .border(1.dp, Color.LightGray)
-//                        .padding(10.dp),
-//                    verticalAlignment = Alignment.CenterVertically
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Default.Newspaper,
-//                        contentDescription = null,
-//                        tint = skyBlue,
-//                        modifier = Modifier.padding(start = 5.dp)
-//                    )
-//                    TextView(
-//                        text = "View Package Detail", style = TextStyle(
-//                            fontSize = 14.sp,
-//                            fontWeight = FontWeight.SemiBold,
-//                            color = skyBlue
-//                        ),
-//                        modifier = Modifier.padding(start = 5.dp)
-//                    )
-//                }
-//            }
-//        }
-//    }
-// }
-
 @Composable
-fun ContentCardView(imageUrl: String, topic: String, description: String, onClickable: () -> Unit, onDelete:()->Unit) {
+fun ContentCardView(
+    imageUrl: String,
+    topic: String,
+    description: String,
+    onClickable: () -> Unit,
+    onDelete: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(bottom = 15.dp)
             .border(1.dp, Color.LightGray)
-            .clickable { /**onClickable()*/ },
+            .clickable { onClickable() },
         shape = ShapeDefaults.Medium
     ) {
         Row(
@@ -507,9 +429,12 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
         ) {
             AsyncImageView(
                 imageUrl = imageUrl,
-                modifier = Modifier.clickable { onClickable() }
+                modifier = Modifier
                     .size(120.dp)
-                    .padding(start = 5.dp, end = 5.dp) // padding(start = 15.dp, end = 15.dp)
+                    .padding(
+                        start = 5.dp,
+                        end = 5.dp
+                    )
             )
             Column(
                 modifier = Modifier
@@ -545,7 +470,8 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
                 Spacer(modifier = Modifier.padding(top = 20.dp))
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth().clickable { onDelete() }
+                        .fillMaxWidth()
+                        .clickable { onDelete() }
                         .border(1.dp, Color.LightGray)
                         .padding(10.dp),
                     verticalAlignment = Alignment.CenterVertically
@@ -556,8 +482,9 @@ fun ContentCardView(imageUrl: String, topic: String, description: String, onClic
                         tint = skyBlue,
                         modifier = Modifier.padding(start = 5.dp)
                     )
+                    // View Package Detail
                     TextView(
-                        text = "View Package Detail", style = TextStyle(
+                        text = "View Package Delete", style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = skyBlue
@@ -730,3 +657,89 @@ fun ButtonAppBar(
             .fillMaxWidth(),
     )
 }
+
+//@Composable
+//fun ContentCardView(
+//    imageUrl: String,
+//    topic: String,
+//    description: String,
+//    onClickable: () -> Unit
+//) {
+//    Card(
+//        modifier = Modifier
+//            .fillMaxWidth().wrapContentHeight()
+//            .padding(bottom = 15.dp)
+//            .border(1.dp, Color.LightGray)
+//            .clickable { onClickable() },
+//        shape = ShapeDefaults.Medium
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .background(Color.White),
+//            horizontalArrangement = Arrangement.Center,
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            AsyncImage(
+//                model = imageUrl,
+//                contentDescription = null,
+//                modifier = Modifier
+//                    .size(120.dp)
+//                    .padding(start = 15.dp, end = 15.dp)
+//            )
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .border(1.dp, Color.LightGray),
+//                verticalArrangement = Arrangement.Bottom
+//            ) {
+//                Column(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .padding(15.dp)
+//                ) {
+//                    TextView(
+//                        text = topic, style = TextStyle(
+//                            fontSize = 15.sp,
+//                            fontWeight = FontWeight.Bold,
+//                        ),
+//                        modifier = Modifier
+//                    )
+//                    TextView(
+//                        text = description,
+//                        style = TextStyle(
+//                            fontSize = 14.sp,
+//                            fontWeight = FontWeight.Normal,
+//                            lineHeight = 20.sp,
+//                            color = Color.Gray
+//                        ),
+//                        modifier = Modifier.padding(top = 5.dp)
+//                    )
+//                }
+//                Spacer(modifier = Modifier.padding(top = 20.dp))
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .border(1.dp, Color.LightGray)
+//                        .padding(10.dp),
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Default.Newspaper,
+//                        contentDescription = null,
+//                        tint = skyBlue,
+//                        modifier = Modifier.padding(start = 5.dp)
+//                    )
+//                    TextView(
+//                        text = "View Package Detail", style = TextStyle(
+//                            fontSize = 14.sp,
+//                            fontWeight = FontWeight.SemiBold,
+//                            color = skyBlue
+//                        ),
+//                        modifier = Modifier.padding(start = 5.dp)
+//                    )
+//                }
+//            }
+//        }
+//    }
+// }
