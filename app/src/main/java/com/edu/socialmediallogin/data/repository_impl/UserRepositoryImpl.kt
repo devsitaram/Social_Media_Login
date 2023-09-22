@@ -31,21 +31,20 @@ class UserRepositoryImpl(private val apiService: ApiService, private val dao: Da
     }
 
     // get user profiles
-    override suspend fun getUserProfile(context: Context): UserProfiles? {
+    override suspend fun getUserProfile(): UserProfiles? {
         try {
             val profiles = dao.getUserProfiles()
-        return if (profiles.toString().isNotEmpty()) {
-            profiles
-        } else {
-            apiService.getUserProfiles()?.result
-        }
-        // return apiService.getUserProfiles()?.result
+            return if (profiles?.userId != null) {
+                profiles
+            } else {
+                apiService.getUserProfiles()?.result
+            }
         } catch (e: Exception) {
             throw Exception("Response Error: ${e.message}", e)
         }
     }
 
-    override suspend fun insertUserProfile(userEntity: UserEntity){
+    override suspend fun insertUserProfile(userEntity: UserEntity) {
         try {
             dao.insertUserProfile(userEntity)
         } catch (e: Exception) {
@@ -53,36 +52,3 @@ class UserRepositoryImpl(private val apiService: ApiService, private val dao: Da
         }
     }
 }
-
-//    override suspend fun getUserProfile(): UserPojo {
-//        try {
-//            val response = apiService.getUserProfiles()
-//            return response ?: throw Exception("Response failed: ${response?.error}")
-//        } catch (e: Exception) {
-//            throw Exception("Response Error: ${e.message}", e)
-//        }
-//    }
-
-//    override suspend fun insertUser(user: User) {
-//        userDao.insertUser(user)
-//    }
-//
-//    override suspend fun getUserByEmailAndPassword(email: String, password: String): User? {
-//        return userDao.getUserByEmailAndPassword(email, password)
-//    }
-//
-//    override suspend fun getUserByEmail(email: String): String? {
-//        return userDao.getUserByEmail(email)
-//    }
-
-//    override suspend fun loginUser(email: String, password: String): UserEntity? {
-//        return userDao.loginUser(email, password)
-//    }
-//
-//    override suspend fun registerUser(email: String, name: String, password: String): Boolean {
-////        val userList = mutableListOf<UserModel>()
-////        userList.add(UserModel(email, name, password))
-////        return userDao.insertUser(userList)
-//        return true
-//    }
-//}

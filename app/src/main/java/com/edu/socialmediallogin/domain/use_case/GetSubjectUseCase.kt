@@ -11,7 +11,7 @@ import java.lang.Exception
 class GetSubjectUseCase(private val subjectRepository: SubjectRepository) {
 
     // get subject
-    operator fun invoke(): Flow<Resource<List<SubjectItem?>>> = flow {
+    operator fun invoke(): Flow<Resource<List<SubjectItem?>?>> = flow {
         emit(Resource.Loading())
         try {
             emit(Resource.Success(data = subjectRepository.getSubjects()))
@@ -21,10 +21,10 @@ class GetSubjectUseCase(private val subjectRepository: SubjectRepository) {
     }
 
     // insert subject in local database
-    operator fun invoke(photoUrl: String?, name: String?, description: String?, isIvy: Boolean?) = flow {
+    operator fun invoke(listOfSubject: List<SubjectEntity>) = flow {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(data = subjectRepository.insertSubject(photoUrl, name, description, isIvy)))
+            emit(Resource.Success(data = subjectRepository.insertSubject(listOfSubject)))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

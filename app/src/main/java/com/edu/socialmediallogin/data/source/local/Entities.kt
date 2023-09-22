@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "user")
 data class UserEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo("id")
     val id: Int? = null,
     @ColumnInfo("pendingBalance")
@@ -53,6 +53,7 @@ data class UserEntity(
     val fullName: String? = null,
     @ColumnInfo("userId")
     val userId: Int? = null,
+    @ColumnInfo("isOtpEnabled")
     val isOtpEnabled: Boolean? = null,
     @ColumnInfo("phoneNumber")
     val phoneNumber: String? = null,
@@ -66,9 +67,9 @@ data class UserEntity(
 
 @Entity(tableName = "subject")
 data class SubjectEntity(
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey
     @ColumnInfo(name = "id")
-    val id: Int = 0,
+    val id: Int? = null,
     @ColumnInfo(name ="photoUrl")
     val photoUrl: String? = null,
     @ColumnInfo(name ="name")

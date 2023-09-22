@@ -10,10 +10,11 @@ import androidx.room.RoomDatabase
  *        1: create database one subject table
  *        2: add another user table (migrate)
  *        3: update the user table (add the column)
+ *        4: new methods implement in dao and entity id auto generate changes
  * @param exportSchema: false
  * implement RoomDatabase
  */
-@Database(entities = [SubjectEntity::class, UserEntity::class], version = 3, exportSchema = false)
+@Database(entities = [SubjectEntity::class, UserEntity::class], version = 5, exportSchema = false)
 abstract class RoomDatabaseHelper : RoomDatabase() {
     abstract fun userDao(): Dao
 

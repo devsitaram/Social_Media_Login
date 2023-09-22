@@ -4,8 +4,8 @@ data class UserPojo(
     val result: UserProfiles? = null,
     val success: Boolean? = null,
     val abp: Boolean? = null,
-    val error: Any? = null,
-    val targetUrl: Any? = null,
+    val error: String? = null,
+    val targetUrl: String? = null,
     val unAuthorizedRequest: Boolean? = null
 )
 
@@ -28,7 +28,7 @@ data class UserProfiles(
     val isEBookPrintFeatureEnabled: Boolean? = null,
     val isLite: Boolean? = null,
     val gradeId: Int? = null,
-    val tutorCreditBalance: Any? = null,
+    val tutorCreditBalance: String? = null,
     val heading: String? = null,
     val subjects: String? = null,
     val fullName: String? = null,

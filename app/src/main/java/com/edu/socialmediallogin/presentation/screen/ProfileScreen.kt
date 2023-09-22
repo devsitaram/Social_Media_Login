@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
+import com.edu.socialmediallogin.data.source.local.UserEntity
 import com.edu.socialmediallogin.presentation.components.AsyncImageView
 import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.TextView
@@ -61,7 +62,6 @@ fun ProfileViewScreen(
     val activity = (LocalContext.current as Activity)
     val sharedPreferences =
         activity.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
-    profileViewModel.getUserProfiles(activity) //
     val profileResult = profileViewModel.profileState.value
     var showDialogBox by remember { mutableStateOf(false) }
 
@@ -72,9 +72,11 @@ fun ProfileViewScreen(
                 .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
-            ProgressIndicator(modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.Center))
+            ProgressIndicator(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.Center)
+            )
         }
     }
 
@@ -110,6 +112,39 @@ fun ProfileViewScreen(
                     }
                 )
             }
+
+            profileViewModel.insertUser(
+                userEntity = UserEntity(
+                    id = profiles.id,
+                    pendingBalance = profiles.pendingBalance,
+                    isSchoolChatroomEnabled = profiles.isSchoolChatroomEnabled,
+                    role = profiles.role,
+                    isActive = profiles.isActive,
+                    countryId = profiles.countryId,
+                    schoolPhotoUrl = profiles.schoolPhotoUrl,
+                    isPasswordEmpty = profiles.isPasswordEmpty,
+                    photoUrl = profiles.photoUrl,
+                    createdAt = profiles.createdAt,
+                    emailAddress =profiles.emailAddress,
+                    userMode = profiles.userMode,
+                    isB2C = profiles.isB2C,
+                    nickname = profiles.nickname,
+                    schoolName = profiles.schoolName,
+                    isEBookPrintFeatureEnabled = profiles.isEBookPrintFeatureEnabled,
+                    isLite = profiles.isLite,
+                    gradeId = profiles.gradeId,
+                    tutorCreditBalance = profiles.tutorCreditBalance,
+                    heading = profiles.heading,
+                    subjects = profiles.subjects,
+                    fullName = profiles.fullName,
+                    userId = profiles.userId,
+                    isOtpEnabled = profiles.isOtpEnabled,
+                    phoneNumber = profiles.phoneNumber,
+                    grade = profiles.grade,
+                    location = profiles.location,
+                    isEmailConfirmed = profiles.isEmailConfirmed
+                )
+            )
         }
     }
 

@@ -29,7 +29,7 @@ import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
 import com.edu.socialmediallogin.presentation.screen.ProfileViewScreen
 import com.edu.socialmediallogin.presentation.screen.SearchViewScreen
 import com.edu.socialmediallogin.presentation.screen.SubjectViewScreen
-import com.edu.socialmediallogin.presentation.screen.VideoPlayViewScreen
+import com.edu.socialmediallogin.presentation.screen.video.VideoPlayViewScreen
 import com.edu.socialmediallogin.ui.theme.pink
 
 

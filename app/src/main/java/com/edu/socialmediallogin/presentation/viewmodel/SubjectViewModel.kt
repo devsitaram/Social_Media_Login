@@ -9,12 +9,8 @@ import com.edu.socialmediallogin.data.source.local.SubjectEntity
 import com.edu.socialmediallogin.domain.use_case.GetSubjectUseCase
 import com.edu.socialmediallogin.presentation.state.SubjectState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -47,20 +43,26 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
     }
 
     fun insertSubject(
+        id: Int?,
         photoUrl: String?,
         name: String?,
         description: String?,
         isIvy: Boolean?
     ) {
-        getSubjectUseCase(photoUrl, name, description, isIvy).launchIn(viewModelScope)
+        val listOfSubject = listOf(
+            SubjectEntity(
+                id = id,
+                photoUrl = photoUrl,
+                name = name,
+                description = description,
+                isIvy = isIvy
+            )
+        )
+        getSubjectUseCase(listOfSubject = listOfSubject).launchIn(viewModelScope)
     }
 
     fun deleteSubject(id: Int) {
         getSubjectUseCase(id).launchIn(viewModelScope)
-    }
-
-    fun updateSubjectListAfterDelete(subjectId: Int) {
-        _subjectList.value.isData = _subjectList.value.isData?.filter { it?.id != subjectId }
     }
 }
 

@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_EXPRESSION")
 
-package com.edu.socialmediallogin.presentation.screen
+package com.edu.socialmediallogin.presentation.screen.video
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
@@ -66,13 +66,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.viewmodel.VideoPlayViewModel
 import kotlinx.coroutines.delay
 
 @Composable

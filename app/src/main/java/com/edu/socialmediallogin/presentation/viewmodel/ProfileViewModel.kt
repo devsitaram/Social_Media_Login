@@ -15,15 +15,18 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val userProfileUseCase: GetUserProfileUseCase) : ViewModel() {
+class ProfileViewModel @Inject constructor(private val userProfileUseCase: GetUserProfileUseCase) :
+    ViewModel() {
 
     private val _profileState = mutableStateOf(ProfileState())
     val profileState: State<ProfileState> get() = _profileState
-//    init {
-//        getUserProfiles()
-//    }
-    fun getUserProfiles(context: Context) {
-        userProfileUseCase(context).onEach { result ->
+
+    init {
+        getUserProfiles()
+    }
+
+    private fun getUserProfiles() {
+        userProfileUseCase().onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _profileState.value = ProfileState(isLoading = true)
@@ -40,23 +43,7 @@ class ProfileViewModel @Inject constructor(private val userProfileUseCase: GetUs
         }.launchIn(viewModelScope)
     }
 
-    fun insertUser(
-        userEntity: UserEntity
-    ) {
-        userProfileUseCase(userEntity).onEach {
-//            when (it) {
-//                is Resource.Loading -> {
-//                    _subjectList.value = SubjectState(isLoading = true)
-//                }
-//
-//                is Resource.Success -> {
-//                    _subjectList.value = SubjectState(isSuccess = true)
-//                }
-//
-//                is Resource.Error -> {
-//                    _subjectList.value = SubjectState(isError = it.message.toString())
-//                }
-//            }
-        }
+    fun insertUser(userEntity: UserEntity) {
+        userProfileUseCase(userEntity).launchIn(viewModelScope)
     }
 }

@@ -15,12 +15,14 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Badge
@@ -38,6 +40,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.PlayCircleOutline
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -458,100 +461,6 @@ fun VectorIconView(
 }
 
 @Composable
-fun ContentCardView(
-    imageUrl: String,
-    topic: String,
-    description: String,
-    onClickable: () -> Unit,
-    onDelete: (Int) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 15.dp)
-            .border(1.dp, Color.LightGray)
-            .clickable { onClickable() },
-        shape = ShapeDefaults.Medium
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AsyncImageView(
-                model = imageUrl,
-                modifier = Modifier
-                    .size(120.dp)
-                    .padding(
-                        start = 5.dp,
-                        end = 5.dp
-                    )
-            )
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(1.dp, Color.LightGray),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp)
-                ) {
-                    TextView(
-                        text = topic,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            color = Color.DarkGray,
-                            fontWeight = FontWeight.Bold,
-                        ),
-                        modifier = Modifier
-                    )
-                    TextView(
-                        text = description,
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Normal,
-                            lineHeight = 20.sp,
-                            color = Color.Gray
-                        ),
-                        modifier = Modifier.padding(top = 5.dp)
-                    )
-                }
-                Spacer(modifier = Modifier.padding(top = 20.dp))
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            onDelete
-                        }
-                        .border(1.dp, Color.LightGray)
-                        .padding(10.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    VectorIconView(
-                        imageVector = Icons.Default.Newspaper,
-                        contentDescription = null,
-                        tint = skyBlue,
-                        modifier = Modifier.padding(start = 5.dp)
-                    )
-                    TextView(
-                        text = "View Package Detail", style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = skyBlue
-                        ),
-                        modifier = Modifier.padding(start = 5.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun RoundedCornerCardView(
     modifier: Modifier = Modifier,
     shape: Shape = ShapeDefaults.Small,
@@ -670,7 +579,7 @@ fun ButtonAppBar(
                         tint = Color.Gray,
                         modifier = Modifier
                             .size(30.dp)
-                            .clickable { navController.navigate(ScreenList.SearchScreen.route) },
+                            .clickable { /**navController.navigate(ScreenList.SearchScreen.route)*/ },
                     )
                     // notification icon
                     IconButton(

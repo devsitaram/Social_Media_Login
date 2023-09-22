@@ -2,7 +2,6 @@ package com.edu.socialmediallogin.domain.repository
 
 import android.content.Context
 import com.edu.socialmediallogin.data.source.local.UserEntity
-import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
 import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserProfiles
@@ -11,7 +10,7 @@ interface UserRepository {
 
     suspend fun getLoginUserAuth(email: String, password: String): AuthPojo?
 
-    suspend fun getUserProfile(context: Context): UserProfiles?
+    suspend fun getUserProfile(): UserProfiles?
 
     suspend fun insertUserProfile(userEntity: UserEntity)
 
