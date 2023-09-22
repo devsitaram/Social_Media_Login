@@ -10,7 +10,7 @@ data class UserPojo(
 )
 
 data class UserProfiles(
-    val pendingBalance: Any? = null,
+    val pendingBalance: String? = null,
     val isSchoolChatroomEnabled: Boolean? = null,
     val role: String? = null,
     val isActive: Boolean? = null,
@@ -30,7 +30,7 @@ data class UserProfiles(
     val gradeId: Int? = null,
     val tutorCreditBalance: Any? = null,
     val heading: String? = null,
-    val subjects: Any? = null,
+    val subjects: String? = null,
     val fullName: String? = null,
     val userId: Int? = null,
     val isOtpEnabled: Boolean? = null,

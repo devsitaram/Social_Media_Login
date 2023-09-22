@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,6 +25,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PersonOutline
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -57,11 +59,12 @@ import com.edu.socialmediallogin.presentation.components.CheckboxComponent
 import com.edu.socialmediallogin.presentation.components.ClickableTextView
 import com.edu.socialmediallogin.presentation.components.MessageDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
+import com.edu.socialmediallogin.presentation.components.PainterImageView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.RoundedCornerCardView
 import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.Navigation.Screen
+import com.edu.socialmediallogin.presentation.navigations.Screen
 import com.edu.socialmediallogin.ui.others.google.GoogleApiContract
 import com.edu.socialmediallogin.presentation.viewmodel.signin.GoogleSignInViewModel
 import com.edu.socialmediallogin.presentation.viewmodel.signin.SignInViewModel
@@ -91,13 +94,13 @@ fun SignInViewScreen(
                     email = "np01ma4s22003@islingtoncollege.edu.np",
                     name = "Sita Ram Thing MAD"
                 )
-//                val gsa = task?.getResult(ApiException::class.java)
-//                if (gsa != null) {
-//                    googleSignInViewModel.fetchSingInUser(gsa.email, gsa.displayName)
-//                } else {
-//                    Toast.makeText(context, "Invalid user", Toast.LENGTH_SHORT).show()
-//                    isGoogleSignInError.value = true
-//                }
+                val gsa = task?.getResult(ApiException::class.java)
+                if (gsa != null) {
+                    googleSignInViewModel.fetchSingInUser(gsa.email, gsa.displayName)
+                } else {
+                    Toast.makeText(context, "Invalid user", Toast.LENGTH_SHORT).show()
+                    isGoogleSignInError.value = true
+                }
 //                Log.e("gsa.email", "gsa.email: ${gsa?.email}")
             } catch (e: ApiException) {
                 Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show()
@@ -133,7 +136,7 @@ fun SignInViewScreen(
 
     if (isLoading.value == true || userLoginResult.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            ProgressIndicator()
+            ProgressIndicator(modifier = Modifier.wrapContentSize().align(Alignment.Center))
         }
     } else {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -163,7 +166,7 @@ fun SignInViewScreen(
                         textAlign = TextAlign.Center,
                     )
                 }
-                Image(
+                PainterImageView(
                     painter = painterResource(id = R.mipmap.ic_login),
                     contentDescription = null,
                     modifier = Modifier
@@ -242,6 +245,10 @@ fun SignInViewScreen(
 
                     // checkbox
                     CheckboxComponent(
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = Color.DarkGray,
+                            uncheckedColor = Color.Gray
+                        ),
                         modifier = Modifier
                             .padding(top = 5.dp)
                             .fillMaxWidth()
@@ -256,7 +263,7 @@ fun SignInViewScreen(
                             isPasswordEmpty = password.isEmpty()
                             onClickNavigate() // navigate
                         },
-                        btnColor = Color.Blue,
+                        btnColor = ButtonDefaults.buttonColors(Color.Blue),
                         text = "Login",
                         textStyle = TextStyle(
                             fontSize = 15.sp,

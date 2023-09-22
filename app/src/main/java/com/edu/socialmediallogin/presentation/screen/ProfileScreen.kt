@@ -3,7 +3,6 @@ package com.edu.socialmediallogin.presentation.screen
 import android.app.Activity
 import android.content.Context
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.material.AlertDialog
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
@@ -36,7 +36,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -47,6 +46,7 @@ import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
 import com.edu.socialmediallogin.presentation.components.AsyncImageView
 import com.edu.socialmediallogin.presentation.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.components.TextView
+import com.edu.socialmediallogin.presentation.components.VectorIconView
 import com.edu.socialmediallogin.presentation.viewmodel.ProfileViewModel
 import com.edu.socialmediallogin.ui.theme.green
 import com.edu.socialmediallogin.ui.theme.skyBlue
@@ -59,16 +59,22 @@ fun ProfileViewScreen(
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val activity = (LocalContext.current as Activity)
-    val sharedPreferences = activity.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
-
+    val sharedPreferences =
+        activity.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
+    profileViewModel.getUserProfiles(activity) //
     val profileResult = profileViewModel.profileState.value
     var showDialogBox by remember { mutableStateOf(false) }
 
     if (profileResult.isLoading) {
-        Box(modifier = Modifier.fillMaxSize().background(Color.White),
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White),
             contentAlignment = Alignment.Center
         ) {
-            ProgressIndicator()
+            ProgressIndicator(modifier = Modifier
+                .wrapContentSize()
+                .align(Alignment.Center))
         }
     }
 
@@ -80,20 +86,22 @@ fun ProfileViewScreen(
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
         profileResult.isData?.let {
-            val profiles = profileResult.isData.result
+            val profiles = profileResult.isData
             Column(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 50.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
                 UserProfileView(
-                    userName = profiles?.fullName.toString(),
-                    emailAddress = profiles?.emailAddress.toString()
+                    userName = profiles.fullName.toString(),
+                    emailAddress = profiles.emailAddress.toString()
                 )
                 CollegeAddressView(
-                    schoolImageUrl = profiles?.schoolPhotoUrl.toString(),
-                    collegeName = profiles?.schoolName.toString(),
-                    location = profiles?.location.toString()
+                    schoolImageUrl = profiles.schoolPhotoUrl.toString(),
+                    collegeName = profiles.schoolName.toString(),
+                    location = profiles.location.toString()
                 )
                 ListOfMoreItems(
                     icon = Icons.Default.Logout, title = "Logout",
@@ -130,7 +138,7 @@ fun UserProfileView(userName: String, emailAddress: String) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Card(modifier = Modifier, shape = CircleShape) {
-            Icon(
+            VectorIconView(
                 imageVector = Icons.Default.PersonOutline,
                 contentDescription = null,
                 tint = green,
@@ -182,7 +190,7 @@ fun UserProfileView(userName: String, emailAddress: String) {
 }
 
 @Composable
-fun CollegeAddressView(schoolImageUrl: String,collegeName: String, location: String) {
+fun CollegeAddressView(schoolImageUrl: String, collegeName: String, location: String) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -197,18 +205,11 @@ fun CollegeAddressView(schoolImageUrl: String,collegeName: String, location: Str
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImageView(
-                imageUrl = HTTPS_IMAGE_BASE_URL + schoolImageUrl,
+                model = HTTPS_IMAGE_BASE_URL + schoolImageUrl,
                 modifier = Modifier
                     .size(50.dp)
                     .padding(end = 10.dp)
             )
-//            Image(
-//                painter = painterResource(id = R.mipmap.img_islington_college),
-//                contentDescription = null,
-//                modifier = Modifier
-//                    .size(50.dp)
-//                    .padding(end = 10.dp)
-//            )
             Column(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.Center

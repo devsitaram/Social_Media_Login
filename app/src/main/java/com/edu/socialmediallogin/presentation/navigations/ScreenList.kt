@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.Navigation
+package com.edu.socialmediallogin.presentation.navigations
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home

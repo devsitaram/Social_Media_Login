@@ -40,8 +40,8 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.presentation.components.IconView
 import com.edu.socialmediallogin.presentation.components.TextView
+import com.edu.socialmediallogin.presentation.components.VectorIconView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -72,7 +72,7 @@ fun SearchViewScreen(navController: NavHostController) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                IconView(
+                VectorIconView(
                     imageVector = Icons.Default.ArrowBackIos,
                     tint = Color.Gray,
                     modifier = Modifier
@@ -86,7 +86,7 @@ fun SearchViewScreen(navController: NavHostController) {
                     maxLines = 1,
                     singleLine = true,
                     leadingIcon = {
-                        IconView(imageVector = Icons.Default.Search)
+                        VectorIconView(imageVector = Icons.Default.Search)
                     },
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.Transparent,

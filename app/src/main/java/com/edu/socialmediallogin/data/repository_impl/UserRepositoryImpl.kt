@@ -1,12 +1,17 @@
 package com.edu.socialmediallogin.data.repository_impl
 
+import android.content.Context
+import android.widget.Toast
+import com.edu.socialmediallogin.data.source.local.Dao
+import com.edu.socialmediallogin.data.source.local.UserEntity
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
-import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
+import com.edu.socialmediallogin.data.source.remote.pojo.user.UserProfiles
 import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import com.edu.socialmediallogin.domain.repository.UserRepository
 
-class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
+class UserRepositoryImpl(private val apiService: ApiService, private val dao: Dao) :
+    UserRepository {
 
     // login authentications
     override suspend fun getLoginUserAuth(email: String, password: String): AuthPojo {
@@ -26,15 +31,38 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
     }
 
     // get user profiles
-    override suspend fun getUserProfile(): UserPojo {
+    override suspend fun getUserProfile(context: Context): UserProfiles? {
         try {
-            val response = apiService.getUserProfiles()
-            return response ?: throw Exception("Response failed: ${response?.error}")
+            val profiles = dao.getUserProfiles()
+        return if (profiles.toString().isNotEmpty()) {
+            profiles
+        } else {
+            apiService.getUserProfiles()?.result
+        }
+        // return apiService.getUserProfiles()?.result
         } catch (e: Exception) {
             throw Exception("Response Error: ${e.message}", e)
         }
     }
+
+    override suspend fun insertUserProfile(userEntity: UserEntity){
+        try {
+            dao.insertUserProfile(userEntity)
+        } catch (e: Exception) {
+            throw Exception(e)
+        }
+    }
 }
+
+//    override suspend fun getUserProfile(): UserPojo {
+//        try {
+//            val response = apiService.getUserProfiles()
+//            return response ?: throw Exception("Response failed: ${response?.error}")
+//        } catch (e: Exception) {
+//            throw Exception("Response Error: ${e.message}", e)
+//        }
+//    }
+
 //    override suspend fun insertUser(user: User) {
 //        userDao.insertUser(user)
 //    }
@@ -47,7 +75,7 @@ class UserRepositoryImpl(private val apiService: ApiService) : UserRepository {
 //        return userDao.getUserByEmail(email)
 //    }
 
-    //    override suspend fun loginUser(email: String, password: String): UserEntity? {
+//    override suspend fun loginUser(email: String, password: String): UserEntity? {
 //        return userDao.loginUser(email, password)
 //    }
 //

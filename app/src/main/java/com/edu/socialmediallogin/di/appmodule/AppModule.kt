@@ -7,8 +7,8 @@ import com.edu.socialmediallogin.data.common.Constants.API_BASE_URL
 import com.edu.socialmediallogin.data.repository_impl.FirebaseAuthRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.SubjectRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.UserRepositoryImpl
-import com.edu.socialmediallogin.data.source.local.UserDatabase
-import com.edu.socialmediallogin.data.source.local.UserDao
+import com.edu.socialmediallogin.data.source.local.RoomDatabaseHelper
+import com.edu.socialmediallogin.data.source.local.Dao
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.domain.repository.AuthRepository
 import com.edu.socialmediallogin.domain.repository.SubjectRepository
@@ -32,10 +32,10 @@ object AppModule {
     // get room database instance
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): UserDao {
+    fun provideAppDatabase(@ApplicationContext context: Context): Dao {
         return Room.databaseBuilder(
             context.applicationContext,
-            UserDatabase::class.java,
+            RoomDatabaseHelper::class.java,
             Constants.DATABASE_NAME
         ).fallbackToDestructiveMigration().build().userDao()
     // multi table migrate fallbackToDestructiveMigration
@@ -59,14 +59,14 @@ object AppModule {
 
     //user auth and profile
     @Provides
-    fun provideUserRepo(apiService: ApiService): UserRepository {
-        return UserRepositoryImpl(apiService)
+    fun provideUserRepo(apiService: ApiService, dao: Dao): UserRepository {
+        return UserRepositoryImpl(apiService, dao)
     }
 
     // subject
     @Provides
-    fun provideSubjectRepo(apiService: ApiService, userDao: UserDao): SubjectRepository {
-        return SubjectRepositoryImpl(apiService, userDao)
+    fun provideSubjectRepo(apiService: ApiService, dao: Dao): SubjectRepository {
+        return SubjectRepositoryImpl(apiService, dao)
     }
 
 

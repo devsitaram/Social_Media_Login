@@ -28,7 +28,7 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
         getSubject()
     }
 
-    fun getSubject() {
+    private fun getSubject() {
         getSubjectUseCase().onEach {
             when (it) {
                 is Resource.Loading -> {
@@ -58,8 +58,11 @@ class SubjectViewModel @Inject constructor(private val getSubjectUseCase: GetSub
     fun deleteSubject(id: Int) {
         getSubjectUseCase(id).launchIn(viewModelScope)
     }
-}
 
+    fun updateSubjectListAfterDelete(subjectId: Int) {
+        _subjectList.value.isData = _subjectList.value.isData?.filter { it?.id != subjectId }
+    }
+}
 
 //fun insertSubject(
 //    photoUrl: String?,

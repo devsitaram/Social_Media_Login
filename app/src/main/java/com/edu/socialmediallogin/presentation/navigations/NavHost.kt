@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.Navigation
+package com.edu.socialmediallogin.presentation.navigations
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -23,8 +23,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.edu.socialmediallogin.test.TestingViewScreen
-import com.edu.socialmediallogin.presentation.components.IconView
 import com.edu.socialmediallogin.presentation.components.TextView
+import com.edu.socialmediallogin.presentation.components.VectorIconView
 import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
 import com.edu.socialmediallogin.presentation.screen.ProfileViewScreen
 import com.edu.socialmediallogin.presentation.screen.SearchViewScreen
@@ -53,7 +53,7 @@ fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
                     BottomNavigationItem(
                         modifier = Modifier.background(color = Color.White),
                         icon = {
-                            IconView(imageVector = screen.icon,
+                            VectorIconView(imageVector = screen.icon,
                                 tint = if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
                                     pink // Change to your desired color
                                 } else {

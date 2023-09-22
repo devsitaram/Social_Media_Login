@@ -19,6 +19,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PersonOutline
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -51,7 +52,7 @@ import com.edu.socialmediallogin.presentation.components.MessageDialogBox
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
 import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.Navigation.Screen
+import com.edu.socialmediallogin.presentation.navigations.Screen
 import com.edu.socialmediallogin.presentation.viewmodel.SignUpViewModel
 
 @Composable
@@ -237,7 +238,7 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                         onClickValidation()
                         onRegisterClick()
                     },
-                    btnColor = Color.Blue,
+                    btnColor = ButtonDefaults.buttonColors(Color.Blue),
                     text = "Sign Up",
                     textStyle = TextStyle(
                         fontSize = 15.sp,
@@ -261,7 +262,8 @@ fun SignUpScreenViewScreen(navController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 TextView(
                     text = "If you have an already account?",

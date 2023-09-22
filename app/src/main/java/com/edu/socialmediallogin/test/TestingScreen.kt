@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.presentation.components.ButtonView
 import com.edu.socialmediallogin.presentation.components.InputTextFieldView
-import com.edu.socialmediallogin.presentation.Navigation.ScreenList
+import com.edu.socialmediallogin.presentation.navigations.ScreenList
 
 @Composable
 fun TestingViewScreen(navController: NavHostController) {
@@ -89,7 +90,7 @@ fun TestingViewScreen(navController: NavHostController) {
                     Toast.makeText(context, "The fields is empty", Toast.LENGTH_SHORT).show()
                 }
             },
-            btnColor = Color.Blue,
+            btnColor = ButtonDefaults.buttonColors(Color.Blue),
             text = "Register",
             textStyle = TextStyle(fontWeight = FontWeight.Bold, color = Color.White)
         )

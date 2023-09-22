@@ -1,6 +1,9 @@
+@file:Suppress("UNUSED_EXPRESSION")
+
 package com.edu.socialmediallogin.presentation.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,12 +21,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Badge
 import androidx.compose.material.BadgedBox
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material3.ButtonDefaults
@@ -37,11 +41,14 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxColors
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -55,6 +62,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -77,12 +85,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.presentation.Navigation.ScreenList
+import com.edu.socialmediallogin.presentation.navigations.ScreenList
 import com.edu.socialmediallogin.ui.theme.pink
 import com.edu.socialmediallogin.ui.theme.skyBlue
 import com.edu.socialmediallogin.ui.theme.white
 
+/**
+ * @param text: th
+ */
 @Composable
 fun TextView(
     text: String,
@@ -128,9 +140,9 @@ fun TextView(
 @Composable
 fun ClickableTextView(
     text: String,
-    style: TextStyle,
+    style: TextStyle = TextStyle(),
     softWrap: Boolean = false,
-    overflow: TextOverflow,
+    overflow: TextOverflow = TextOverflow.Clip,
     maxLines: Int = Int.MAX_VALUE,
     onTextLayout: ((TextLayoutResult) -> Unit),
     onClick: (Int) -> Unit,
@@ -153,16 +165,24 @@ fun ClickableTextView(
 fun ButtonView(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    btnColor: Color,
+    btnColor: ButtonColors = ButtonDefaults.buttonColors(),
     text: String,
-    textStyle: TextStyle
+    textStyle: TextStyle = TextStyle(),
+    enabled: Boolean = true,
+    shape: Shape = ShapeDefaults.Medium,
+    elevation: ButtonElevation? = null,
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     Button(
         onClick = { onClick() },
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(
-            btnColor
-        )
+        colors = btnColor,
+        enabled = enabled,
+        shape = shape,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding
     ) {
         TextView(text = text, style = textStyle, modifier = Modifier.padding(3.dp))
     }
@@ -174,11 +194,23 @@ fun TextButtonView(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     text: String,
-    textStyle: TextStyle
+    textStyle: TextStyle = TextStyle.Default,
+    enabled: Boolean = true,
+    shape: Shape = MaterialTheme.shapes.small,
+    btnColors: ButtonColors = ButtonDefaults.buttonColors(),
+    elevation: ButtonElevation? = null,
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     TextButton(
         onClick = { onClick() },
         modifier = modifier,
+        enabled = enabled,
+        shape = shape,
+        colors = btnColors,
+        elevation = elevation,
+        border = border,
+        contentPadding = contentPadding,
     ) {
         TextView(text = text, style = textStyle, modifier = Modifier)
     }
@@ -190,31 +222,31 @@ fun TextButtonView(
 fun InputTextFieldView(
     value: String,
     onValueChange: (String) -> Unit,
-    label: String,
+    label: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     leadingIcon: @Composable() (() -> Unit)? = null,
     modifier: Modifier = Modifier,
-    placeholder: String,
-    textStyle: TextStyle,
+    placeholder: String? = null,
+    textStyle: TextStyle = TextStyle.Default,
     isEmpty: Boolean = false,
     isInvalidError: Boolean = false,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     shape: Shape = ShapeDefaults.Medium,
-    errorMessage: String,
-    invalidMessage: String,
+    errorMessage: String? = null,
+    invalidMessage: String? = null,
     errorColor: Color = Color.Unspecified
 ) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            label = { TextView(text = label, style = textStyle) },
+            label = { TextView(text = label.toString(), style = textStyle) },
             placeholder = {
                 TextView(
-                    text = placeholder,
+                    text = placeholder.toString(),
                     style = TextStyle(
                         color = Color.Gray,
                         fontSize = 14.sp,
@@ -237,14 +269,14 @@ fun InputTextFieldView(
         )
         if (isEmpty) {
             TextView(
-                text = errorMessage,
+                text = errorMessage.toString(),
                 style = TextStyle(color = errorColor),
                 modifier = Modifier.padding(start = 5.dp, top = 2.dp)
             )
         }
         if (isInvalidError) {
             TextView(
-                text = invalidMessage,
+                text = invalidMessage.toString(),
                 style = TextStyle(color = errorColor),
                 modifier = Modifier.padding(start = 5.dp, top = 2.dp)
             )
@@ -258,13 +290,13 @@ fun InputTextFieldView(
 fun PasswordTextFieldView(
     value: String,
     onValueChange: (String) -> Unit,
-    label: String,
+    label: String? = null,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     leadingIcon: @Composable() (() -> Unit)? = null,
     modifier: Modifier = Modifier,
-    placeholder: String,
-    textStyle: TextStyle,
+    placeholder: String? = null,
+    textStyle: TextStyle = TextStyle.Default,
     isEmpty: Boolean = false,
     isError: Boolean = false,
     singleLine: Boolean = true,
@@ -284,10 +316,10 @@ fun PasswordTextFieldView(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { TextView(text = label, style = textStyle) },
+        label = { TextView(text = label.toString(), style = textStyle) },
         placeholder = {
             TextView(
-                text = placeholder,
+                text = placeholder.toString(),
                 style = TextStyle(
                     color = Color.Gray,
                     fontSize = 14.sp,
@@ -308,7 +340,7 @@ fun PasswordTextFieldView(
             IconButton(
                 onClick = { passwordVisibility.value = !passwordVisibility.value }
             ) {
-                IconView(
+                VectorIconView(
                     imageVector = if (passwordVisibility.value) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                     tint = if (isEmpty || isError) Color.Red else Color.Black
                 )
@@ -327,12 +359,20 @@ fun PasswordTextFieldView(
         )
     }
     if (isError) {
-        TextView(text = errorMessage.toString(), style = TextStyle(color = errorColor), modifier = Modifier.padding(start = 5.dp,  top = 2.dp))
+        TextView(
+            text = errorMessage.toString(),
+            style = TextStyle(color = errorColor),
+            modifier = Modifier.padding(start = 5.dp, top = 2.dp)
+        )
     }
 }
 
 @Composable
-fun CheckboxComponent(modifier: Modifier = Modifier) {
+fun CheckboxComponent(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = false,
+    colors: CheckboxColors = CheckboxDefaults.colors(),
+) {
     var checkedState by remember { mutableStateOf(false) }
     Row(
         modifier = modifier,
@@ -341,12 +381,11 @@ fun CheckboxComponent(modifier: Modifier = Modifier) {
         Checkbox(
             checked = checkedState,
             onCheckedChange = { checkedState = it },
-            colors = CheckboxDefaults.colors(
-                checkedColor = Color.DarkGray,
-                uncheckedColor = Color.Gray
-            )
+            modifier = Modifier,
+            enabled = enabled,
+            colors = colors,
         )
-        Text(
+        TextView(
             text = if (checkedState) "Remember" else "Remember Me"
         )
     }
@@ -359,7 +398,7 @@ fun PainterImageView(
     contentDescription: String? = null,
     modifier: Modifier = Modifier,
     alignment: Alignment = Alignment.Center,
-    contentScale: ContentScale = ContentScale.None,
+    contentScale: ContentScale = ContentScale.Fit,
     alpha: Float = Float.MAX_VALUE,
     colorFilter: ColorFilter? = null
 ) {
@@ -377,20 +416,34 @@ fun PainterImageView(
 @SuppressLint("ModifierParameter")
 @Composable
 fun AsyncImageView(
-    imageUrl: String,
+    model: Any,
     contentDescription: String? = null,
     modifier: Modifier = Modifier,
+    transform: (AsyncImagePainter.State) -> AsyncImagePainter.State = { it },
+    onState: ((AsyncImagePainter.State) -> Unit)? = null,
+    alignment: Alignment = Alignment.Center,
+    contentScale: ContentScale = ContentScale.Fit,
+    alpha: Float = 1.0f,
+    colorFilter: ColorFilter? = null,
+    filterQuality: FilterQuality = FilterQuality.None
 ) {
     AsyncImage(
-        model = imageUrl,
+        model = model,
         contentDescription = contentDescription,
-        modifier = modifier
+        modifier = modifier,
+        transform = transform,
+        onState = onState,
+        alignment = alignment,
+        contentScale = contentScale,
+        alpha = alpha,
+        colorFilter = colorFilter,
+        filterQuality = filterQuality,
     )
 }
 
 @SuppressLint("ModifierParameter")
 @Composable
-fun IconView(
+fun VectorIconView(
     imageVector: ImageVector,
     contentDescription: String? = null,
     modifier: Modifier = Modifier,
@@ -410,7 +463,7 @@ fun ContentCardView(
     topic: String,
     description: String,
     onClickable: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: (Int) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -428,7 +481,7 @@ fun ContentCardView(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AsyncImageView(
-                imageUrl = imageUrl,
+                model = imageUrl,
                 modifier = Modifier
                     .size(120.dp)
                     .padding(
@@ -450,7 +503,7 @@ fun ContentCardView(
                     TextView(
                         text = topic,
                         style = TextStyle(
-                            fontSize = 15.sp,
+                            fontSize = 16.sp,
                             color = Color.DarkGray,
                             fontWeight = FontWeight.Bold,
                         ),
@@ -471,20 +524,21 @@ fun ContentCardView(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onDelete() }
+                        .clickable {
+                            onDelete
+                        }
                         .border(1.dp, Color.LightGray)
                         .padding(10.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
+                    VectorIconView(
                         imageVector = Icons.Default.Newspaper,
                         contentDescription = null,
                         tint = skyBlue,
                         modifier = Modifier.padding(start = 5.dp)
                     )
-                    // View Package Detail
                     TextView(
-                        text = "View Package Delete", style = TextStyle(
+                        text = "View Package Detail", style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = skyBlue
@@ -513,28 +567,32 @@ fun RoundedCornerCardView(
 }
 
 @Composable
-fun ProgressIndicator() {
+fun ProgressIndicator(
+    modifier: Modifier = Modifier,
+    color: Color = Color.Transparent,
+    backgroundColor: Color = Color.Transparent,
+) {
     Box(modifier = Modifier.fillMaxSize()) {
         CircularProgressIndicator(
-            modifier = Modifier
-                .wrapContentSize()
-                .align(Alignment.Center)
+            modifier = modifier,
+            color = color,
+            backgroundColor = backgroundColor
         )
     }
 }
 
 @Composable
 fun MessageDialogBox(
-    title: String,
-    descriptions: String,
+    title: String? = null,
+    descriptions: String? = null,
     onDismiss: () -> Unit,
-    btnText: String,
-    color: Color
+    btnText: String? = null,
+    color: Color = Color.Transparent,
 ) {
     AlertDialog(
         title = {
             TextView(
-                text = title,
+                text = title.toString(),
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -545,7 +603,7 @@ fun MessageDialogBox(
         onDismissRequest = { onDismiss() },
         text = {
             TextView(
-                text = descriptions,
+                text = descriptions.toString(),
                 textAlign = TextAlign.Center,
                 color = Color.Black,
                 modifier = Modifier.fillMaxWidth()
@@ -561,8 +619,8 @@ fun MessageDialogBox(
             ) {
                 ButtonView(
                     onClick = { onDismiss() },
-                    btnColor = color,
-                    text = btnText,
+                    btnColor = ButtonDefaults.buttonColors(color),
+                    text = btnText.toString(),
                     textStyle = TextStyle(
                         fontSize = 15.sp,
                         color = Color.White,
@@ -591,7 +649,7 @@ fun ButtonAppBar(
                     .width(IntrinsicSize.Min),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Image(
+                PainterImageView(
                     painter = painterResource(id = R.mipmap.img_islington_college),
                     modifier = Modifier.size(40.dp),
                     contentDescription = null
@@ -607,7 +665,7 @@ fun ButtonAppBar(
                     horizontalArrangement = Arrangement.End
                 ) {
                     // search icon
-                    IconView(
+                    VectorIconView(
                         imageVector = Icons.Default.Search,
                         tint = Color.Gray,
                         modifier = Modifier
@@ -616,7 +674,7 @@ fun ButtonAppBar(
                     )
                     // notification icon
                     IconButton(
-                        onClick = { /**navController.navigate(ScreenList.AuthScreen.route)*/ },
+                        onClick = { /**navController.navigate(ScreenList.Notification.route)*/ },
                         modifier = Modifier
                     ) {
                         BottomNavigationItem(
@@ -636,7 +694,7 @@ fun ButtonAppBar(
                                         }
                                     }
                                 ) {
-                                    IconView(
+                                    VectorIconView(
                                         Icons.Filled.Notifications,
                                         contentDescription = "Notification",
                                         tint = Color.Gray
