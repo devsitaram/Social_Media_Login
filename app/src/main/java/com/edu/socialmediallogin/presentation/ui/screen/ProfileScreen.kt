@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.screen
+package com.edu.socialmediallogin.presentation.ui.screen
 
 import android.app.Activity
 import android.content.Context
@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material3.Divider
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,10 +45,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
 import com.edu.socialmediallogin.data.source.local.UserEntity
-import com.edu.socialmediallogin.presentation.components.AsyncImageView
-import com.edu.socialmediallogin.presentation.components.ProgressIndicator
-import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.components.VectorIconView
+import com.edu.socialmediallogin.presentation.ui.components.AsyncImageView
+import com.edu.socialmediallogin.presentation.ui.components.ProgressIndicator
+import com.edu.socialmediallogin.presentation.ui.components.TextView
+import com.edu.socialmediallogin.presentation.ui.components.VectorIconView
 import com.edu.socialmediallogin.presentation.viewmodel.ProfileViewModel
 import com.edu.socialmediallogin.ui.theme.green
 import com.edu.socialmediallogin.ui.theme.skyBlue
@@ -113,38 +114,40 @@ fun ProfileViewScreen(
                 )
             }
 
-            profileViewModel.insertUser(
-                userEntity = UserEntity(
-                    id = profiles.id,
-                    pendingBalance = profiles.pendingBalance,
-                    isSchoolChatroomEnabled = profiles.isSchoolChatroomEnabled,
-                    role = profiles.role,
-                    isActive = profiles.isActive,
-                    countryId = profiles.countryId,
-                    schoolPhotoUrl = profiles.schoolPhotoUrl,
-                    isPasswordEmpty = profiles.isPasswordEmpty,
-                    photoUrl = profiles.photoUrl,
-                    createdAt = profiles.createdAt,
-                    emailAddress =profiles.emailAddress,
-                    userMode = profiles.userMode,
-                    isB2C = profiles.isB2C,
-                    nickname = profiles.nickname,
-                    schoolName = profiles.schoolName,
-                    isEBookPrintFeatureEnabled = profiles.isEBookPrintFeatureEnabled,
-                    isLite = profiles.isLite,
-                    gradeId = profiles.gradeId,
-                    tutorCreditBalance = profiles.tutorCreditBalance,
-                    heading = profiles.heading,
-                    subjects = profiles.subjects,
-                    fullName = profiles.fullName,
-                    userId = profiles.userId,
-                    isOtpEnabled = profiles.isOtpEnabled,
-                    phoneNumber = profiles.phoneNumber,
-                    grade = profiles.grade,
-                    location = profiles.location,
-                    isEmailConfirmed = profiles.isEmailConfirmed
+            LaunchedEffect(key1 = profiles.id, block = {
+                profileViewModel.insertUser(
+                    userEntity = UserEntity(
+                        id = profiles.id,
+                        pendingBalance = profiles.pendingBalance,
+                        isSchoolChatroomEnabled = profiles.isSchoolChatroomEnabled,
+                        role = profiles.role,
+                        isActive = profiles.isActive,
+                        countryId = profiles.countryId,
+                        schoolPhotoUrl = profiles.schoolPhotoUrl,
+                        isPasswordEmpty = profiles.isPasswordEmpty,
+                        photoUrl = profiles.photoUrl,
+                        createdAt = profiles.createdAt,
+                        emailAddress =profiles.emailAddress,
+                        userMode = profiles.userMode,
+                        isB2C = profiles.isB2C,
+                        nickname = profiles.nickname,
+                        schoolName = profiles.schoolName,
+                        isEBookPrintFeatureEnabled = profiles.isEBookPrintFeatureEnabled,
+                        isLite = profiles.isLite,
+                        gradeId = profiles.gradeId,
+                        tutorCreditBalance = profiles.tutorCreditBalance,
+                        heading = profiles.heading,
+                        subjects = profiles.subjects,
+                        fullName = profiles.fullName,
+                        userId = profiles.userId,
+                        isOtpEnabled = profiles.isOtpEnabled,
+                        phoneNumber = profiles.phoneNumber,
+                        grade = profiles.grade,
+                        location = profiles.location,
+                        isEmailConfirmed = profiles.isEmailConfirmed
+                    )
                 )
-            )
+            })
         }
     }
 

@@ -1,10 +1,10 @@
 package com.edu.socialmediallogin.data.source.remote.network
 
 import com.edu.socialmediallogin.data.common.Constants.AUTHORIZATION
+import com.edu.socialmediallogin.data.common.Constants.VIDEO_URL_AUTHORIZATION
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
-import com.edu.socialmediallogin.data.source.remote.pojo.user.UserProfiles
 import com.edu.socialmediallogin.data.source.remote.pojo.video.VideoPojo
 import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import retrofit2.http.Body
@@ -25,12 +25,16 @@ interface ApiService {
     // get subject
     @Headers(AUTHORIZATION)
     @GET("students-subject-library")
-    suspend fun getAllSubjects(): SubjectPojo
+    suspend fun getSubjects(): SubjectPojo
 
     // get video
     @Headers(AUTHORIZATION)
     @GET("subjects/157/average-tree")
     suspend fun getVideos(): VideoPojo
+
+    @Headers(VIDEO_URL_AUTHORIZATION)
+    @GET("/api/v1/embed")
+    suspend fun getVideoUrl()
 
 //    // get user
 //    @POST("TokenAuth/Authenticate/")

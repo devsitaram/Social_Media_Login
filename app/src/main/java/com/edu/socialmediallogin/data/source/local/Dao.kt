@@ -3,7 +3,9 @@ package com.edu.socialmediallogin.data.source.local
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.edu.socialmediallogin.data.source.remote.pojo.user.UserProfiles
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectResult
+import com.edu.socialmediallogin.data.source.remote.pojo.user.ProfileResult
+import com.edu.socialmediallogin.data.source.remote.pojo.video.VideoResult
 
 @SuppressWarnings("AndroidUnresolvedRoomSqlReference")
 @Dao
@@ -15,16 +17,22 @@ interface Dao {
     suspend fun insertUserProfile(userEntity: UserEntity)
 
     @Query("SELECT * FROM user")
-    suspend fun getUserProfiles(): UserProfiles?
+    suspend fun getUserProfiles(): ProfileResult?
 
     // Subject
     @Upsert // insert and update both
-    suspend fun insertSubject(subject: List<SubjectEntity>)
+    suspend fun insertSubject(listOfSubject: List<SubjectEntity>)
 
-//    @Query("SELECT * FROM subject")
-//    suspend fun getAllSubjects(): List<SubjectItem>
+    @Query("SELECT * FROM subjects")
+    suspend fun getSubject():  List<SubjectResult>?
 
-    @Query("DELETE FROM subject WHERE id = :id")
+    @Query("DELETE FROM subjects WHERE subjectId = :id")
     suspend fun deleteSubject(id: Int)
+
+    // video
+    @Upsert // insert and update both
+    suspend fun insertVideo(listOfVideo: List<VideoEntity>)
+    @Query("SELECT * FROM videos")
+    suspend fun getVideos(): VideoResult?
 
 }

@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.navigations
+package com.edu.socialmediallogin.presentation.ui.navigations
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -23,15 +23,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.edu.socialmediallogin.test.TestingViewScreen
-import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.components.VectorIconView
-import com.edu.socialmediallogin.presentation.screen.HomeViewScreen
-import com.edu.socialmediallogin.presentation.screen.ProfileViewScreen
-import com.edu.socialmediallogin.presentation.screen.SearchViewScreen
-import com.edu.socialmediallogin.presentation.screen.SubjectViewScreen
-import com.edu.socialmediallogin.presentation.screen.video.VideoPlayViewScreen
+import com.edu.socialmediallogin.presentation.ui.components.TextView
+import com.edu.socialmediallogin.presentation.ui.components.VectorIconView
+import com.edu.socialmediallogin.presentation.ui.screen.HomeViewScreen
+import com.edu.socialmediallogin.presentation.ui.screen.ProfileViewScreen
+import com.edu.socialmediallogin.presentation.ui.screen.SearchViewScreen
+import com.edu.socialmediallogin.presentation.ui.screen.SubjectViewScreen
+import com.edu.socialmediallogin.presentation.ui.screen.video.VideoListViewScreen
+import com.edu.socialmediallogin.presentation.ui.screen.video.VideoPlayViewScreen
 import com.edu.socialmediallogin.ui.theme.pink
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,6 +112,10 @@ fun ButtonNavigationViewScreen(
         }
         composable(ScreenList.ProfileScreen.route) {
             ProfileViewScreen(navController)
+        }
+        // other screen
+        composable(Screen.VideoListScreen.route){
+            VideoListViewScreen(navController)
         }
         composable(
             route = Screen.VideoScreen.route,

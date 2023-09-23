@@ -5,8 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.edu.socialmediallogin.data.common.Resource
-import com.edu.socialmediallogin.domain.use_case.GetLoginAuthUseCase
-import com.edu.socialmediallogin.domain.use_case.GetUserProfileUseCase
+import com.edu.socialmediallogin.domain.use_case.LoginAuthUseCase
 import com.edu.socialmediallogin.presentation.state.SignInState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class SignInViewModel @Inject constructor(private val getLoginAuthUseCase: GetLoginAuthUseCase) :
+class SignInViewModel @Inject constructor(private val loginAuthUseCase: LoginAuthUseCase) :
     ViewModel() {
 
     private val _signInState = mutableStateOf(SignInState())
@@ -22,7 +21,7 @@ class SignInViewModel @Inject constructor(private val getLoginAuthUseCase: GetLo
     val signInState: State<SignInState> get() = _signInState
 
     fun getLoginUserAuth(email: String, password: String) {
-        getLoginAuthUseCase(email, password).onEach { result ->
+        loginAuthUseCase(email, password).onEach { result ->
             when (result) {
                 is Resource.Loading -> {
                     _signInState.value = SignInState(isLoading = true)

@@ -7,6 +7,7 @@ import com.edu.socialmediallogin.data.common.Constants.API_BASE_URL
 import com.edu.socialmediallogin.data.repository_impl.FirebaseAuthRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.SubjectRepositoryImpl
 import com.edu.socialmediallogin.data.repository_impl.UserRepositoryImpl
+import com.edu.socialmediallogin.data.repository_impl.VideoRepositoryImpl
 import com.edu.socialmediallogin.data.source.local.RoomDatabaseHelper
 import com.edu.socialmediallogin.data.source.local.Dao
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
@@ -32,18 +33,21 @@ object AppModule {
     // get room database instance
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext context: Context): Dao {
+    fun provideDatabaseInstance(@ApplicationContext context: Context): Dao {
+//        return getDatabaseInstance(context).userDao()
         return Room.databaseBuilder(
             context.applicationContext,
             RoomDatabaseHelper::class.java,
             Constants.DATABASE_NAME
-        ).fallbackToDestructiveMigration().build().userDao()
-    // multi table migrate fallbackToDestructiveMigration
+        ).fallbackToDestructiveMigration()
+            .build().userDao()
+        // multi table migrate fallbackToDestructiveMigration
     }
 
     // get api instance
     @Provides
-    fun provideApiService(): ApiService {
+    @Singleton
+    fun provideApiRetrofitInstance(): ApiService {
         // create object of httpLoggingInterceptor
         val httpLoggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
@@ -59,14 +63,23 @@ object AppModule {
 
     //user auth and profile
     @Provides
-    fun provideUserRepo(apiService: ApiService, dao: Dao): UserRepository {
+    @Singleton
+    fun provideUserRepoImpl(apiService: ApiService, dao: Dao): UserRepository {
         return UserRepositoryImpl(apiService, dao)
     }
 
     // subject
     @Provides
-    fun provideSubjectRepo(apiService: ApiService, dao: Dao): SubjectRepository {
+    @Singleton
+    fun provideSubjectRepoImpl(apiService: ApiService, dao: Dao): SubjectRepository {
         return SubjectRepositoryImpl(apiService, dao)
+    }
+
+    // video
+    @Provides
+    @Singleton
+    fun provideVideoRepoImpl(apiService: ApiService, dao: Dao): VideoRepositoryImpl {
+        return VideoRepositoryImpl(apiService, dao)
     }
 
 
@@ -77,7 +90,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun providesRepository(firebaseAuth: FirebaseAuth): AuthRepository {
+    fun providesRepositoryImpl(firebaseAuth: FirebaseAuth): AuthRepository {
         return FirebaseAuthRepositoryImpl(firebaseAuth)
     }
 }

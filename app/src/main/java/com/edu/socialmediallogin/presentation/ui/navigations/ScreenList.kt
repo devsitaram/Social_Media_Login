@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.navigations
+package com.edu.socialmediallogin.presentation.ui.navigations
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -16,6 +16,7 @@ sealed class Screen(val route: String) {
     object LoginScreen : Screen("LoginScreen")
     object RegisterScreen : Screen("RegisterScreen")
     object MainScreen: Screen("MainScreen")
+    object VideoListScreen : Screen("VideoListScreen")
     object VideoScreen : Screen("VideoScreen/{$SUBJECT_NAME_KEY}/{$SUBJECT_DESC_KEY}/{$VIDEO_URL_KEY}")
     object TestScreen: Screen("TestScreen")
 }

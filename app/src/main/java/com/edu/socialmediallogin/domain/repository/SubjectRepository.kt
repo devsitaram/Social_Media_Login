@@ -1,15 +1,13 @@
 package com.edu.socialmediallogin.domain.repository
 
 import com.edu.socialmediallogin.data.source.local.SubjectEntity
-import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectResult
 
 interface SubjectRepository {
 
-    suspend fun getSubjects(): List<SubjectItem?>?
+    suspend fun getSubjects(): List<SubjectResult>?
 
     suspend fun insertSubject(listOfSubject: List<SubjectEntity>)
-
-//    suspend fun insertSubject(photoUrl: String?, name: String?, description: String?, isIvy: Boolean?)
 
     suspend fun deleteSubject(id: Int)
 }

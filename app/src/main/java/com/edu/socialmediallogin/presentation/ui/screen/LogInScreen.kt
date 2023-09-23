@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.screen
+package com.edu.socialmediallogin.presentation.ui.screen
 
 import android.content.Context
 import android.util.Log
@@ -53,18 +53,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.data.common.emailValidation
-import com.edu.socialmediallogin.presentation.components.ButtonView
-import com.edu.socialmediallogin.presentation.components.CheckboxComponent
-import com.edu.socialmediallogin.presentation.components.ClickableTextView
-import com.edu.socialmediallogin.presentation.components.MessageDialogBox
-import com.edu.socialmediallogin.presentation.components.InputTextFieldView
-import com.edu.socialmediallogin.presentation.components.PainterImageView
-import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
-import com.edu.socialmediallogin.presentation.components.ProgressIndicator
-import com.edu.socialmediallogin.presentation.components.RoundedCornerCardView
-import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.navigations.Screen
+import com.edu.socialmediallogin.data.common.util.Validators.emailValidation
+import com.edu.socialmediallogin.presentation.ui.components.ButtonView
+import com.edu.socialmediallogin.presentation.ui.components.CheckboxComponent
+import com.edu.socialmediallogin.presentation.ui.components.ClickableTextView
+import com.edu.socialmediallogin.presentation.ui.components.MessageDialogBox
+import com.edu.socialmediallogin.presentation.ui.components.InputTextFieldView
+import com.edu.socialmediallogin.presentation.ui.components.PainterImageView
+import com.edu.socialmediallogin.presentation.ui.components.PasswordTextFieldView
+import com.edu.socialmediallogin.presentation.ui.components.ProgressIndicator
+import com.edu.socialmediallogin.presentation.ui.components.RoundedCornerCardView
+import com.edu.socialmediallogin.presentation.ui.components.TextView
+import com.edu.socialmediallogin.presentation.ui.navigations.Screen
 import com.edu.socialmediallogin.ui.others.google.GoogleApiContract
 import com.edu.socialmediallogin.presentation.viewmodel.signin.GoogleSignInViewModel
 import com.edu.socialmediallogin.presentation.viewmodel.signin.SignInViewModel
@@ -280,6 +280,7 @@ fun SignInViewScreen(
                             .padding(top = 5.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        /**navController.navigate(User.ForgotPassword.route)*/
                         ClickableTextView(
                             text = "Forgot password?",
                             style = TextStyle(textAlign = TextAlign.Start),
@@ -381,11 +382,6 @@ fun SignInViewScreen(
                     }
                 }
             }
-            //        val moshi = Moshi.Builder().build()
-            //        val jsonAdapter = moshi.adapter(GoogleUserModel::class.java)
-            //        val userJson = jsonAdapter.toJson(googleUser.value)
-            //        navController.navigate(ScreenList.HomeScreen.replace("{user}", userJson))
-            //        navController.navigate(ScreenList.RegisterScreen.route)
         }
     }
 

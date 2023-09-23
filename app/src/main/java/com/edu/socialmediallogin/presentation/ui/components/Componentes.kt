@@ -1,6 +1,6 @@
 @file:Suppress("UNUSED_EXPRESSION")
 
-package com.edu.socialmediallogin.presentation.components
+package com.edu.socialmediallogin.presentation.ui.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
@@ -90,7 +90,7 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.presentation.navigations.ScreenList
+import com.edu.socialmediallogin.presentation.ui.navigations.ScreenList
 import com.edu.socialmediallogin.ui.theme.pink
 import com.edu.socialmediallogin.ui.theme.skyBlue
 import com.edu.socialmediallogin.ui.theme.white
@@ -574,6 +574,7 @@ fun ButtonAppBar(
                     horizontalArrangement = Arrangement.End
                 ) {
                     // search icon
+                    /**navController.navigate(ScreenList.SearchScreen.route)*/
                     VectorIconView(
                         imageVector = Icons.Default.Search,
                         tint = Color.Gray,

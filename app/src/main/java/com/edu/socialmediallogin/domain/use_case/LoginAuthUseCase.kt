@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.Exception
 
-class GetLoginAuthUseCase(private val userRepository: UserRepository) {
+class LoginAuthUseCase(private val userRepository: UserRepository) {
     operator fun invoke(email: String, password: String): Flow<Resource<AuthPojo?>> = flow {
         emit(Resource.Loading())
         try {

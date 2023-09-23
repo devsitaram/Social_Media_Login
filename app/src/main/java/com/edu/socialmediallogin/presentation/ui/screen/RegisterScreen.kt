@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.screen
+package com.edu.socialmediallogin.presentation.ui.screen
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -44,15 +44,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.data.common.emailValidation
-import com.edu.socialmediallogin.data.common.nameValidation
-import com.edu.socialmediallogin.presentation.components.ButtonView
-import com.edu.socialmediallogin.presentation.components.ClickableTextView
-import com.edu.socialmediallogin.presentation.components.MessageDialogBox
-import com.edu.socialmediallogin.presentation.components.InputTextFieldView
-import com.edu.socialmediallogin.presentation.components.PasswordTextFieldView
-import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.navigations.Screen
+import com.edu.socialmediallogin.data.common.util.Validators.emailValidation
+import com.edu.socialmediallogin.data.common.util.Validators.nameValidation
+import com.edu.socialmediallogin.presentation.ui.components.ButtonView
+import com.edu.socialmediallogin.presentation.ui.components.ClickableTextView
+import com.edu.socialmediallogin.presentation.ui.components.MessageDialogBox
+import com.edu.socialmediallogin.presentation.ui.components.InputTextFieldView
+import com.edu.socialmediallogin.presentation.ui.components.PasswordTextFieldView
+import com.edu.socialmediallogin.presentation.ui.components.TextView
+import com.edu.socialmediallogin.presentation.ui.navigations.Screen
 import com.edu.socialmediallogin.presentation.viewmodel.SignUpViewModel
 
 @Composable

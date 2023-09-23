@@ -3,6 +3,12 @@ package com.edu.socialmediallogin.data.source.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.edu.socialmediallogin.data.common.util.json_convertoer.VideoTypeConverter
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.AssetType
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.Level
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.StudentSubject
+import com.edu.socialmediallogin.data.source.remote.pojo.video.ChaptersItem
 
 @Entity(tableName = "user")
 data class UserEntity(
@@ -65,17 +71,66 @@ data class UserEntity(
     val isEmailConfirmed: Boolean? = null
 )
 
-@Entity(tableName = "subject")
+@Entity(tableName = "subjects")
 data class SubjectEntity(
+    @PrimaryKey
+    @ColumnInfo(name = "subjectId")
+    val subjectId: Int? = null,
+    @ColumnInfo(name = "yearlyPrice")
+    val yearlyPrice: String? = null,
+    @ColumnInfo(name = "studentSubject")
+    val studentSubject: StudentSubject? = null,
+    @ColumnInfo(name = "validityStartDate")
+    val validityStartDate: String? = null,
+    @ColumnInfo(name = "level")
+    val level: Level? = null,
+    @ColumnInfo(name = "packageId")
+    val packageId: Int? = null,
+    @ColumnInfo(name = "packageTag")
+    val packageTag: String? = null,
+    @ColumnInfo(name = "monthlyPrice")
+    val monthlyPrice: String? = null,
+    @ColumnInfo(name = "validityEndDate")
+    val validityEndDate: String? = null,
+    @ColumnInfo(name = "halfYearlyPrice")
+    val halfYearlyPrice: String? = null,
+    @ColumnInfo(name = "assetType")
+    val assetType: AssetType? = null,
+    @ColumnInfo(name = "photoUrl")
+    val photoUrl: String? = null,
+    @ColumnInfo(name = "isComingSoon")
+    val isComingSoon: Boolean? = null,
+    @ColumnInfo(name = "name")
+    val name: String? = null,
+    @ColumnInfo(name = "planEndDate")
+    val planEndDate: String? = null,
+    @ColumnInfo(name = "packageGrade")
+    val packageGrade: String? = null,
+    @ColumnInfo(name = "isStudentPremium")
+    val isStudentPremium: Boolean? = null,
+    @ColumnInfo(name = "order")
+    val order: Int? = null
+)
+
+@Entity(tableName = "videos")
+data class VideoEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int? = null,
-    @ColumnInfo(name ="photoUrl")
+    @ColumnInfo(name = "completion")
+    val completion: String? = null,
+    @ColumnInfo(name = "photoUrl")
     val photoUrl: String? = null,
-    @ColumnInfo(name ="name")
-    val name: String? = null,
-    @ColumnInfo(name ="description")
-    val description: String? = null,
-    @ColumnInfo(name ="isIvy")
-    val isIvy: Boolean? = null
+    @ColumnInfo(name = "chapters")
+    val chapters: List<ChaptersItem?>? = null,
+    @ColumnInfo(name = "subjectDescription")
+    val subjectDescription: String? = null,
+    @ColumnInfo(name = "totalVideoWatchedTimeInSeconds")
+    val totalVideoWatchedTimeInSeconds: String? = null,
+    @ColumnInfo(name = "className")
+    val className: String? = null,
+    @ColumnInfo(name = "subjectName")
+    val subjectName: String? = null,
+    @ColumnInfo(name = "mastery")
+    val mastery: String? = null,
 )

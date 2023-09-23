@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.screen
+package com.edu.socialmediallogin.presentation.ui.screen
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.edu.socialmediallogin.presentation.components.ButtonAppBar
-import com.edu.socialmediallogin.presentation.components.TextView
+import com.edu.socialmediallogin.presentation.ui.components.ButtonAppBar
+import com.edu.socialmediallogin.presentation.ui.components.TextView
 
 @SuppressLint("UnrememberedMutableState")
 @Composable

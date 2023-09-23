@@ -1,12 +1,10 @@
 package com.edu.socialmediallogin.data.repository_impl
 
-import android.content.Context
-import android.widget.Toast
 import com.edu.socialmediallogin.data.source.local.Dao
 import com.edu.socialmediallogin.data.source.local.UserEntity
 import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
-import com.edu.socialmediallogin.data.source.remote.pojo.user.UserProfiles
+import com.edu.socialmediallogin.data.source.remote.pojo.user.ProfileResult
 import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import com.edu.socialmediallogin.domain.repository.UserRepository
 
@@ -31,7 +29,7 @@ class UserRepositoryImpl(private val apiService: ApiService, private val dao: Da
     }
 
     // get user profiles
-    override suspend fun getUserProfile(): UserProfiles? {
+    override suspend fun getUserProfile(): ProfileResult? {
         try {
             val profiles = dao.getUserProfiles()
             return if (profiles?.userId != null) {

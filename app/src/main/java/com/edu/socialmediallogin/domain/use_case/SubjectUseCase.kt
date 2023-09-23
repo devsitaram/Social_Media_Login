@@ -2,16 +2,16 @@ package com.edu.socialmediallogin.domain.use_case
 
 import com.edu.socialmediallogin.data.common.Resource
 import com.edu.socialmediallogin.data.source.local.SubjectEntity
-import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectItem
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectResult
 import com.edu.socialmediallogin.domain.repository.SubjectRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.lang.Exception
 
-class GetSubjectUseCase(private val subjectRepository: SubjectRepository) {
+class SubjectUseCase(private val subjectRepository: SubjectRepository) {
 
     // get subject
-    operator fun invoke(): Flow<Resource<List<SubjectItem?>?>> = flow {
+    operator fun invoke(): Flow<Resource<List<SubjectResult?>?>> = flow {
         emit(Resource.Loading())
         try {
             emit(Resource.Success(data = subjectRepository.getSubjects()))

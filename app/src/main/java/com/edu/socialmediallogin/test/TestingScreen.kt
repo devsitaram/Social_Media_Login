@@ -20,9 +20,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.edu.socialmediallogin.presentation.components.ButtonView
-import com.edu.socialmediallogin.presentation.components.InputTextFieldView
-import com.edu.socialmediallogin.presentation.navigations.ScreenList
+import com.edu.socialmediallogin.presentation.ui.components.ButtonView
+import com.edu.socialmediallogin.presentation.ui.components.InputTextFieldView
+import com.edu.socialmediallogin.presentation.ui.navigations.ScreenList
 
 @Composable
 fun TestingViewScreen(navController: NavHostController) {

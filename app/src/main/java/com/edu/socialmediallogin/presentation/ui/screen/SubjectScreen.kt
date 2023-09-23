@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.screen
+package com.edu.socialmediallogin.presentation.ui.screen
 
 import android.app.Activity
 import android.content.Context
@@ -22,6 +22,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,14 +34,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.room.ColumnInfo
 import com.edu.socialmediallogin.data.common.Constants.DEFAULT_IMAGE_URL
 import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
 import com.edu.socialmediallogin.data.common.Resource
-import com.edu.socialmediallogin.presentation.components.AsyncImageView
-import com.edu.socialmediallogin.presentation.components.ButtonAppBar
-import com.edu.socialmediallogin.presentation.components.TextView
-import com.edu.socialmediallogin.presentation.components.VectorIconView
-import com.edu.socialmediallogin.presentation.navigations.ScreenList
+import com.edu.socialmediallogin.data.source.local.SubjectEntity
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.AssetType
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.Level
+import com.edu.socialmediallogin.data.source.remote.pojo.subject.StudentSubject
+import com.edu.socialmediallogin.presentation.ui.components.AsyncImageView
+import com.edu.socialmediallogin.presentation.ui.components.ButtonAppBar
+import com.edu.socialmediallogin.presentation.ui.components.TextView
+import com.edu.socialmediallogin.presentation.ui.components.VectorIconView
+import com.edu.socialmediallogin.presentation.ui.navigations.Screen
+import com.edu.socialmediallogin.presentation.ui.navigations.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.SubjectViewModel
 import com.edu.socialmediallogin.ui.theme.skyBlue
 
@@ -55,6 +62,10 @@ fun SubjectViewScreen(
     val getSubjectPreferences = getSharedPreferences.getString("SubjectPreferences", "")
 
     val subjects = viewModel.subjectList.value
+
+    LaunchedEffect(key1 = Unit, block = {
+        viewModel.getSubject()
+    })
 
     if (subjects.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -73,28 +84,28 @@ fun SubjectViewScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 50.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            ButtonAppBar(title = "", navController = navController)
-            TextView(
-                text = "Subject",
-                style = TextStyle(
-                    fontSize = 15.sp,
-                    color = Color.Gray,
-                    fontWeight = FontWeight.SemiBold,
-                    textAlign = TextAlign.Start
-                ),
+    subjects.isData?.let {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(15.dp)
-            )
+                    .padding(bottom = 50.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                ButtonAppBar(title = "", navController = navController)
+                TextView(
+                    text = "Subject",
+                    style = TextStyle(
+                        fontSize = 15.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.Start
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(15.dp)
+                )
 
-            subjects.isData?.let {
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -102,19 +113,33 @@ fun SubjectViewScreen(
                 ) {
                     items(it) {
                         val subjectId = it?.subjectId
-                        val title = it?.name.toString()
-                        val planEndDate = it?.planEndDate.toString()
-                        val imageUrl = if (it?.photoUrl.isNullOrEmpty()) DEFAULT_IMAGE_URL else it?.photoUrl.toString()
-                        val videoUrl = "Video Url is not available"
-                        val description = it?.studentSubject?.subjectName.toString()
+                        val yearlyPrice = it?.yearlyPrice
+                        val studentSubject = it?.studentSubject
+                        val validityStartDate = it?.validityStartDate
+                        val level = it?.level
+                        val packageId = it?.packageId
+                        val packageTag = it?.packageTag
+                        val monthlyPrice = it?.monthlyPrice
+                        val validityEndDate = it?.validityEndDate
+                        val halfYearlyPrice = it?.halfYearlyPrice
+                        val assetType = it?.assetType
+                        val photoUrl =
+                            if (it?.photoUrl.isNullOrEmpty()) DEFAULT_IMAGE_URL else it?.photoUrl.toString()
+                        val isComingSoon = it?.isComingSoon
+                        val name = it?.name
+                        val planEndDate = it?.planEndDate
+                        val packageGrade = it?.packageGrade
+                        val isStudentPremium = it?.isStudentPremium
+                        val order = it?.order
 
                         SubjectCardView(
-                            imageUrl = HTTPS_IMAGE_BASE_URL + imageUrl,
-                            topic = title,
-                            description = description,
+                            imageUrl = HTTPS_IMAGE_BASE_URL + photoUrl,
+                            name = name,
+                            studSubjName = it?.studentSubject?.subjectName,
                             planEndDate = planEndDate,
                             onClickable = {
-                                navController.navigate("VideoScreen/${title}/${description}/${videoUrl}")
+                                navController.navigate(Screen.VideoScreen.route)
+                                // navController.navigate("VideoScreen/${name}/${subjectId}/${videoUrl}")
                             },
                             onDelete = {
 //                                viewModel.deleteSubject(id = subjectId.toInt())
@@ -124,9 +149,31 @@ fun SubjectViewScreen(
                         )
 
                         // insert the data in local server if any change the remote server
-//                        LaunchedEffect(key1 = subjectId, block = {
-//                            viewModel.insertSubject(subjectId, imageUrl, title, subjectDesc, isIvy)
-//                        })
+                        LaunchedEffect(key1 = subjectId, block = {
+                            val listOfSubjects = listOf(
+                                SubjectEntity(
+                                    subjectId = subjectId,
+                                    yearlyPrice = yearlyPrice,
+                                    studentSubject = studentSubject,
+                                    validityStartDate = validityStartDate,
+                                    level = level,
+                                    packageId = packageId,
+                                    packageTag = packageTag,
+                                    monthlyPrice = monthlyPrice,
+                                    validityEndDate = validityEndDate,
+                                    halfYearlyPrice = halfYearlyPrice,
+                                    assetType = assetType,
+                                    photoUrl = photoUrl,
+                                    isComingSoon = isComingSoon,
+                                    name = name,
+                                    planEndDate = planEndDate,
+                                    packageGrade = packageGrade,
+                                    isStudentPremium = isStudentPremium,
+                                    order = order
+                                )
+                            )
+                            viewModel.insertSubject(listOfSubjects)
+                        })
                     }
                 }
             }
@@ -137,9 +184,9 @@ fun SubjectViewScreen(
 @Composable
 fun SubjectCardView(
     imageUrl: String,
-    topic: String,
-    description: String,
-    planEndDate: String,
+    name: String?,
+    studSubjName: String?,
+    planEndDate: String?,
     onClickable: () -> Unit,
     onDelete: (Int) -> Unit
 ) {
@@ -161,7 +208,7 @@ fun SubjectCardView(
             AsyncImageView(
                 model = imageUrl,
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(120.dp)
                     .padding(
                         start = 10.dp,
                         end = 10.dp
@@ -179,7 +226,7 @@ fun SubjectCardView(
                         .padding(15.dp)
                 ) {
                     TextView(
-                        text = topic,
+                        text = name.toString(),
                         style = TextStyle(
                             fontSize = 16.sp,
                             color = Color.DarkGray,
@@ -188,7 +235,7 @@ fun SubjectCardView(
                         modifier = Modifier
                     )
                     TextView(
-                        text = description,
+                        text = studSubjName.toString(),
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,
@@ -198,7 +245,7 @@ fun SubjectCardView(
                         modifier = Modifier.padding(top = 5.dp)
                     )
                     TextView(
-                        text = planEndDate,
+                        text = planEndDate.toString(),
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Normal,

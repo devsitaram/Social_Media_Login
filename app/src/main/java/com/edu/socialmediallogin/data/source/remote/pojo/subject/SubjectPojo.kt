@@ -1,11 +1,11 @@
 package com.edu.socialmediallogin.data.source.remote.pojo.subject
 
 data class SubjectPojo(
-	val result: List<SubjectItem?>? = null,
+	val result: List<SubjectResult>? = null,
 	val success: Boolean? = null,
 	val abp: Boolean? = null,
-	val error: Any? = null,
-	val targetUrl: Any? = null,
+	val error: String? = null,
+	val targetUrl: String? = null,
 	val unAuthorizedRequest: Boolean? = null
 )
 
@@ -20,23 +20,23 @@ data class Level(
 	val order: Int? = null
 )
 
-data class SubjectItem(
-	val yearlyPrice: Any? = null,
+data class SubjectResult(
+	val yearlyPrice: String? = null,
 	val studentSubject: StudentSubject? = null,
 	val validityStartDate: String? = null,
 	val level: Level? = null,
 	val packageId: Int? = null,
-	val packageTag: Any? = null,
-	val monthlyPrice: Any? = null,
+	val packageTag: String? = null,
+	val monthlyPrice: String? = null,
 	val validityEndDate: String? = null,
 	val subjectId: Int? = null,
-	val halfYearlyPrice: Any? = null,
+	val halfYearlyPrice: String? = null,
 	val assetType: AssetType? = null,
 	val photoUrl: String? = null,
 	val isComingSoon: Boolean? = null,
 	val name: String? = null,
 	val planEndDate: String? = null,
-	val packageGrade: Any? = null,
+	val packageGrade: String? = null,
 	val isStudentPremium: Boolean? = null,
 	val order: Int? = null
 )
@@ -44,6 +44,6 @@ data class SubjectItem(
 data class StudentSubject(
 	val subjectId: Int? = null,
 	val subjectName: String? = null,
-	val order: Any? = null
+	val order: String? = null
 )
 

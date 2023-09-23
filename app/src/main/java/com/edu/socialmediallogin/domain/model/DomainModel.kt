@@ -27,3 +27,15 @@ data class LoginRequestModel(
     val rememberClient: Boolean,
     val couponCode: String,
 )
+
+//fun SubjectDTO.toDomainModel(): SubjectModel {
+//    return SubjectModel(
+//        imageUrl = this.previewURL,
+//        title = this.tags,
+//        urlDescriptions = this.userImageURL
+//    )
+//}
+
+enum class RegistrationState {
+    INITIAL, LOADING, SUCCESS, ERROR
+}

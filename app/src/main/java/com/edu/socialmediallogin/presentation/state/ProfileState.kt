@@ -1,10 +1,10 @@
 package com.edu.socialmediallogin.presentation.state
 
-import com.edu.socialmediallogin.data.source.remote.pojo.user.UserProfiles
+import com.edu.socialmediallogin.data.source.remote.pojo.user.ProfileResult
 
 data class ProfileState(
     val isLoading: Boolean = false,
-    val isData: UserProfiles? = null,
+    val isData: ProfileResult? = null,
     val isError: String = ""
 )
 

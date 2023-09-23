@@ -1,4 +1,4 @@
-package com.edu.socialmediallogin.presentation.screen
+package com.edu.socialmediallogin.presentation.ui.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,7 +18,7 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.edu.socialmediallogin.R
-import com.edu.socialmediallogin.presentation.navigations.Screen
+import com.edu.socialmediallogin.presentation.ui.navigations.Screen
 import kotlinx.coroutines.delay
 
 @Composable

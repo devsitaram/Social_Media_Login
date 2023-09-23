@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.edu.socialmediallogin.presentation.components.TextView
+import com.edu.socialmediallogin.presentation.ui.components.TextView
 import com.google.android.gms.auth.api.identity.Identity
 
 @Composable
