@@ -1,6 +1,8 @@
 package com.edu.socialmediallogin.presentation.ui.navigations
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.background
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -8,6 +10,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -38,6 +42,7 @@ import com.edu.socialmediallogin.ui.theme.pink
 @Composable
 fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
     val navController = rememberNavController()
+    //    val visibleState by remember { MutableTransitionState(false) }
     val pages = listOf(
         ScreenList.HomeScreen,
         ScreenList.SubjectScreen,
@@ -46,6 +51,9 @@ fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
         )
     Scaffold(
         bottomBar = {
+//            AnimatedVisibility(visibleState = visibleState) {
+//
+//            }
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
@@ -114,8 +122,20 @@ fun ButtonNavigationViewScreen(
             ProfileViewScreen(navController)
         }
         // other screen
-        composable(Screen.VideoListScreen.route){
-            VideoListViewScreen(navController)
+        composable(
+            route = Screen.VideoListScreen.route,
+            arguments = listOf(
+                navArgument(name = SUBJECT_NAME_KEY) {
+                    type = NavType.StringType
+                },
+                navArgument(name = SUBJECT_ID) {
+                    type = NavType.StringType
+                },
+            )
+        ){navBackStackEntry ->
+            val subjectId = navBackStackEntry.arguments?.getString(SUBJECT_ID)?.toInt()
+            val subject = navBackStackEntry.arguments?.getString(SUBJECT_NAME_KEY)
+            VideoListViewScreen(subjectId, subject, navController)
         }
         composable(
             route = Screen.VideoScreen.route,

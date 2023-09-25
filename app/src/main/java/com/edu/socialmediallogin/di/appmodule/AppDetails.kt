@@ -11,6 +11,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
@@ -30,6 +31,7 @@ class AppDetails {
     fun provideProfileUseCase(userRepository: UserRepository): UserProfileUseCase {
         return UserProfileUseCase(userRepository)
     }
+
     // subject's use case
     @Provides
     @Singleton
@@ -43,6 +45,4 @@ class AppDetails {
     fun provideVideoUseCase(videoRepository: VideoRepository): VideoUseCase {
         return VideoUseCase(videoRepository)
     }
-
-
 }

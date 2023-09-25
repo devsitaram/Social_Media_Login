@@ -6,5 +6,5 @@ import dagger.Module
 
 interface VideoRepository {
     suspend fun insertVideos(videoEntity: List<VideoEntity>)
-    suspend fun getVideoDetails():  VideoResult?
+    suspend fun getVideoDetails(subjectId: Int?):  VideoResult?
 }

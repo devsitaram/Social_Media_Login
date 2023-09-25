@@ -14,6 +14,7 @@ import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.domain.repository.AuthRepository
 import com.edu.socialmediallogin.domain.repository.SubjectRepository
 import com.edu.socialmediallogin.domain.repository.UserRepository
+import com.edu.socialmediallogin.domain.repository.VideoRepository
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
 import dagger.Provides
@@ -34,7 +35,6 @@ object AppModule {
     @Provides
     @Singleton
     fun provideDatabaseInstance(@ApplicationContext context: Context): Dao {
-//        return getDatabaseInstance(context).userDao()
         return Room.databaseBuilder(
             context.applicationContext,
             RoomDatabaseHelper::class.java,
@@ -42,6 +42,7 @@ object AppModule {
         ).fallbackToDestructiveMigration()
             .build().userDao()
         // multi table migrate fallbackToDestructiveMigration
+        // return getDatabaseInstance(context).userDao()
     }
 
     // get api instance
@@ -78,7 +79,7 @@ object AppModule {
     // video
     @Provides
     @Singleton
-    fun provideVideoRepoImpl(apiService: ApiService, dao: Dao): VideoRepositoryImpl {
+    fun provideVideoRepoImpl(apiService: ApiService, dao: Dao): VideoRepository {
         return VideoRepositoryImpl(apiService, dao)
     }
 

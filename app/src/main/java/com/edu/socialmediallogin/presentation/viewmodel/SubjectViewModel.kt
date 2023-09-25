@@ -20,10 +20,6 @@ class SubjectViewModel @Inject constructor(private val subjectUseCase: SubjectUs
     private var _subjectList = mutableStateOf(SubjectState())
     val subjectList: State<SubjectState> get() = _subjectList
 
-//    init {
-//        getSubject()
-//    }
-
     fun getSubject() {
         subjectUseCase().onEach {
             when (it) {

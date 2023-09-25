@@ -16,12 +16,12 @@ class VideoRepositoryImpl(private val apiService: ApiService, private val dao: D
         }
     }
 
-    override suspend fun getVideoDetails(): VideoResult? {
-        val videosResult = dao.getVideos()
-        return if (videosResult?.id != null) {
-            videosResult
+    override suspend fun getVideoDetails(subjectId: Int?): VideoResult? {
+        val videosResult = dao.getVideosById(subjectId)
+        return if (videosResult?.id == null) {
+            apiService.getVideos(subjectId).result
         } else {
-            apiService.getVideos().result
+            videosResult
         }
     }
 }

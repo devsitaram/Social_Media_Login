@@ -24,7 +24,7 @@ interface Dao {
     suspend fun insertSubject(listOfSubject: List<SubjectEntity>)
 
     @Query("SELECT * FROM subjects")
-    suspend fun getSubject():  List<SubjectResult>?
+    suspend fun getSubject(): List<SubjectResult>?
 
     @Query("DELETE FROM subjects WHERE subjectId = :id")
     suspend fun deleteSubject(id: Int)
@@ -32,7 +32,11 @@ interface Dao {
     // video
     @Upsert // insert and update both
     suspend fun insertVideo(listOfVideo: List<VideoEntity>)
+
     @Query("SELECT * FROM videos")
     suspend fun getVideos(): VideoResult?
+
+    @Query("SELECT * FROM videos WHERE id = :subjectId")
+    suspend fun getVideosById(subjectId: Int?): VideoResult?
 
 }

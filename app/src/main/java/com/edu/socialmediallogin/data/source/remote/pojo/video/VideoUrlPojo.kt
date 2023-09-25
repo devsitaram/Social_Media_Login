@@ -3,11 +3,11 @@ package com.edu.socialmediallogin.data.source.remote.pojo.video
 data class VideoUrlPojo(
 	val result: VideoUrlResult? = null,
 	val success: Boolean? = null,
-	val error: Any? = null
+	val error: String? = null
 )
 
 data class TimeLineItem(
-	val endTimeLine: Any? = null,
+	val endTimeLine: String? = null,
 	val id: String? = null,
 	val startTimeLine: Any? = null
 )
@@ -18,7 +18,7 @@ data class ControlBars(
 )
 
 data class VideoUrlResult(
-	val prevAnswers: List<Any?>? = null,
+	val prevAnswers: List<String?>? = null,
 	val secondaryProvider: String? = null,
 	val thumbnail: String? = null,
 	val controlBars: ControlBars? = null,
@@ -30,7 +30,7 @@ data class VideoUrlResult(
 	val playbackRate: Int? = null,
 	val prevInteractions: Boolean? = null,
 	val provider: String? = null,
-	val time: Any? = null,
+	val time: String? = null,
 	val parentTheme: String? = null,
 	val isWorkedOut: Boolean? = null
 )
@@ -45,7 +45,7 @@ data class AnnotationsItem(
 	val deleted: Boolean? = null,
 	val createdBy: String? = null,
 	val v: Int? = null,
-	val startTime: Any? = null,
+	val startTime: String? = null,
 	val id: String? = null,
 	val position: Position? = null,
 	val dimension: Dimension? = null,
@@ -55,7 +55,7 @@ data class AnnotationsItem(
 
 data class Action(
 	val groupId: String? = null,
-	val time: Any? = null,
+	val time: String? = null,
 	val type: String? = null,
 	val value: String? = null
 )
@@ -77,7 +77,7 @@ data class ItemsItem(
 
 data class OptionsItem(
 	val createdAt: String? = null,
-	val answerOptionCodes: List<Any?>? = null,
+	val answerOptionCodes: List<String?>? = null,
 	val deleted: Boolean? = null,
 	val action: Action? = null,
 	val id: String? = null,

@@ -2,6 +2,7 @@ package com.edu.socialmediallogin.presentation.ui.screen
 
 import android.app.Activity
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -57,9 +58,6 @@ fun SubjectViewScreen(
     viewModel: SubjectViewModel = hiltViewModel()
 ) {
     val context = (LocalContext.current as Activity)
-    val getSharedPreferences =
-        context.getSharedPreferences("social_media_preferences", Context.MODE_PRIVATE)
-    val getSubjectPreferences = getSharedPreferences.getString("SubjectPreferences", "")
 
     val subjects = viewModel.subjectList.value
 
@@ -94,7 +92,7 @@ fun SubjectViewScreen(
             ) {
                 ButtonAppBar(title = "", navController = navController)
                 TextView(
-                    text = "Subject",
+                    text = "Subjects",
                     style = TextStyle(
                         fontSize = 15.sp,
                         color = Color.Gray,
@@ -111,35 +109,33 @@ fun SubjectViewScreen(
                         .fillMaxWidth()
                         .padding(start = 15.dp, end = 15.dp)
                 ) {
-                    items(it) {
-                        val subjectId = it?.subjectId
-                        val yearlyPrice = it?.yearlyPrice
-                        val studentSubject = it?.studentSubject
-                        val validityStartDate = it?.validityStartDate
-                        val level = it?.level
-                        val packageId = it?.packageId
-                        val packageTag = it?.packageTag
-                        val monthlyPrice = it?.monthlyPrice
-                        val validityEndDate = it?.validityEndDate
-                        val halfYearlyPrice = it?.halfYearlyPrice
-                        val assetType = it?.assetType
-                        val photoUrl =
-                            if (it?.photoUrl.isNullOrEmpty()) DEFAULT_IMAGE_URL else it?.photoUrl.toString()
-                        val isComingSoon = it?.isComingSoon
-                        val name = it?.name
-                        val planEndDate = it?.planEndDate
-                        val packageGrade = it?.packageGrade
-                        val isStudentPremium = it?.isStudentPremium
-                        val order = it?.order
+                    items(it) { subject ->
+                        val subjectId = subject?.subjectId
+                        val yearlyPrice = subject?.yearlyPrice
+                        val studentSubject = subject?.studentSubject
+                        val validityStartDate = subject?.validityStartDate
+                        val level = subject?.level
+                        val packageId = subject?.packageId
+                        val packageTag = subject?.packageTag
+                        val monthlyPrice = subject?.monthlyPrice
+                        val validityEndDate = subject?.validityEndDate
+                        val halfYearlyPrice = subject?.halfYearlyPrice
+                        val assetType = subject?.assetType
+                        val photoUrl = subject?.photoUrl.toString()
+                        val isComingSoon = subject?.isComingSoon
+                        val name = subject?.name
+                        val planEndDate = subject?.planEndDate
+                        val packageGrade = subject?.packageGrade
+                        val isStudentPremium = subject?.isStudentPremium
+                        val order = subject?.order
 
                         SubjectCardView(
                             imageUrl = HTTPS_IMAGE_BASE_URL + photoUrl,
                             name = name,
-                            studSubjName = it?.studentSubject?.subjectName,
+                            studSubjName = subject?.studentSubject?.subjectName,
                             planEndDate = planEndDate,
                             onClickable = {
-                                navController.navigate(Screen.VideoScreen.route)
-                                // navController.navigate("VideoScreen/${name}/${subjectId}/${videoUrl}")
+                                 navController.navigate("VideoListScreen/${subjectId}/${name}")
                             },
                             onDelete = {
 //                                viewModel.deleteSubject(id = subjectId.toInt())

@@ -37,7 +37,7 @@ data class TopicsItem(
 	val topicName: String? = null,
 	val videos: List<VideosItem?>? = null,
 	val id: Int? = null,
-	val mastery: Any? = null
+	val mastery: String? = null
 )
 
 data class VideosItem(
@@ -64,7 +64,7 @@ data class VideosItem(
 	val isRecommended: Boolean? = null,
 	val topicName: String? = null,
 	val completionStatus: String? = null,
-	val videoInteraction: List<String?>? = null,
+	val videoInteraction: List<Any?>? = null,
 	val elapsedTime: String? = null
 )
 

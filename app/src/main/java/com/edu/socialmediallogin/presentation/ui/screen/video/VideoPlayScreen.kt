@@ -619,7 +619,7 @@ fun BottomIconsActionView(
     val activity = context as? Activity
 
     var currentTimer by remember { mutableStateOf("") }
-    LaunchedEffect(videoTimer, totalDuration) {
+    LaunchedEffect(videoTimer) {
         // Calculate minutes, and seconds
         val seconds = (videoTimer / 1000) % 60
         val minutes = (videoTimer / (1000 * 60)) % 60

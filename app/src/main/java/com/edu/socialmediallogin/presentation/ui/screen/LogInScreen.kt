@@ -80,8 +80,6 @@ fun SignInViewScreen(
     val userLoginResult = signInViewModel.signInState.value
 
     // google account to login
-//    val authViewModel: AuthViewModel = hiltViewModel()
-//    val googleLoginResult = authViewModel.googleLoginResult.observeAsState()
     val googleSignInViewModel: GoogleSignInViewModel =
         viewModel(factory = GoogleSignInViewModel.SignInGoogleViewModelFactory(context))
     val googleUser = googleSignInViewModel.googleUser.observeAsState()

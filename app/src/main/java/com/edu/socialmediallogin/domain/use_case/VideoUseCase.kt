@@ -11,10 +11,10 @@ import java.lang.Exception
 
 class VideoUseCase(private val videoRepository: VideoRepository) {
 
-    operator fun invoke(): Flow<Resource<VideoResult?>> = flow {
+    operator fun invoke(subjectId: Int?): Flow<Resource<VideoResult?>> = flow {
         emit(Resource.Loading())
         try {
-            emit(Resource.Success(data = videoRepository.getVideoDetails()))
+            emit(Resource.Success(data = videoRepository.getVideoDetails(subjectId)))
         } catch (e: Exception) {
             emit(Resource.Error(message = e.message.toString()))
         }

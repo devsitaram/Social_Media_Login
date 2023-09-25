@@ -4,8 +4,8 @@ data class AuthPojo(
 	val result: Result? = null,
 	val success: Boolean? = null,
 	val abp: Boolean? = null,
-	val error: Any? = null,
-	val targetUrl: Any? = null,
+	val error: String? = null,
+	val targetUrl: String? = null,
 	val unAuthorizedRequest: Boolean? = null
 )
 
@@ -55,8 +55,8 @@ data class TimeLine(
 data class Result(
 	val featureList: Any? = null,
 	val features: Features? = null,
-	val tempAuthToken: Any? = null,
-	val encryptedCode: Any? = null,
+	val tempAuthToken: String? = null,
+	val encryptedCode: String? = null,
 	val expireInSeconds: Int? = null,
 	val encryptedAccessToken: String? = null,
 	val otpExpireTime: Int? = null,
