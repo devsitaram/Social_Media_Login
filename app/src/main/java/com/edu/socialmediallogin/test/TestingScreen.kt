@@ -1,5 +1,9 @@
 package com.edu.socialmediallogin.test
 
+import android.annotation.SuppressLint
+import android.net.Uri
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -17,82 +22,60 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.AndroidFont
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.media3.common.MediaItem
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.ui.AspectRatioFrameLayout
+import androidx.media3.ui.PlayerView
 import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.presentation.ui.components.ButtonView
 import com.edu.socialmediallogin.presentation.ui.components.InputTextFieldView
 import com.edu.socialmediallogin.presentation.ui.navigations.ScreenList
 
+@SuppressLint("UnsafeOptInUsageError", "OpaqueUnitKey")
 @Composable
-fun TestingViewScreen(navController: NavHostController) {
+fun TestingViewScreen() {
 
+    val videoUrls = "https://embed-ivy.advancedpedagogy.com/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTU2NzE1NjIsInBhcmFtcyI6eyJvd25lciI6IjYwMTBlNWExMTJiYmI0MDAxMjE0YmQ5NyIsInZpZXdlciI6Ijk5MTA2IiwidmlkZW9JZCI6IjYyNTdhNDIyOTUyYjM2MDAxMjk2MGI0MSIsInBsYXliYWNrSWQiOiJHVlhGU21HVW9mMDEzYjAwSklLejAyS0pxMVNqeHppMWRBMWVOR0VvalBVVUtNIiwicGxheWJhY2tSYXRlIjowLCJjYW5TZWVrIjp0cnVlLCJpc1dvcmtlZE91dCI6ZmFsc2UsInRpbWUiOjExNDMuOTk5LCJwYXJlbnRUaGVtZSI6Imdsb2JhbCJ9LCJpYXQiOjE2OTU2MjgzNjJ9.wer5RR-ypQ2XqPqSI9EA_j9H_EoYMjpwK1dsySx1ZnM"
     val context = LocalContext.current
-//    val viewModel: SubjectViewModel = hiltViewModel()
+    val exoplayer = remember {
+        ExoPlayer.Builder(context).build().apply {
+            val defaultDataSourceFactory = DefaultDataSource.Factory(context)
+            val dataSourceFactory: DataSource.Factory = DefaultDataSource.Factory(
+                context, defaultDataSourceFactory
+            )
 
-    var photoUrl by remember { mutableStateOf("") }
-    var name by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
+            val source = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(
+                MediaItem.fromUri(Uri.parse(videoUrls))
+            )
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 15.dp, vertical = 15.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // photoUrl
-        InputTextFieldView(
-            value = photoUrl,
-            onValueChange = { photoUrl = it },
-            label = "photoUrl",
-            placeholder = "photoUrl",
-            textStyle = TextStyle(),
-            errorMessage = "",
-            invalidMessage = "",
-            modifier = Modifier.fillMaxWidth()
-        )
-        // name
-        InputTextFieldView(
-            value = name,
-            onValueChange = { name = it },
-            label = "name",
-            placeholder = "name",
-            textStyle = TextStyle(),
-            errorMessage = "",
-            invalidMessage = "",
-            modifier = Modifier.fillMaxWidth()
-        )
-        // description
-        InputTextFieldView(
-            value = description,
-            onValueChange = { description = it },
-            label = "description",
-            placeholder = "description",
-            textStyle = TextStyle(),
-            errorMessage = "",
-            invalidMessage = "",
-            modifier = Modifier.fillMaxWidth()
-        )
+            setMediaSource(source)
+            prepare()
+        }
+    }
 
-        Spacer(modifier = Modifier.padding(top = 20.dp))
-        ButtonView(
-            onClick = {
-                if (name.isNotEmpty() && description.isNotEmpty()) {
-//                    viewModel.insertSubject(
-//                        photoUrl = photoUrl, //.ifEmpty { DEFAULT_IMAGE_URL },
-//                        name = name,
-//                        description = description,
-//                        isIvy = false
-//                    )
-                    navController.navigate(ScreenList.SubjectScreen.route)
-                } else {
-                    Toast.makeText(context, "The fields is empty", Toast.LENGTH_SHORT).show()
+    DisposableEffect(
+        AndroidView(
+            factory = {
+                PlayerView(context).apply {
+                    hideController()
+                    useController = false
+                    resizeMode = AspectRatioFrameLayout.RESIZE_MODE_ZOOM
+
+                    player = exoplayer
+                    layoutParams = FrameLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT,
+                    )
                 }
-            },
-            btnColor = ButtonDefaults.buttonColors(Color.Blue),
-            text = "Register",
-            textStyle = TextStyle(fontWeight = FontWeight.Bold, color = Color.White)
+            }
         )
+    ) {
+        onDispose { exoplayer.release() }
     }
 }

@@ -1,14 +1,16 @@
 @file:Suppress("UNUSED_EXPRESSION")
-
 package com.edu.socialmediallogin.presentation.ui.screen.video
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -66,192 +68,213 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
+import androidx.media3.datasource.DataSource
+import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.SimpleExoPlayer
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.ui.PlayerView
 import com.edu.socialmediallogin.presentation.ui.components.TextView
+import com.edu.socialmediallogin.presentation.viewmodel.VideoViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 
+@SuppressLint("UnsafeOptInUsageError")
 @Composable
 fun VideoPlayViewScreen(
-    title: String?,
-    description: String?,
-    videoUrls: String?,
+    videoId: String?,
+    videoViewModel: VideoViewModel = hiltViewModel()
 ) {
 
-//    val videoPlayViewModel: VideoPlayViewModel = viewModel()
-//    val result = videoPlayViewModel.videoDetails
-
-//    val title = result?.title
-//    val description = result?.descriptions
-//    val videoUrls = result?.videoUri
-//        "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/I-want-my-school-future-ready-1.mp4"
-//        "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/Do-you-miss-your-school.mp4
-
     val context = LocalContext.current
-    val videoUrl =
-        "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/How-do-you-create-assessment-materials-for-your-students.mp4"
+    val videoUrl = videoViewModel.videoUrl.value
 
-    // Create a single ExoPlayer instance for video playback
-    val exoPlayer = remember {
-        ExoPlayer.Builder(context)
-            .build().apply {
-                setMediaItem(MediaItem.fromUri(Uri.parse(videoUrl)))
+    if (videoUrl.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+            CircularProgressIndicator()
+        }
+    }
+
+    if (videoUrl.isError.isNotBlank()) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 15.dp, vertical = 15.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            TextView(text = videoUrl.isError)
+        }
+    }
+    LaunchedEffect(key1 = videoId, block = {
+        videoViewModel.getVideoUrl(videoId)
+    })
+
+    videoUrl.isData.let { url ->
+        val vUrl = url?.url.toString()
+
+        val videoUrls =
+            "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/How-do-you-create-assessment-materials-for-your-students.mp4"
+        // ExoPlayer instance
+        val exoPlayer = remember {
+            ExoPlayer.Builder(context).build().apply {
+                val defaultDataSourceFactory = DefaultDataSource.Factory(context)
+                val dataSourceFactory: DataSource.Factory = DefaultDataSource.Factory(
+                    context, defaultDataSourceFactory
+                )
+                val source = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(
+                    MediaItem.fromUri(Uri.parse(videoUrls))
+                )
+                this.setMediaSource(source)
                 this.prepare()
                 this.playWhenReady = true
             }
-    }
-
-    var isPlaying by remember { mutableStateOf(false) }
-
-    var videoTimer by remember { mutableLongStateOf(0L) }
-
-    var totalDuration by remember { mutableLongStateOf(0L) }
-
-    var bufferedPercentage by remember { mutableIntStateOf(0) }
-
-    var playbackState by remember { mutableIntStateOf(0) }
-
-    DisposableEffect(key1 = true) {
-        val listener = object : Player.Listener {
-            override fun onEvents(player: Player, events: Player.Events) {
-                super.onEvents(player, events)
-                isPlaying = player.isPlaying
-                totalDuration = player.duration.coerceAtLeast(0L)
-                videoTimer = player.contentPosition.coerceAtLeast(0L)
-                bufferedPercentage = player.bufferedPercentage
-                playbackState = player.playbackState
-            }
-
-//            override fun onIsPlayingChanged(isPlayingValue: Boolean) {
-////                isPlaying = isPlayingValue
-//            }
-//
-//            override fun onPlaybackStateChanged(state: Int) {
-////                playbackState = state
-//            }
-//
-//            @SuppressLint("UnsafeOptInUsageError")
-//            override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-////                indicatorRun = playWhenReady
-////                state = playbackState
-//            }
+//            ExoPlayer.Builder(context)
+//                .build().apply {
+//                    setMediaItem(MediaItem.fromUri(Uri.parse(videoUrls)))
+//                    this.prepare()
+//                    this.playWhenReady = true
+//                }
         }
-        exoPlayer.addListener(listener)
-        onDispose {
-            exoPlayer.removeListener(listener)
-            exoPlayer.release()
-        }
-    }
 
-    // Use a LaunchedEffect to observe the exoPlayer and update isPlaying
-    LaunchedEffect(exoPlayer) {
-        while (true) {
-            val isPlayerPlaying = exoPlayer.isPlaying
-            if (isPlaying != isPlayerPlaying) {
-                isPlaying = isPlayerPlaying
-            }
-            delay(1000) // Adjust the delay as needed
-        }
-    }
+        var isPlaying by remember { mutableStateOf(true) }
 
-    var iconVisible by remember { mutableStateOf(false) }
-    LaunchedEffect(iconVisible) {
-        if (iconVisible) {
-            delay(4000) // Delay for 5 seconds
-            iconVisible = false // Hide the icon after the delay
-        }
-    }
+        var videoTimer by remember { mutableLongStateOf(0L) }
 
-    val handler = remember { Handler(Looper.getMainLooper()) }
-    val runnable = remember {
-        object : Runnable {
-            override fun run() {
-                videoTimer = exoPlayer.currentPosition
-                handler.postDelayed(this, 1000)
-            }
-        }
-    }
+        var totalDuration by remember { mutableLongStateOf(0L) }
 
-    DisposableEffect(key1 = Unit) {
-        handler.postDelayed(runnable, 1000)
-        onDispose {
-            handler.removeCallbacks(runnable)
-        }
-    }
+        var bufferedPercentage by remember { mutableIntStateOf(0) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalArrangement = Arrangement.Top,
-    ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier//.height(275.dp)
-                .fillMaxWidth()
-                .height(275.dp)
-                .background(Color.Black),
-        ) {
-            if (playbackState == Player.STATE_ENDED) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator(color = Color.White)
+        var playbackState by remember { mutableIntStateOf(0) }
+
+        DisposableEffect(key1 = true) {
+            val listener = object : Player.Listener {
+                override fun onEvents(player: Player, events: Player.Events) {
+                    super.onEvents(player, events)
+                    isPlaying = player.isPlaying
+                    totalDuration = player.duration.coerceAtLeast(0L)
+                    videoTimer = player.contentPosition.coerceAtLeast(0L)
+                    bufferedPercentage = player.bufferedPercentage
+                    playbackState = player.playbackState
                 }
             }
-            AndroidView(
-                factory = {
-                    PlayerView(context).apply {
-                        player = exoPlayer
-                        useController = false // default icon buttons off
-                        layoutParams = FrameLayout.LayoutParams(
-                            MATCH_PARENT, MATCH_PARENT,
-                        )
-                    }
-                },
-                modifier = Modifier.clickable { iconVisible = !iconVisible }
-            )
-
-            CustomButtonIcons(
-                iconVisible = iconVisible,
-                exoPlayer = exoPlayer,
-                isPlaying = isPlaying,
-                onPlayPauseReplay = {
-                    isPlaying = if (isPlaying) {
-                        exoPlayer.pause()
-                        !isPlaying
-                    } else {
-                        exoPlayer.play()
-                        !isPlaying
-                    }
-                },
-                onPlay = { isPlaying = true },
-                playbackState = playbackState,
-                videoTimer = videoTimer,
-                totalDuration = totalDuration,
-                bufferedPercentage = { bufferedPercentage }
-            )
+            exoPlayer.addListener(listener)
+            onDispose {
+                exoPlayer.removeListener(listener)
+                exoPlayer.release()
+            }
         }
+
+        // Use a LaunchedEffect to observe the exoPlayer and update isPlaying
+        LaunchedEffect(exoPlayer) {
+            while (true) {
+                val isPlayerPlaying = exoPlayer.isPlaying
+                if (isPlaying != isPlayerPlaying) {
+                    isPlaying = isPlayerPlaying
+                }
+                delay(1000) // Adjust the delay as needed
+            }
+        }
+
+        var iconVisible by remember { mutableStateOf(false) }
+        LaunchedEffect(iconVisible) {
+            if (iconVisible) {
+                delay(4000) // Delay for 5 seconds
+                iconVisible = false // Hide the icon after the delay
+            }
+        }
+
+        val handler = remember { Handler(Looper.getMainLooper()) }
+        val runnable = remember {
+            object : Runnable {
+                override fun run() {
+                    videoTimer = exoPlayer.currentPosition
+                    handler.postDelayed(this, 1000)
+                }
+            }
+        }
+
+        DisposableEffect(key1 = Unit) {
+            handler.postDelayed(runnable, 1000)
+            onDispose {
+                handler.removeCallbacks(runnable)
+            }
+        }
+
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Top,
         ) {
-            TextView(
-                text = title.toString(),
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = Color.DarkGray,
-                    fontWeight = FontWeight.Bold,
-                ),
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier//.height(275.dp)
+                    .fillMaxWidth()
+                    .height(275.dp)
+                    .background(Color.Black),
+            ) {
+                if (playbackState == Player.STATE_ENDED) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(color = Color.White)
+                    }
+                }
+                AndroidView(
+                    factory = {
+                        PlayerView(context).apply {
+                            player = exoPlayer
+                            useController = false // default icon buttons off
+                            layoutParams = FrameLayout.LayoutParams(
+                                MATCH_PARENT, MATCH_PARENT,
+                            )
+                        }
+                    },
+                    modifier = Modifier.clickable { iconVisible = !iconVisible }
+                )
+
+                CustomButtonIcons(
+                    iconVisible = iconVisible,
+                    exoPlayer = exoPlayer,
+                    isPlaying = isPlaying,
+                    onPlayPauseReplay = {
+                        isPlaying = if (isPlaying) {
+                            exoPlayer.pause()
+                            !isPlaying
+                        } else {
+                            exoPlayer.play()
+                            !isPlaying
+                        }
+                    },
+                    onPlay = { isPlaying = true },
+                    playbackState = playbackState,
+                    videoTimer = videoTimer,
+                    totalDuration = totalDuration,
+                    bufferedPercentage = { bufferedPercentage }
+                )
+            }
+            Column(
                 modifier = Modifier
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            TextView(text = description.toString())
-            Spacer(modifier = Modifier.height(10.dp))
-            TextView(
-                text = videoUrls.toString(),
-                color = Color.Blue
-            )
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                TextView(
+                    text = "Video Title",// videoTitle.toString(),
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        color = Color.DarkGray,
+                        fontWeight = FontWeight.Bold,
+                    ),
+                    modifier = Modifier
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                TextView(text = videoId.toString())
+                Spacer(modifier = Modifier.height(10.dp))
+                TextView(
+                    text = vUrl,//videoUrl.toString(),
+                    color = Color.Blue
+                )
+            }
         }
     }
 }
@@ -413,7 +436,7 @@ fun TopSettingActionView(
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 IconButton(
                                     modifier = Modifier.size(width = 24.dp, height = 24.dp),
-                                    onClick = {  }
+                                    onClick = { }
                                 ) {
                                     Icon(
                                         modifier = Modifier.fillMaxSize(),
@@ -441,6 +464,7 @@ fun TopSettingActionView(
                                             fontSize = 10.sp,
                                             modifier = Modifier.padding(start = 8.dp)
                                         )
+
                                         "Audio" -> TextView(
                                             text = showsAudio,
                                             color = Color.White,

@@ -6,11 +6,9 @@ import androidx.compose.material.icons.filled.MenuBook
 import androidx.compose.material.icons.filled.PersonOutline
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
-
-const val SUBJECT_ID = "subject_id"
-const val SUBJECT_NAME_KEY = "subject_name"
-const val SUBJECT_DESC_KEY = "subject_descriptions"
-const val VIDEO_URL_KEY = "video_url"
+import com.edu.socialmediallogin.data.common.Constants.SUBJECT_ID
+import com.edu.socialmediallogin.data.common.Constants.SUBJECT_NAME_KEY
+import com.edu.socialmediallogin.data.common.Constants.VIDEO_ID_KEY
 
 sealed class Screen(val route: String) {
     object SplashScreen : Screen("SplashScreen")
@@ -18,7 +16,7 @@ sealed class Screen(val route: String) {
     object RegisterScreen : Screen("RegisterScreen")
     object MainScreen: Screen("MainScreen")
     object VideoListScreen : Screen("VideoListScreen/{$SUBJECT_ID}/{$SUBJECT_NAME_KEY}")
-    object VideoScreen : Screen("VideoScreen/{$SUBJECT_NAME_KEY}/{$SUBJECT_DESC_KEY}/{$VIDEO_URL_KEY}")
+    object VideoScreen : Screen("VideoPlayScreen/{$VIDEO_ID_KEY}")
     object TestScreen: Screen("TestScreen")
 }
 

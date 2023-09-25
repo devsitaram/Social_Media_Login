@@ -8,12 +8,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.edu.socialmediallogin.data.common.Resource
-import com.edu.socialmediallogin.data.source.local.SubjectEntity
-import com.edu.socialmediallogin.domain.use_case.SubjectUseCase
-import com.edu.socialmediallogin.presentation.state.SubjectState
-import com.edu.socialmediallogin.presentation.state.VideoState
+import com.edu.socialmediallogin.presentation.state.video.VideoListState
+import com.edu.socialmediallogin.presentation.state.video.VideoUrlState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.internal.InjectedFieldSignature
 import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
@@ -21,22 +18,22 @@ import javax.inject.Inject
 class VideoViewModel @Inject constructor(private val videoUseCase: VideoUseCase) :
     ViewModel() {
 
-    private var _videoList = mutableStateOf(VideoState())
-    val videoList: State<VideoState> get() = _videoList
+    private var _videoList = mutableStateOf(VideoListState())
+    val videoList: State<VideoListState> get() = _videoList
 
     fun getVideos(subjectId: Int?) {
         videoUseCase(subjectId).onEach {
             when (it) {
                 is Resource.Loading -> {
-                    _videoList.value = VideoState(isLoading = true)
+                    _videoList.value = VideoListState(isLoading = true)
                 }
 
                 is Resource.Success -> {
-                    _videoList.value = VideoState(isData = it.data)
+                    _videoList.value = VideoListState(isData = it.data)
                 }
 
                 is Resource.Error -> {
-                    _videoList.value = VideoState(isError = it.message.toString())
+                    _videoList.value = VideoListState(isError = it.message.toString())
                 }
             }
         }.launchIn(viewModelScope)
@@ -44,5 +41,26 @@ class VideoViewModel @Inject constructor(private val videoUseCase: VideoUseCase)
 
     fun insertVideo(listOfVideo: List<VideoEntity>) {
         videoUseCase(listOfVideo).launchIn(viewModelScope)
+    }
+
+
+    private var _videoUrl = mutableStateOf(VideoUrlState())
+    val videoUrl: State<VideoUrlState> get() = _videoUrl
+    fun getVideoUrl(videoId: String?) {
+        videoUseCase(videoId).onEach {
+            when (it) {
+                is Resource.Loading -> {
+                    _videoUrl.value = VideoUrlState(isLoading = true)
+                }
+
+                is Resource.Success -> {
+                    _videoUrl.value = VideoUrlState(isData = it.data)
+                }
+
+                is Resource.Error -> {
+                    _videoUrl.value = VideoUrlState(isError = it.message.toString())
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 }

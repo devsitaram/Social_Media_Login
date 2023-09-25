@@ -18,6 +18,7 @@ import com.edu.socialmediallogin.presentation.ui.navigations.Screen
 import com.edu.socialmediallogin.presentation.ui.screen.SignInViewScreen
 import com.edu.socialmediallogin.presentation.ui.screen.SignUpScreenViewScreen
 import com.edu.socialmediallogin.presentation.ui.screen.SplashViewScreen
+import com.edu.socialmediallogin.test.TestingViewScreen
 import com.edu.socialmediallogin.ui.theme.SocialMedialLoginTheme
 //demo1004@mst.sg
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,31 +41,32 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MainViewScreen(checked = darkMode) { darkMode = !darkMode }
+//                    TestingViewScreen()
+//                    MainViewScreen(checked = darkMode) { darkMode = !darkMode }
 
-//                    val navController = rememberNavController()
-//                    NavHost(
-//                        navController = navController,
-//                        startDestination = // ScreenList.SearchScreen.route // ScreenList.SplashScreen.route
-//                        if (getUserDevice.isNullOrEmpty()) {
-//                            Screen.LoginScreen.route
-//                        } else {
-//                            Screen.MainScreen.route
-//                        }
-//                    ) {
-//                        composable(Screen.SplashScreen.route) {
-//                            SplashViewScreen(getUserDevice, navController)
-//                        }
-//                        composable(Screen.LoginScreen.route) {
-//                            SignInViewScreen(navController)
-//                        }
-//                        composable(Screen.RegisterScreen.route) {
-//                            SignUpScreenViewScreen(navController)
-//                        }
-//                        composable(Screen.MainScreen.route) {
-//                            MainViewScreen(checked = darkMode) { darkMode = !darkMode }
-//                        }
-//                    }
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = // ScreenList.SearchScreen.route // ScreenList.SplashScreen.route
+                        if (getUserDevice.isNullOrEmpty()) {
+                            Screen.LoginScreen.route
+                        } else {
+                            Screen.MainScreen.route
+                        }
+                    ) {
+                        composable(Screen.SplashScreen.route) {
+                            SplashViewScreen(getUserDevice, navController)
+                        }
+                        composable(Screen.LoginScreen.route) {
+                            SignInViewScreen(navController)
+                        }
+                        composable(Screen.RegisterScreen.route) {
+                            SignUpScreenViewScreen(navController)
+                        }
+                        composable(Screen.MainScreen.route) {
+                            MainViewScreen(checked = darkMode) { darkMode = !darkMode }
+                        }
+                    }
                 }
             }
         }

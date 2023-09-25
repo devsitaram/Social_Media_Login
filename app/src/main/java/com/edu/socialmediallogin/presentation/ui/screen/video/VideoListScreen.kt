@@ -1,3 +1,5 @@
+@file:Suppress("NAME_SHADOWING")
+
 package com.edu.socialmediallogin.presentation.ui.screen.video
 
 import android.util.Log
@@ -49,8 +51,6 @@ fun VideoListViewScreen(
 
     val context = LocalContext.current
     LaunchedEffect(key1 = subjectId, block = {
-        Toast.makeText(context, "Id: $subjectId", Toast.LENGTH_SHORT).show()
-        Log.e("Subject", "Subject Id: $subjectId")
         videoViewModel.getVideos(subjectId)
     })
 
@@ -136,7 +136,9 @@ fun VideoListViewScreen(
                                     imageUrl = Constants.HTTPS_IMAGE_BASE_URL + thumbNailUrl,
                                     videoTitle = videoTitle,
                                     videoDuration = videoDuration.toDouble(),
-                                    onClick = {}
+                                    onClick = {
+                                        navController.navigate("VideoPlayScreen/${videoId}")
+                                    }
                                 )
                             }
                         }
@@ -239,11 +241,17 @@ fun VideoCardView(
         val seconds = (videoDuration + 0.5).toInt()
 
         // Calculate minutes and remaining seconds
-        val minutes = seconds / 60
         val remainingSeconds = seconds % 60
+        val minutes = seconds / 60
+        val hours = seconds / 3600
 
-        // Format the time as "MM:SS"
-        totalDurationTime = String.format("%02d:%02d", minutes, remainingSeconds)
+
+        totalDurationTime = if (hours > 0) {
+            String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds)
+        } else {
+            // Format the time as "MM:SS"
+            String.format("%02d:%02d", minutes, remainingSeconds)
+        }
     }
 
     Column(
@@ -264,7 +272,6 @@ fun VideoCardView(
                 model = imageUrl,
                 modifier = Modifier
             )
-//            VectorIconView(imageVector = Icons.Default.PlayCircleOutline, tint = Color.White)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

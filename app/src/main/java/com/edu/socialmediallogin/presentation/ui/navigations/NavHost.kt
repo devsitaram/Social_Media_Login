@@ -3,15 +3,20 @@ package com.edu.socialmediallogin.presentation.ui.navigations
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -26,6 +31,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.edu.socialmediallogin.data.common.Constants.SUBJECT_ID
+import com.edu.socialmediallogin.data.common.Constants.SUBJECT_NAME_KEY
+import com.edu.socialmediallogin.data.common.Constants.VIDEO_ID_KEY
 import com.edu.socialmediallogin.test.TestingViewScreen
 import com.edu.socialmediallogin.presentation.ui.components.TextView
 import com.edu.socialmediallogin.presentation.ui.components.VectorIconView
@@ -36,30 +44,29 @@ import com.edu.socialmediallogin.presentation.ui.screen.SubjectViewScreen
 import com.edu.socialmediallogin.presentation.ui.screen.video.VideoListViewScreen
 import com.edu.socialmediallogin.presentation.ui.screen.video.VideoPlayViewScreen
 import com.edu.socialmediallogin.ui.theme.pink
+import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
     val navController = rememberNavController()
-    //    val visibleState by remember { MutableTransitionState(false) }
+
     val pages = listOf(
         ScreenList.HomeScreen,
         ScreenList.SubjectScreen,
         ScreenList.SearchScreen,
         ScreenList.ProfileScreen,
-        )
+    )
     Scaffold(
         bottomBar = {
-//            AnimatedVisibility(visibleState = visibleState) {
-//
-//            }
             BottomNavigation {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 pages.forEach { screen ->
                     BottomNavigationItem(
-                        modifier = Modifier.background(color = Color.White),
+                        modifier = Modifier
+                            .background(color = Color.White),
                         icon = {
                             VectorIconView(imageVector = screen.icon,
                                 tint = if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
@@ -132,7 +139,7 @@ fun ButtonNavigationViewScreen(
                     type = NavType.StringType
                 },
             )
-        ){navBackStackEntry ->
+        ) { navBackStackEntry ->
             val subjectId = navBackStackEntry.arguments?.getString(SUBJECT_ID)?.toInt()
             val subject = navBackStackEntry.arguments?.getString(SUBJECT_NAME_KEY)
             VideoListViewScreen(subjectId, subject, navController)
@@ -140,24 +147,16 @@ fun ButtonNavigationViewScreen(
         composable(
             route = Screen.VideoScreen.route,
             arguments = listOf(
-                navArgument(name = SUBJECT_NAME_KEY) {
-                    type = NavType.StringType
-                },
-                navArgument(name = SUBJECT_DESC_KEY) {
-                    type = NavType.StringType
-                },
-                navArgument(name = VIDEO_URL_KEY) {
+                navArgument(name = VIDEO_ID_KEY) {
                     type = NavType.StringType
                 }
             )
         ) { navBackStackEntry ->
-            val name = navBackStackEntry.arguments?.getString(SUBJECT_NAME_KEY)
-            val description = navBackStackEntry.arguments?.getString(SUBJECT_DESC_KEY)
-            val videoUrl = navBackStackEntry.arguments?.getString(VIDEO_URL_KEY)
-            VideoPlayViewScreen(title = name, description = description, videoUrls = videoUrl)
+            val videoId = navBackStackEntry.arguments?.getString(VIDEO_ID_KEY)
+            VideoPlayViewScreen(videoId = videoId)
         }
-        composable(Screen.TestScreen.route){
-            TestingViewScreen(navController)
+        composable(Screen.TestScreen.route) {
+//            TestingViewScreen(navController)
         }
     }
 }

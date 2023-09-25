@@ -6,6 +6,7 @@ import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.UserPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.video.VideoPojo
+import com.edu.socialmediallogin.data.source.remote.pojo.video.VideoUrlPojo
 import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -34,8 +35,8 @@ interface ApiService {
     suspend fun getVideos(@Path("subjectId") subjectId: Int?): VideoPojo
 
     @Headers(VIDEO_URL_AUTHORIZATION)
-    @GET("/api/v1/embed")
-    suspend fun getVideoUrl()
+    @GET("videos/{videoId}/embed") //62454185952b36001286d8d7
+    suspend fun getVideoUrl(@Path("videoId") videoId: String?): VideoUrlPojo?
 
 //    // get user
 //    @POST("TokenAuth/Authenticate/")

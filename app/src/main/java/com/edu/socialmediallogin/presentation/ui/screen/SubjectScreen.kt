@@ -36,19 +36,12 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.room.ColumnInfo
-import com.edu.socialmediallogin.data.common.Constants.DEFAULT_IMAGE_URL
 import com.edu.socialmediallogin.data.common.Constants.HTTPS_IMAGE_BASE_URL
-import com.edu.socialmediallogin.data.common.Resource
 import com.edu.socialmediallogin.data.source.local.SubjectEntity
-import com.edu.socialmediallogin.data.source.remote.pojo.subject.AssetType
-import com.edu.socialmediallogin.data.source.remote.pojo.subject.Level
-import com.edu.socialmediallogin.data.source.remote.pojo.subject.StudentSubject
 import com.edu.socialmediallogin.presentation.ui.components.AsyncImageView
 import com.edu.socialmediallogin.presentation.ui.components.ButtonAppBar
 import com.edu.socialmediallogin.presentation.ui.components.TextView
 import com.edu.socialmediallogin.presentation.ui.components.VectorIconView
-import com.edu.socialmediallogin.presentation.ui.navigations.Screen
-import com.edu.socialmediallogin.presentation.ui.navigations.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.SubjectViewModel
 import com.edu.socialmediallogin.ui.theme.skyBlue
 
@@ -57,7 +50,7 @@ fun SubjectViewScreen(
     navController: NavHostController,
     viewModel: SubjectViewModel = hiltViewModel()
 ) {
-    val context = (LocalContext.current as Activity)
+//    val context = (LocalContext.current as Activity)
 
     val subjects = viewModel.subjectList.value
 
