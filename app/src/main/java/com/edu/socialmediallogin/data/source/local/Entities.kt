@@ -3,8 +3,6 @@ package com.edu.socialmediallogin.data.source.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
-import com.edu.socialmediallogin.data.common.util.json_convertoer.VideoTypeConverter
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.AssetType
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.Level
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.StudentSubject

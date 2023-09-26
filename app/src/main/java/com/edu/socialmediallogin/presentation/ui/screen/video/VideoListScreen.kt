@@ -2,8 +2,6 @@
 
 package com.edu.socialmediallogin.presentation.ui.screen.video
 
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,9 +35,8 @@ import androidx.navigation.NavHostController
 import com.edu.socialmediallogin.data.common.Constants
 import com.edu.socialmediallogin.data.source.local.VideoEntity
 import com.edu.socialmediallogin.presentation.ui.components.AsyncImageView
-import com.edu.socialmediallogin.presentation.ui.components.ButtonAppBar
 import com.edu.socialmediallogin.presentation.ui.components.TextView
-import com.edu.socialmediallogin.presentation.viewmodel.VideoViewModel
+import com.edu.socialmediallogin.presentation.viewmodel.video.VideoViewModel
 
 @Composable
 fun VideoListViewScreen(
@@ -51,7 +48,7 @@ fun VideoListViewScreen(
 
     val context = LocalContext.current
     LaunchedEffect(key1 = subjectId, block = {
-        videoViewModel.getVideos(subjectId)
+        videoViewModel.getVideoList(subjectId)
     })
 
     val videoList = videoViewModel.videoList.value
@@ -121,8 +118,8 @@ fun VideoListViewScreen(
                 )
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 10.dp, end = 10.dp)
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp)
                 ) {
                     this.items(videoResult.chapters.orEmpty()) { chapterItem ->
                         chapterItem?.topics.orEmpty().forEach { topicItem ->
@@ -295,7 +292,7 @@ fun VideoCardView(
         }
 
         TextView(
-            text = videoTitle,//"Introduction to Grade 11 Compulsory English is Compulsory English",
+            text = videoTitle, //"Introduction to Grade 11 Compulsory English is Compulsory English",
             style = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,

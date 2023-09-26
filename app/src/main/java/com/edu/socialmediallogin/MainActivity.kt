@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 
         // create the Shared Preferences
         val getSharedPreferences = getSharedPreferences("social_media_preferences", MODE_PRIVATE)
-        val getUserDevice = getSharedPreferences.getString("accessToken", "")
+        val getUserDevice= getSharedPreferences.getString("accessToken", "")
 
         var darkMode by mutableStateOf(false)
 
@@ -47,8 +47,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
-                        startDestination = // ScreenList.SearchScreen.route // ScreenList.SplashScreen.route
-                        if (getUserDevice.isNullOrEmpty()) {
+                        startDestination = if (getUserDevice.isNullOrEmpty()) {
                             Screen.LoginScreen.route
                         } else {
                             Screen.MainScreen.route

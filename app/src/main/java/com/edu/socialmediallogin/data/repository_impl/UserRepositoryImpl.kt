@@ -1,14 +1,14 @@
 package com.edu.socialmediallogin.data.repository_impl
 
-import com.edu.socialmediallogin.data.source.local.Dao
+import com.edu.socialmediallogin.data.source.local.RoomDao
 import com.edu.socialmediallogin.data.source.local.UserEntity
-import com.edu.socialmediallogin.data.source.remote.network.ApiService
+import com.edu.socialmediallogin.data.source.remote.network.ApiServiceMst
 import com.edu.socialmediallogin.data.source.remote.pojo.user.AuthPojo
 import com.edu.socialmediallogin.data.source.remote.pojo.user.ProfileResult
 import com.edu.socialmediallogin.domain.model.LoginRequestModel
 import com.edu.socialmediallogin.domain.repository.UserRepository
 
-class UserRepositoryImpl(private val apiService: ApiService, private val dao: Dao) :
+class UserRepositoryImpl(private val apiServiceMst: ApiServiceMst, private val roomDao: RoomDao) :
     UserRepository {
 
     // login authentications
@@ -20,7 +20,7 @@ class UserRepositoryImpl(private val apiService: ApiService, private val dao: Da
                 rememberClient = false,
                 couponCode = "",
             )
-            val response = apiService.getLoginUserAuth(loginRequestModel)
+            val response = apiServiceMst.getLoginUserAuth(loginRequestModel)
             return response ?: throw Exception("Login failed: ${response?.error}")
         } catch (e: Exception) {
             // Handle exceptions
@@ -31,11 +31,11 @@ class UserRepositoryImpl(private val apiService: ApiService, private val dao: Da
     // get user profiles
     override suspend fun getUserProfile(): ProfileResult? {
         try {
-            val profiles = dao.getUserProfiles()
+            val profiles = roomDao.getUserProfiles()
             return if (profiles?.userId != null) {
                 profiles
             } else {
-                apiService.getUserProfiles()?.result
+                apiServiceMst.getUserProfiles()?.result
             }
         } catch (e: Exception) {
             throw Exception("Response Error: ${e.message}", e)
@@ -44,7 +44,7 @@ class UserRepositoryImpl(private val apiService: ApiService, private val dao: Da
 
     override suspend fun insertUserProfile(userEntity: UserEntity) {
         try {
-            dao.insertUserProfile(userEntity)
+            roomDao.insertUserProfile(userEntity)
         } catch (e: Exception) {
             throw Exception(e)
         }

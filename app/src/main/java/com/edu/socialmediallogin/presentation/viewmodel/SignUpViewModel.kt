@@ -2,7 +2,6 @@ package com.edu.socialmediallogin.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.edu.socialmediallogin.data.source.remote.network.ApiService
 import com.edu.socialmediallogin.domain.model.RegistrationState
 import com.edu.socialmediallogin.presentation.state.SignUpState
 import kotlinx.coroutines.channels.Channel

@@ -5,11 +5,11 @@ import androidx.room.Query
 import androidx.room.Upsert
 import com.edu.socialmediallogin.data.source.remote.pojo.subject.SubjectResult
 import com.edu.socialmediallogin.data.source.remote.pojo.user.ProfileResult
-import com.edu.socialmediallogin.data.source.remote.pojo.video.VideoResult
+import com.edu.socialmediallogin.data.source.remote.pojo.video.VideoListResult
 
 @SuppressWarnings("AndroidUnresolvedRoomSqlReference")
 @Dao
-interface Dao {
+interface RoomDao {
 
     // user
     // @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -34,9 +34,9 @@ interface Dao {
     suspend fun insertVideo(listOfVideo: List<VideoEntity>)
 
     @Query("SELECT * FROM videos")
-    suspend fun getVideos(): VideoResult?
+    suspend fun getVideos(): VideoListResult?
 
     @Query("SELECT * FROM videos WHERE id = :subjectId")
-    suspend fun getVideosById(subjectId: Int?): VideoResult?
+    suspend fun getVideosById(subjectId: Int?): VideoListResult?
 
 }

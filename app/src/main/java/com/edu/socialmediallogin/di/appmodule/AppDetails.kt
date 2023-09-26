@@ -6,12 +6,12 @@ import com.edu.socialmediallogin.domain.repository.VideoRepository
 import com.edu.socialmediallogin.domain.use_case.LoginAuthUseCase
 import com.edu.socialmediallogin.domain.use_case.SubjectUseCase
 import com.edu.socialmediallogin.domain.use_case.UserProfileUseCase
-import com.edu.socialmediallogin.domain.use_case.VideoUseCase
+import com.edu.socialmediallogin.domain.use_case.video.VideoIvyUseCase
+import com.edu.socialmediallogin.domain.use_case.video.VideoUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
@@ -44,5 +44,11 @@ class AppDetails {
     @Singleton
     fun provideVideoUseCase(videoRepository: VideoRepository): VideoUseCase {
         return VideoUseCase(videoRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideVideoIvyUseCase(videoRepository: VideoRepository): VideoIvyUseCase {
+        return VideoIvyUseCase(videoRepository)
     }
 }

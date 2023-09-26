@@ -1,7 +1,7 @@
 package com.edu.socialmediallogin.data.source.remote.pojo.video
 
-data class VideoPojo(
-	val result: VideoResult? = null,
+data class VideoListPojo(
+	val result: VideoListResult? = null,
 	val success: Boolean? = null,
 	val abp: Boolean? = null,
 	val error: String? = null,
@@ -9,7 +9,7 @@ data class VideoPojo(
 	val unAuthorizedRequest: Boolean? = null
 )
 
-data class VideoResult(
+data class VideoListResult(
 	val completion: String? = null,
 	val photoUrl: String? = null,
 	val chapters: List<ChaptersItem?>? = null,
@@ -68,16 +68,8 @@ data class VideosItem(
 	val elapsedTime: String? = null
 )
 
-// un-used
-data class ReportsItem(
-	val interactionDate: String? = null,
-	val interactionId: String? = null,
-	val videoId: String? = null,
-	val quizTime: String? = null,
-	val diagnosticRemarks: String? = null,
-	val mastery: String? = null
-)
 
+// un-used
 data class VideoInteractionItem(
 	val completionPercentage: String? = null,
 	val reports: List<ReportsItem?>? = null,
@@ -88,5 +80,13 @@ data class VideoInteractionItem(
 	val userId: Int? = null,
 	val endOfLessonQuizCount: Int? = null,
 	val updatedAt: String? = null
+)
+data class ReportsItem(
+	val interactionDate: String? = null,
+	val interactionId: String? = null,
+	val videoId: String? = null,
+	val quizTime: String? = null,
+	val diagnosticRemarks: String? = null,
+	val mastery: String? = null
 )
 

@@ -88,17 +88,17 @@ fun SignInViewScreen(
     val authResultLauncher =
         rememberLauncherForActivityResult(contract = GoogleApiContract()) { task ->
             try {
-                googleSignInViewModel.fetchSingInUser(
-                    email = "np01ma4s22003@islingtoncollege.edu.np",
-                    name = "Sita Ram Thing MAD"
-                )
-                val gsa = task?.getResult(ApiException::class.java)
-                if (gsa != null) {
-                    googleSignInViewModel.fetchSingInUser(gsa.email, gsa.displayName)
-                } else {
-                    Toast.makeText(context, "Invalid user", Toast.LENGTH_SHORT).show()
-                    isGoogleSignInError.value = true
-                }
+//                googleSignInViewModel.fetchSingInUser(
+//                    email = "np01ma4s22003@islingtoncollege.edu.np",
+//                    name = "Sita Ram Thing MAD"
+//                )
+//                val gsa = task?.getResult(ApiException::class.java)
+//                if (gsa != null) {
+//                    googleSignInViewModel.fetchSingInUser(gsa.email, gsa.displayName)
+//                } else {
+//                    Toast.makeText(context, "Invalid user", Toast.LENGTH_SHORT).show()
+//                    isGoogleSignInError.value = true
+//                }
 //                Log.e("gsa.email", "gsa.email: ${gsa?.email}")
             } catch (e: ApiException) {
                 Toast.makeText(context, e.toString(), Toast.LENGTH_SHORT).show()
@@ -155,7 +155,7 @@ fun SignInViewScreen(
                         text = "Sing In",
                         modifier = Modifier
                             .wrapContentHeight()
-                            .padding(horizontal = 5.dp),
+                            .padding(horizontal = 5.dp, vertical = 5.dp),
                         style = TextStyle(
                             fontSize = 16.sp,
                             fontWeight = FontWeight.SemiBold,
@@ -370,17 +370,17 @@ fun SignInViewScreen(
             }
         }
 
-        googleUser.let {
-            googleSignInViewModel.hideLoading()
-            if (googleUser.value != null) {
-                googleSignInViewModel.hideLoading()
-                navController.navigate(Screen.MainScreen.route) {
-                    popUpTo(Screen.LoginScreen.route) {
-                        inclusive = true
-                    }
-                }
-            }
-        }
+//        googleUser?.let {
+//            googleSignInViewModel.hideLoading()
+//            if (googleUser.value != null) {
+//                googleSignInViewModel.hideLoading()
+//                navController.navigate(Screen.MainScreen.route) {
+//                    popUpTo(Screen.LoginScreen.route) {
+//                        inclusive = true
+//                    }
+//                }
+//            }
+//        }
     }
 
     if (isError) {
