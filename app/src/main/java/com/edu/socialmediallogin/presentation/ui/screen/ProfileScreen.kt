@@ -49,6 +49,8 @@ import com.edu.socialmediallogin.presentation.ui.components.AsyncImageView
 import com.edu.socialmediallogin.presentation.ui.components.ProgressIndicator
 import com.edu.socialmediallogin.presentation.ui.components.TextView
 import com.edu.socialmediallogin.presentation.ui.components.VectorIconView
+import com.edu.socialmediallogin.presentation.ui.navigations.Screen
+import com.edu.socialmediallogin.presentation.ui.navigations.ScreenList
 import com.edu.socialmediallogin.presentation.viewmodel.ProfileViewModel
 import com.edu.socialmediallogin.ui.theme.green
 import com.edu.socialmediallogin.ui.theme.skyBlue
@@ -58,6 +60,7 @@ import com.edu.socialmediallogin.ui.theme.white
 @Composable
 fun ProfileViewScreen(
     navController: NavHostController,
+    navHostController: NavHostController,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val activity = (LocalContext.current as Activity)
@@ -157,10 +160,15 @@ fun ProfileViewScreen(
             text = "Are you sure you want to log out?",
             onDismiss = { showDialogBox = false },
             onConfirm = {
-                // remove access_token
-                val editor = sharedPreferences.edit()
-                editor.putString("accessToken", "").apply()
-                activity.finish() // close the app
+                // activity.finish() // close the app
+                navHostController.navigate(Screen.LoginScreen.route){
+                    popUpTo(ScreenList.ProfileScreen.route) {
+                        inclusive = true
+                        // remove access_token
+                        val editor = sharedPreferences.edit()
+                        editor.putString("accessToken", "").apply()
+                    }
+                }
             }
         )
     }

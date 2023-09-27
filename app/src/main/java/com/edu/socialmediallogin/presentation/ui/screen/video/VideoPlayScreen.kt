@@ -4,6 +4,7 @@ package com.edu.socialmediallogin.presentation.ui.screen.video
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Handler
@@ -11,6 +12,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import android.widget.VideoView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -33,7 +35,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material3.Slider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Audiotrack
@@ -49,6 +50,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -75,13 +77,16 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.datasource.DataSource
-import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
-import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.dash.DashMediaSource
+import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.ui.PlayerView
 import com.edu.socialmediallogin.presentation.ui.components.TextView
 import com.edu.socialmediallogin.presentation.viewmodel.video.VideoIvyViewModel
 import com.edu.socialmediallogin.presentation.viewmodel.video.VideoViewModel
+import com.google.android.exoplayer2.ui.StyledPlayerView
 import kotlinx.coroutines.delay
 
 @SuppressLint("UnsafeOptInUsageError")
@@ -120,33 +125,27 @@ fun VideoPlayViewScreen(
 
     videoEmbedToken.isData?.let { token ->
         val embedToken = token.embedToken.toString()
-        val vUrl = token.url.toString()
-
         // get video streamingUrl
         LaunchedEffect(key1 = embedToken, block = {
             // get embed token
             videoIvyViewModel.getStreamingUrl(embedToken)
         })
 
+//        val videoUrls = "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/How-do-you-create-assessment-materials-for-your-students.mp4"
         videoStreamingUrl.isData?.let { url ->
 
-//            val videoUrls = url.streamingUrl
-            val videoUrls =
-                "https://assets.mysecondteacher.com/ap-websites/wp-content/uploads/2023/03/How-do-you-create-assessment-materials-for-your-students.mp4"
-            // ExoPlayer instance
+            val videoUrls = url.streamingUrl.toString()
+
             val exoPlayer = remember {
                 ExoPlayer.Builder(context).build().apply {
-                    val defaultDataSourceFactory = DefaultDataSource.Factory(context)
-                    val dataSourceFactory: DataSource.Factory = DefaultDataSource.Factory(
-                        context, defaultDataSourceFactory
-                    )
-                    val source = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(
-                            MediaItem.fromUri(videoUrls.toString())
-                        )
-                    setMediaSource(source)
-                    playWhenReady = true
-                    prepare()
-                }
+                    val dataSourceFactory: DataSource.Factory = DefaultHttpDataSource.Factory()
+                    val mediaSource: MediaSource =
+                        DashMediaSource.Factory(dataSourceFactory)
+                            .createMediaSource(MediaItem.fromUri(videoUrls))
+                   setMediaSource(mediaSource)
+                    this.playWhenReady = true
+                   this.prepare()
+               }
             }
 
             var isPlayingError by remember { mutableStateOf("") }
@@ -793,3 +792,26 @@ open class ListOfSettingMenus(var icon: ImageVector, val name: String) {
     object Speed : ListOfSettingMenus(Icons.Default.Settings, "Speed")
     object Audio : ListOfSettingMenus(Icons.Default.Audiotrack, "Audio")
 }
+
+
+//            val mediaSource = ProgressiveMediaSource.Factory(DefaultHttpDataSource.Factory())
+//                .createMediaSource(MediaItem.fromUri(videoUrls))
+//
+//            // ExoPlayer instance
+//            val exoPlayer = remember {
+//                ExoPlayer.Builder(context).build().apply {
+//                    setMediaSource(mediaSource)
+//                    playWhenReady = true
+//                    prepare()
+//                }
+
+//            val exoPlayer = remember {
+//                ExoPlayer.Builder(context)
+//                    .setSeekBackIncrementMs(5000L)
+//                    .setSeekForwardIncrementMs(10000L)
+//                    .build().apply {
+//                        setMediaSource(mediaSource)
+//                        this.playWhenReady = true
+//                        this.prepare()
+//                    }
+//              }

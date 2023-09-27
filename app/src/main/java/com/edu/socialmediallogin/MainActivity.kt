@@ -41,9 +41,6 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-//                    TestingViewScreen()
-//                    MainViewScreen(checked = darkMode) { darkMode = !darkMode }
-
                     val navController = rememberNavController()
                     NavHost(
                         navController = navController,
@@ -63,7 +60,7 @@ class MainActivity : ComponentActivity() {
                             SignUpScreenViewScreen(navController)
                         }
                         composable(Screen.MainScreen.route) {
-                            MainViewScreen(checked = darkMode) { darkMode = !darkMode }
+                            MainViewScreen(checked = darkMode, navHostController = navController) { darkMode = !darkMode }
                         }
                     }
                 }

@@ -30,6 +30,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -69,6 +70,12 @@ import com.edu.socialmediallogin.ui.others.google.GoogleApiContract
 import com.edu.socialmediallogin.presentation.viewmodel.signin.GoogleSignInViewModel
 import com.edu.socialmediallogin.presentation.viewmodel.signin.SignInViewModel
 import com.google.android.gms.common.api.ApiException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.internal.notifyAll
 
 @Composable
 fun SignInViewScreen(
@@ -113,17 +120,37 @@ fun SignInViewScreen(
     var isPasswordEmpty by remember { mutableStateOf(false) }
     var isError by remember { mutableStateOf(false) }
 
+//    LaunchedEffect(key1 = userLoginResult, key2 = null, block = {
+//
+//    }
+//        if (userLoginResult.data != null) {
+//            if (userLoginResult.data.success == true) {
+//                navController.navigate(Screen.MainScreen.route) {
+//                    popUpTo(Screen.LoginScreen.route) {
+//                        inclusive = true
+//                        val editor = sharedPreferences.edit()
+//                        editor.putString("accessToken", "${userLoginResult.data.result?.accessToken}").apply()
+//                    }
+//                }
+//            } else {
+//                isError = true
+//            }
+//        }
+//    })
+
     // Login button click handler
     val onClickNavigate: () -> Unit = {
+        isEmailEmpty = email.isEmpty()
+        if (!isEmailEmpty) { isInvalidEmail = !emailValidation(email) }
+        isPasswordEmpty = password.isEmpty()
         if (emailValidation(email) && password.isNotEmpty()) {
             signInViewModel.getLoginUserAuth(email, password)
             if (userLoginResult.data?.success == true) {
                 navController.navigate(Screen.MainScreen.route) {
                     popUpTo(Screen.LoginScreen.route) {
+                        Toast.makeText(context, "Success is: ${userLoginResult.data.success}", Toast.LENGTH_SHORT).show()
                         inclusive = true
                         val editor = sharedPreferences.edit()
-                        editor.putString("accessToken", "${userLoginResult.data.result?.accessToken}").apply()
-                        Log.e("Access Token", "accessToken: ${userLoginResult.data.result?.accessToken}")
                     }
                 }
             } else {
@@ -134,7 +161,11 @@ fun SignInViewScreen(
 
     if (isLoading.value == true || userLoginResult.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            ProgressIndicator(modifier = Modifier.wrapContentSize().align(Alignment.Center))
+            ProgressIndicator(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .align(Alignment.Center)
+            )
         }
     } else {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -152,7 +183,7 @@ fun SignInViewScreen(
                         .padding(top = 20.dp, start = 15.dp)
                 ) {
                     TextView(
-                        text = "Sing In",
+                        text = "Sign In",
                         modifier = Modifier
                             .wrapContentHeight()
                             .padding(horizontal = 5.dp, vertical = 5.dp),
@@ -254,11 +285,6 @@ fun SignInViewScreen(
                     // login button
                     ButtonView(
                         onClick = {
-                            isEmailEmpty = email.isEmpty()
-                            if (!isEmailEmpty) {
-                                isInvalidEmail = !emailValidation(email)
-                            }
-                            isPasswordEmpty = password.isEmpty()
                             onClickNavigate() // navigate
                         },
                         btnColor = ButtonDefaults.buttonColors(Color.Blue),
@@ -370,17 +396,17 @@ fun SignInViewScreen(
             }
         }
 
-//        googleUser?.let {
-//            googleSignInViewModel.hideLoading()
-//            if (googleUser.value != null) {
-//                googleSignInViewModel.hideLoading()
-//                navController.navigate(Screen.MainScreen.route) {
-//                    popUpTo(Screen.LoginScreen.route) {
-//                        inclusive = true
-//                    }
-//                }
-//            }
-//        }
+        googleUser?.let {
+            googleSignInViewModel.hideLoading()
+            if (googleUser.value != null) {
+                googleSignInViewModel.hideLoading()
+                navController.navigate(Screen.MainScreen.route) {
+                    popUpTo(Screen.LoginScreen.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
     }
 
     if (isError) {

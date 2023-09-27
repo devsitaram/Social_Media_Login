@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_EXPRESSION")
-
 package com.edu.socialmediallogin.presentation.ui.components
 
 import android.annotation.SuppressLint

@@ -233,16 +233,6 @@ fun SubjectCardView(
                         ),
                         modifier = Modifier.padding(top = 5.dp)
                     )
-                    TextView(
-                        text = planEndDate.toString(),
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Normal,
-                            lineHeight = 20.sp,
-                            color = Color.Gray
-                        ),
-                        modifier = Modifier.padding(top = 5.dp)
-                    )
                 }
                 Spacer(modifier = Modifier.padding(top = 20.dp))
                 Row(

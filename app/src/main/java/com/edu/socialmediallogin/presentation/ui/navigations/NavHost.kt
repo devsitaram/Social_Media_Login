@@ -43,13 +43,14 @@ import com.edu.socialmediallogin.presentation.ui.screen.SearchViewScreen
 import com.edu.socialmediallogin.presentation.ui.screen.SubjectViewScreen
 import com.edu.socialmediallogin.presentation.ui.screen.video.VideoListViewScreen
 import com.edu.socialmediallogin.presentation.ui.screen.video.VideoPlayViewScreen
+import com.edu.socialmediallogin.presentation.ui.screen.video.VideoViewScreen
 import com.edu.socialmediallogin.ui.theme.pink
 import kotlinx.coroutines.delay
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
+fun MainViewScreen(checked: Boolean, navHostController: NavHostController, onCheckedChange: () -> Unit) {
     val navController = rememberNavController()
 
     val pages = listOf(
@@ -105,7 +106,7 @@ fun MainViewScreen(checked: Boolean, onCheckedChange: () -> Unit) {
             }
         }
     ) {
-        ButtonNavigationViewScreen(navController, checked, onCheckedChange)
+        ButtonNavigationViewScreen(navController, checked, onCheckedChange, navHostController)
     }
 }
 
@@ -114,6 +115,7 @@ fun ButtonNavigationViewScreen(
     navController: NavHostController,
     checked: Boolean,
     onCheckedChange: () -> Unit,
+    navHostController: NavHostController
 ) {
     NavHost(navController = navController, startDestination = ScreenList.HomeScreen.route) {
         composable(ScreenList.HomeScreen.route) {
@@ -126,7 +128,7 @@ fun ButtonNavigationViewScreen(
             SearchViewScreen(navController)
         }
         composable(ScreenList.ProfileScreen.route) {
-            ProfileViewScreen(navController)
+            ProfileViewScreen(navController, navHostController)
         }
         // other screen
         composable(
@@ -153,7 +155,8 @@ fun ButtonNavigationViewScreen(
             )
         ) { navBackStackEntry ->
             val videoId = navBackStackEntry.arguments?.getString(VIDEO_ID_KEY)
-            VideoPlayViewScreen(videoId = videoId)
+//            VideoPlayViewScreen(videoId = videoId)
+            VideoViewScreen(videoId)
         }
         composable(Screen.TestScreen.route) {
 //            TestingViewScreen(navController)
